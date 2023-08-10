@@ -2,9 +2,9 @@
 
 <script>
     import { onMount } from 'svelte';
-    import '../style.css'
+    import '../../style.css'
 	// import javascript from 'highlight.js/lib/languages/javascript';
-    import CodeSnippet from '../CodeSnippet.svelte';
+    import CodeSnippet from '../../CodeSnippet.svelte';
     let el;
     onMount(async () =>{
         const {createScene} = await import('./scene')
@@ -57,7 +57,13 @@
     
 
 </script>
-
+<script context="module">
+    export const metadata = {
+        title : "Learning ThreeJS Part2: 3D Text, Matcaps",
+        description : "test description",
+        image : "images/bricks/color.jpg"
+    }
+</script>
 <svelte:head>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/themes/prism.min.css" rel="stylesheet" />
 </svelte:head>

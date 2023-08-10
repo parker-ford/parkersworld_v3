@@ -1,5 +1,9 @@
 <script>
-    export let data;
+  export let data;
+  console.log(data)
+  //export let summaries = [];
+  //$: console.log(summaries)
+
 	import { onMount } from 'svelte';
     import './style.css'
     let el;
@@ -35,5 +39,10 @@
                 </div>
             </div>
         {/each}
+        <!-- {#each summaries as summary}
+            <div>
+              <h1>{summary.name}</h1>
+            </div>
+        {/each} -->
     </div>
   </div>

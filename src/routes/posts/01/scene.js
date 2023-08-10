@@ -24,7 +24,6 @@ camera.position.z = 4;
 scene.add(camera)
 
 
-//
 /*
     Lights
 */

@@ -2,12 +2,12 @@
 
 <script>
 	import { onMount } from 'svelte';
-    import '../style.css'
+    import '../../style.css'
 
     import hljs from 'highlight.js/lib/core'
     import javascript from 'highlight.js/lib/languages/javascript';
     import 'highlight.js/styles/default.css';
-	import CodeSnippet from '../CodeSnippet.svelte';
+	import CodeSnippet from '../../CodeSnippet.svelte';
     hljs.registerLanguage('javascript', javascript);
 
 
@@ -60,7 +60,13 @@
     `;
 
 </script>
-
+<script context="module">
+    export const metadata = {
+        title : "Learning ThreeJS Part3: Lights, Shadows, Fog",
+        description : "test description",
+        image : "images/bricks/color.jpg"
+    }
+</script>
 <div class="page__main">
     <div class = "page__content">
         <div class="page__canvas__container">

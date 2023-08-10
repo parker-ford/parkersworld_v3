@@ -1,17 +1,21 @@
 <script>
 	import { onMount } from 'svelte';
-    import '../style.css'
+    import '../../style.css'
     let el;
     onMount(async () =>{
         const {createScene} = await import('./scene')
         createScene(el)
     })
-
     const title = "Learning ThreeJS Part 1: Scenes, Objects, Materials"
     const date = "1/16/2023"
-    const text_content = `
-                
-    `
+    const text_content = ``;
+</script>
+<script context="module">
+    export const metadata = {
+        title : "Learning ThreeJS Part 1: Scenes, Objects, Materials",
+        description : "test description",
+        image : "images/bricks/color.jpg"
+    }
 </script>
 
 <div class="page__main">
