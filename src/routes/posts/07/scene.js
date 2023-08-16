@@ -5,7 +5,8 @@ import { init } from 'svelte/internal';
 import canvasShaderCode from './canvasShader.wgsl?raw'
 
 import shaderCode1 from './whiteNoise.wgsl?raw';
-const shaderCode = [shaderCode1];
+import shaderCode2 from './valueNoise.wgsl?raw';
+const shaderCode = [shaderCode1, shaderCode2];
 
 const CANVAS_SIZE = 512;
 let startTime = performance.now();
@@ -13,12 +14,13 @@ let startTime = performance.now();
 const gui = new GUI()
 gui.domElement.id = 'gui';
 const parameters = {
-    shaderIndex: 0,
+    shaderIndex: 1,
     shaders: shaderCode,
-    shaderNames: ["WhiteNoise"],
+    shaderNames: ["WhiteNoise", "ValueNoise"],
     shader: "",
     animate: false,
     textureSize: 512,
+    cellSize: 4,
 }
 parameters.shader = parameters.shaderNames[parameters.shaderIndex];
 
@@ -82,6 +84,7 @@ export const createScene = async (el) => {
     let noiseTexture;
     let noiseTextureView;
     let sampler;
+    let cellSizeUniformBuffer;
 
     const initializeVertexBuffer = () => {
         vertexBuffer = device.createBuffer({
@@ -123,7 +126,7 @@ export const createScene = async (el) => {
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
         device.queue.writeBuffer(canvasUniformBuffer, 0, canvasUniformArray);
-        
+
         textureSizeUniformArray = new Float32Array([parameters.textureSize, parameters.textureSize]);
         textureSizeUniformBuffer = device.createBuffer({
             label: "Texture Size Uniforms",
@@ -133,11 +136,18 @@ export const createScene = async (el) => {
         device.queue.writeBuffer(textureSizeUniformBuffer, 0, textureSizeUniformArray);
 
         timeUniformBuffer = device.createBuffer({
-            labal: "Time Uniforms",
+            label: "Time Uniforms",
             size: 4,
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
-        })
+        });
         device.queue.writeBuffer(timeUniformBuffer, 0, new Float32Array([1]));
+
+        cellSizeUniformBuffer = device.createBuffer({
+            label: "Cell Size Uniform",
+            size: 4,
+            usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
+        });
+        device.queue.writeBuffer(cellSizeUniformBuffer, 0, new Float32Array([parameters.cellSize]));
     }
 
     const initializePipelineLayout = () => {
@@ -152,6 +162,13 @@ export const createScene = async (el) => {
                 },
                 {
                     binding: 1,
+                    visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
+                    buffer: {
+                        type: 'uniform'
+                    }
+                },
+                {
+                    binding: 2,
                     visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
                     buffer: {
                         type: 'uniform'
@@ -270,6 +287,10 @@ export const createScene = async (el) => {
                 {
                     binding: 1,
                     resource: { buffer: timeUniformBuffer }
+                },
+                {
+                    binding: 2,
+                    resource: {buffer: cellSizeUniformBuffer}
                 }
             ],
         });
@@ -339,7 +360,7 @@ export const createScene = async (el) => {
 
         device.queue.submit([encoder.finish()]);
 
-        requestAnimationFrame(tick);
+       //requestAnimationFrame(tick);
     }
 
     const resetSystem = () => {
@@ -365,15 +386,13 @@ export const createScene = async (el) => {
         resetSystem();
     })
 
+    gui.add(parameters, 'cellSize').min(2).max(16).step(1).onChange(() => {
+        resetSystem();
+    })
+
     gui.add(parameters, 'animate');
 
     parameters.saveImage = async () => {
-        // const dataURL = el.toDataURL("image/png");
-        // const a = document.createElement('a');
-        // a.href = dataURL;
-        // a.download = parameters.shaderNames[parameters.shaderIndex] + ".png";
-        // a.click();
-
         const bufferSize = parameters.textureSize * parameters.textureSize * 4; // Assuming a rgba8unorm format
         const readbackBuffer = device.createBuffer({
             size: bufferSize,
