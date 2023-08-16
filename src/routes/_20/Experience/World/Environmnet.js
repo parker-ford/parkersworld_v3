@@ -35,6 +35,7 @@ export default class Environment {
                 if(child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial){
                     child.material.envMap = this.environmentMap.texture;
                     child.material.envMapIntensity = this.environmentMap.intensity;
+                    child.material.needsUpdate = true;
                 }
             })
         }

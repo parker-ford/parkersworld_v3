@@ -1,5 +1,7 @@
-@group(0) @binding(0) var<uniform> canvas: vec2f;
-@group(0) @binding(1) var<uniform> time: f32;
+@group(0) @binding(0) var noiseTexture: texture_2d<f32>;
+@group(0) @binding(1) var texSampler: sampler;
+@group(0) @binding(2) var<uniform> canvas: vec2f;
+
     
 struct VertexInput {
     @location(0) pos: vec2f,
@@ -19,6 +21,7 @@ fn vertexMain(input: VertexInput) -> VertexOutput{
 @fragment
 fn fragmentMain(input: VertexOutput) -> @location(0) vec4f {
     var uv: vec2f = input.pos.xy / canvas;
-    var c: f32 = fract(sin(uv.x*100.0 + uv.y*2345.0)*8732.0);
-    return vec4f(vec3(c), 1.0);
+    return textureSample(noiseTexture, texSampler, uv);
 }
+
+
