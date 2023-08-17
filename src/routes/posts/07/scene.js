@@ -387,7 +387,7 @@ export const createScene = async (el) => {
         resetSystem();
     })
 
-    gui.add(parameters, 'cellSize').min(2).max(16).step(1).onChange(() => {
+    gui.add(parameters, 'cellSize').min(2).max(64).step(1).onChange(() => {
         resetSystem();
     })
 
