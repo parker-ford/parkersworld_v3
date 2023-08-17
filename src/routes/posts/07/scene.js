@@ -7,7 +7,8 @@ import canvasShaderCode from './canvasShader.wgsl?raw'
 import shaderCode1 from './whiteNoise.wgsl?raw';
 import shaderCode2 from './valueNoise.wgsl?raw';
 import shaderCode3 from './perlinNoise.wgsl?raw';
-const shaderCode = [shaderCode1, shaderCode2, shaderCode3];
+import shaderCode4 from './simplexNoise.wgsl?raw';
+const shaderCode = [shaderCode1, shaderCode2, shaderCode3, shaderCode4];
 
 const CANVAS_SIZE = 512;
 let startTime = performance.now();
@@ -15,9 +16,9 @@ let startTime = performance.now();
 const gui = new GUI()
 gui.domElement.id = 'gui';
 const parameters = {
-    shaderIndex: 2,
+    shaderIndex: 3,
     shaders: shaderCode,
-    shaderNames: ["WhiteNoise", "ValueNoise", "PerlinNoise"],
+    shaderNames: ["WhiteNoise", "ValueNoise", "PerlinNoise", "SimplexNoise"],
     shader: "",
     animate: false,
     textureSize: 512,

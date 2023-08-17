@@ -3,6 +3,7 @@
 @group(0) @binding(2) var<uniform> cellSize: f32;
     
 const PI: f32 = 3.1415926535897932385;
+const F: f32 = (sqrt(3.0) - 1.0) / 2.0;
 
 struct VertexInput {
     @location(0) pos: vec2f,
@@ -69,6 +70,13 @@ fn fade(x: f32) -> f32 {
     return ((6*x - 15)*x + 10)*x*x*x;
 }
 
+fn skew_vec2(v: vec2f) -> vec2f{
+    var v_ : vec2f = vec2f();
+    v_.x = v.x + (v.x + v.y) * F;
+    v_.y = v.y + (v.x + v.y) * F;
+    return v_;
+}
+
 fn perlin_noise(in: vec2f) -> f32 {
 
     let p: vec2f = in * 1;
@@ -115,10 +123,21 @@ fn perlin_noise(in: vec2f) -> f32 {
     return n;
 }
 
+fn simplex_noise(in: vec2f) -> f32 {
+    var p: vec2f = in;
+    var p_s: vec2f = skew_vec2(p);
+
+    let id = floor(p_s * cellSize) / cellSize;
+
+    
+
+    return 1.0;
+}
+
 @fragment
 fn fragmentMain(input: VertexOutput) -> @location(0) vec4f {
     var uv: vec2f = input.pos.xy / canvas;
     var col: f32 = perlin_noise(uv + time);
     col = (col + 1) / 2;
-    return vec4f(vec3f(col), 1.0);
+    return vec4f(vec3f(0.5), 1.0);
 }
