@@ -4,6 +4,7 @@
     
 const PI: f32 = 3.1415926535897932385;
 const F: f32 = (sqrt(3.0) - 1.0) / 2.0;
+const G: f32 = (3.0 - sqrt(3.0)) / 6.0;
 
 struct VertexInput {
     @location(0) pos: vec2f,
@@ -77,6 +78,13 @@ fn skew_vec2(v: vec2f) -> vec2f{
     return v_;
 }
 
+fn unskew_vec2(v: vec2f) -> vec2f {
+    var v_ : vec2f = vec2f();
+    v_.x = v.x - (v.x + v.y) * G;
+    v_.y = v.y - (v.x + v.y) * G;
+    return v_;
+}
+
 fn perlin_noise(in: vec2f) -> f32 {
 
     let p: vec2f = in * 1;
@@ -124,20 +132,70 @@ fn perlin_noise(in: vec2f) -> f32 {
 }
 
 fn simplex_noise(in: vec2f) -> f32 {
+    let i: f32 = 1.0 / cellSize;
     var p: vec2f = in;
     var p_s: vec2f = skew_vec2(p);
 
-    let id = floor(p_s * cellSize) / cellSize;
+    let id_s: vec2f = floor(p_s * cellSize)/cellSize;
 
+    let pos: vec2f = p_s - id_s;
+
+    var test: vec2f = vec2f();
+
+    test.x = f32(pos.x > pos.y);
+    test.y = f32(pos.x <= pos.y);
+
+    var id2_s: vec2f = vec2f();
+    var id3_s: vec2f = vec2f();
+
+    if(pos.x > pos.y){
+        id2_s.x = id_s.x - i;
+        id2_s.y = id_s.y;
+        id3_s.x = id_s.x;
+        id3_s.y = id_s.y - i;
+    }
+    else{
+        id2_s.x = id_s.x - i;
+        id2_s.y = id_s.y - i;
+        id3_s.x = id_s.x;
+        id3_s.y = id_s.y - i;
+    }
+
+    //MAY HAVE TO SWITCH PLUS TO MINUS ^^^
     
+    let id1: vec2f = unskew_vec2(id_s);
+    let id2: vec2f = unskew_vec2(id2_s);
+    let id3: vec2f = unskew_vec2(id3_s);
 
-    return 1.0;
+    let id1_v = (id1 - p);
+    let id2_v = id2 - p;
+    let id3_v = (id3 - p);
+
+    let id1_gv = gradient_vector(id1);
+    let id2_gv = gradient_vector(id2);
+    let id3_gv = gradient_vector(id3);
+
+    var fx: f32 = fade(fract(pos.x * cellSize));
+    var fy: f32 = fade(fract(pos.y * cellSize));
+
+    let id1_dot = dot(id1_v, id1_gv);
+    let id2_dot = dot(id2_v, id2_gv);
+    let id3_dot = dot(id3_v, id3_gv);
+
+    //let n12 = mix(id1_dot, id2_dot, fy);
+    //let n13 = mix(id1_dot, id3_dot, fy);
+    //let n = mix(n12, n13, fx);
+
+    let n = id1_dot + id2_dot + id3_dot;
+
+    return n;
 }
 
 @fragment
 fn fragmentMain(input: VertexOutput) -> @location(0) vec4f {
     var uv: vec2f = input.pos.xy / canvas;
-    var col: f32 = perlin_noise(uv + time);
+    //return vec4f(simplex_noise(uv), 0.0, 1.0);
+    var col: f32 = simplex_noise(uv);
     col = (col + 1) / 2;
-    return vec4f(vec3f(0.5), 1.0);
+    return vec4f(vec3f(col), 1.0);
 }
