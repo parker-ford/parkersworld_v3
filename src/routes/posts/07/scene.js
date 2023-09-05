@@ -8,8 +8,9 @@ import shaderCode1 from './whiteNoise.wgsl?raw';
 import shaderCode2 from './valueNoise.wgsl?raw';
 import shaderCode3 from './perlinNoise.wgsl?raw';
 import shaderCode4 from './simplexNoise.wgsl?raw';
+import shaderCode5 from './worleyNoise.wgsl?raw';
 
-const shaderCode = [shaderCode1, shaderCode2, shaderCode3, shaderCode4];
+const shaderCode = [shaderCode1, shaderCode2, shaderCode3, shaderCode4, shaderCode5];
 
 const CANVAS_SIZE = 512;
 let startTime = performance.now();
@@ -17,9 +18,9 @@ let startTime = performance.now();
 const gui = new GUI()
 gui.domElement.id = 'gui';
 const parameters = {
-    shaderIndex: 3,
+    shaderIndex: 4,
     shaders: shaderCode,
-    shaderNames: ["WhiteNoise", "ValueNoise", "PerlinNoise", "SimplexNoise"],
+    shaderNames: ["WhiteNoise", "ValueNoise", "PerlinNoise", "SimplexNoise", "WorleyNoise"],
     shader: "",
     animate: false,
     textureSize: 512,
@@ -363,7 +364,7 @@ export const createScene = async (el) => {
 
         device.queue.submit([encoder.finish()]);
 
-    //    requestAnimationFrame(tick);
+        requestAnimationFrame(tick);
     }
 
     const resetSystem = () => {
