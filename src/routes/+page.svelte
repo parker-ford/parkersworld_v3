@@ -17,7 +17,7 @@
     <div class="main__container">
       <div class="main__content">
         <h1>Hi, I'm Parker</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>Welcome to my site. I'm just a guy messing around with graphics programming. This place is basically my digital sketchbook—a spot where I get to share the projects I've been working on. I'm not out to change the world or anything; I'm just into creating stuff that I personally find cool. So go ahead, take your time, and browse around. Maybe you'll find something cool or even pick up a new trick or two. Enjoy your stay, and thanks for dropping by. </p>
       </div>
       <div class="main__img--container" >
         <canvas class="webgl" id="three__continer" bind:this={el}></canvas>

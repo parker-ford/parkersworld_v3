@@ -1,7 +1,7 @@
 
 const postModules = import.meta.glob('./posts/*/*.svelte')
 export async function load() {
-    const summaries = [];
+    let summaries = [];
 
     const postPromises = Object.keys(postModules).map(async path => {
         const post = await postModules[path]();
@@ -17,10 +17,10 @@ export async function load() {
             console.log("no meta data found")
         }
     })
-    
+    //summaries = summaries.reverse();
     await Promise.all(postPromises);
-    console.log(summaries)
+    
     return {
-            summaries
+            summaries: summaries.reverse()
     }
 }
