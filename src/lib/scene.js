@@ -26,7 +26,7 @@ scene.add(hemisphereLight);
 let renderer;
 
 const animate = () => {
-	requestAnimationFrame(animate);
+	//requestAnimationFrame(animate);
 	cube.rotation.x += 0.01;
 	cube.rotation.y += 0.01;
 	renderer.render(scene, camera);
@@ -34,7 +34,7 @@ const animate = () => {
 
 const resize = () => {
 	//renderer.setSize(window.innerWidth, window.innerHeight);
-    console.log(window.innerWidth)
+    //console.log(window.innerWidth)
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
 };
