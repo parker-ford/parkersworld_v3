@@ -28,7 +28,8 @@
     export const metadata = {
         title : "Cellular Automota: Game of Life",
         description : "test description",
-        image : "images/bricks/color.jpg"
+        image : "images/bricks/color.jpg",
+        date : "1/1/2000",
     }
 </script>
 

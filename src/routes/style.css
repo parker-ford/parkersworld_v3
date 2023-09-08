@@ -52,7 +52,7 @@ html {
     background-color: black;
     z-index: 1;
     width: 100%;
-    max-width: 1300px;
+    max-width: 1500px;
     padding: 0 50px;
 }
 
@@ -60,7 +60,7 @@ html {
     /* height: 90vh; */
     width: 100%;
     max-width: 1400px;
-    background-color: orange;
+    /* background-color: orange; */
     /* display: grid; */
     /* align-items: center; */
     justify-self: center;
@@ -68,7 +68,7 @@ html {
     padding: 20px;
 }
 
-#post {
+.post {
     width: 100%;
     /* height: 10vh; */
     height: 20vh;
@@ -78,9 +78,10 @@ html {
     display: flex;
     flex-direction: row;
     cursor: pointer;
+    border-radius: 6px;
 }
 
-#post__text {
+.post__text {
     /* margin: 20px;
     max-height: 20vh; */
     /* height: 20vh; */
@@ -99,21 +100,73 @@ html {
 }
 
 
-#post__img__container {
+.post__img__container {
 
     /* background-color: red; */
     display: flex;
     justify-content: center;
     align-items: center;
     flex: 2;
+    perspective: 1000px;
 }
 
-#post__img {
+.post__img {
+    position: relative;
     max-height: 150px;
     max-width: 300px;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1;
 }
 
+.post__img::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.2) 25%, transparent 50%, rgba(0, 0, 0, 0.2) 75%);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.post__img:hover {
+    transform: translateY(-20px) rotateX(30deg);
+    box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.1);
+    animation: rotation 4s infinite alternate;
+}
+
+.post__img:hover::before {
+    opacity: 1;
+    animation: lighting 4s infinite alternate;
+}
+
+@keyframes rotation {
+    0% {
+      transform: translateY(-10px) rotateX(20deg) rotateY(0deg);
+    }
+    50% {
+      transform: translateY(-10px) rotateX(20deg) rotateY(15deg);
+    }
+    100% {
+      transform: translateY(-10px) rotateX(20deg) rotateY(-15deg);
+    }
+}
+
+@keyframes lighting {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+}
+
+
 #post__title {
+    padding-top: 20px;
     padding-bottom: 20px;
 }
 
@@ -151,8 +204,9 @@ html {
         align-items: center;
         justify-self: center;
         width: 100%;
+        height: 100%;
         margin: 0 auto;
-        height: 90vh;
+        margin-bottom: 20px;
     }
 
     .main__content{
@@ -160,48 +214,72 @@ html {
         margin-bottom: 4rem;
     }
 
-    #post{
-        width: 100%;
+    .main__posts{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .post{
+        width: 80%;
+        height: 250px;
+        height: 50vw;
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: stretch;
+        margin-bottom: 1rem;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        /* width: 100%; */
         /* height: 10vh; */
         /* max-height: 20vh; */
-        max-height: none;
+        /* max-height: none;
         background-color: white;
         z-index: 4;
         margin-bottom: 20px;
         display: flex;
-        flex-direction: column-reverse;
-        
+         */
     }
     
-    #post__text {
-        margin: 20px;
-        /* height: 100%; */
-        max-height: 20vh;
-        background-color: purple;
-        
-        --max-lines: 3;
-        max-height: calc(var(--lh) * var(--max-lines));
+    .post__img__container{
+        height: 75%;
+        background-color: rgb(48, 48, 48);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+
+    .post__img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    
+    .post__text {
+        margin: 0;
+        height: 25%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: left;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .post__title {
+        font-size: 1rem;
+        white-space: nowrap;
         overflow: hidden;
-        /* overflow: hidden;
-        text-overflow: ellipsis; */
+        text-overflow: ellipsis;
+        font-weight: 600;
     }
 
-    #post__img {
-        max-width: none;
-        max-height: none;
-        height: 200px;
-        width: 350px;
+    .post__date {
+        font-size: .8rem;
     }
-
-    #post__img__container{
-        flex: none;
-    }
-    
-    .post__text{
-        flex: none;
-    }
-}
-
+} 
 
 .page__main{
     background-color: white;

@@ -64,7 +64,8 @@
     export const metadata = {
         title : "Learning ThreeJS Part3: Lights, Shadows, Fog",
         description : "test description",
-        image : "images/bricks/color.jpg"
+        image : "images/bricks/color.jpg",
+        date : "1/1/2000",
     }
 </script>
 <div class="page__main">

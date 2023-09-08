@@ -68,6 +68,7 @@
     export const metadata = {
         title : "Learning ThreeJS Part 4: Particles",
         description : "test description",
+        date : "1/1/2000",
         image : "images/bricks/color.jpg"
     }
 </script>

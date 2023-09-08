@@ -9,6 +9,7 @@ export async function load() {
             summaries.push({
                 name: post.metadata.title,
                 description: post.metadata.description,
+                date: post.metadata.date,
                 image: post.metadata.image,
                 page: `/posts/${path.split('/')[2]}/`
             });

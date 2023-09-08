@@ -28,14 +28,14 @@
       <h1>Projects</h1>
     </div>
     <div class="main__posts" id="main__posts">
-        {#each data.summaries as {name, description, image, page}}
-            <div id="post" on:click={()=>window.location.href = page} on:keydown={() => console.log('test')}>
-                <div id="post__text">
-                    <h1 id="post__title">{name}</h1>
-                    <p id="post__body">{description}</p>
+        {#each data.summaries as {name, description, date, image, page}}
+            <div class="post" on:click={()=>window.location.href = page} on:keydown={() => console.log('test')}>
+                <div class="post__text">
+                    <h1 class="post__title">{name}</h1>
+                    <p class="post__date">{date}</p>
                 </div>
-                <div id="post__img__container">
-                    <img id="post__img" src={image} alt="dog">
+                <div class="post__img__container">
+                    <img class="post__img" src={image} alt="dog">
                 </div>
             </div>
         {/each}

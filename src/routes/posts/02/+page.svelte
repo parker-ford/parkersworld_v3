@@ -61,7 +61,8 @@
     export const metadata = {
         title : "Learning ThreeJS Part2: 3D Text, Matcaps",
         description : "test description",
-        image : "images/bricks/color.jpg"
+        date : "1/1/2000",
+        image : "images/bricks/color.jpg",
     }
 </script>
 <svelte:head>
