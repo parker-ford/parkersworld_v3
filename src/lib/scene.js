@@ -262,7 +262,7 @@ const tick = () => {
     }
 
     renderer.render(scene,camera)
-    controls.update();
+    //controls.update();
     lightHelper.update()
     window.requestAnimationFrame(tick) 
 
