@@ -5,6 +5,7 @@ import {TextGeometry} from 'three/examples/jsm/geometries/TextGeometry.js'
 import GUI from 'lil-gui'; 
 import Stats from 'stats-js'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
+import { BoxGeometry } from 'three';
 
 /*
     Initial Setup
@@ -48,6 +49,19 @@ const bumpMap = textureLoader.load('./models/Frame/frame_new/frame_bump.png');
 const diffuseMap = textureLoader.load('./models/Frame/frame_new/frame_diff.png');
 const reflectionMap = textureLoader.load('./models/Frame/frame_new/frame_refl.png');
 
+const paintingMap = textureLoader.load('./images/portrait/ai_portrait.gif');
+const normalMap = textureLoader.load('./images/portrait/normal2.jpg');
+
+/*
+    Video
+*/
+const video = document.createElement('video');
+video.src = './images/portrait/vid2.mp4'
+video.loop = true;
+video.muted = true;
+video.play();
+const videoTexture = new THREE.VideoTexture(video);
+
 
 /*
     Material
@@ -56,9 +70,10 @@ const frameMaterial = new THREE.MeshStandardMaterial({
     map: diffuseMap,
     bumpMap: bumpMap,
     metalnessMap: reflectionMap,
-    metalness: 1,
-    roughness: 0
-    // envMap: reflectionMap
+    metalness: 0.79,
+    roughness: 0.58,
+    bumpScale: 0.2,
+    color: 0xd3c697,
 })
 console.log(frameMaterial);
 const materialFolder = gui.addFolder("Material")
@@ -73,22 +88,63 @@ materialFolder.add(frameMaterial, 'emissiveIntensity').min(0).max(1)
     Models
 */
 const fbxLoader = new FBXLoader();
+let paintingMesh;
+const paintingParent = new THREE.Object3D();
+scene.add(paintingParent);
+
+const planeGeometry = new THREE.PlaneGeometry();
+const planeMaterial = new THREE.MeshStandardMaterial(
+    {
+        map: videoTexture,
+        normalMap: normalMap,
+        normalScale: new THREE.Vector2(0.2,0.2),
+        metalness: 0.3,
+        roughness: 0.7
+    }
+);
+const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+scene.add(planeMesh)
+planeMesh.position.set(0,0,.05)
+planeMesh.scale.set(4,4,1)
+paintingParent.add(planeMesh)
+
 fbxLoader.load(
     './models/Frame/frame_new/frame.fbx',
     (object) => {
         console.log(object)
-        object.position.set(.3,-2.8,0);
-        object.scale.set(.05,.05,.05);
-        object.children[1].material = frameMaterial
-        scene.add(object)
+        paintingMesh = object;
+        const axesHelper = new THREE.AxesHelper(10);
+        // object.add(axesHelper)
+        object.position.set(.3,-3,0);
+        object.scale.set(.045,.053,.05);
+        gui.add(object.scale, 'x').min(0).max(.1).step(.001)
+        gui.add(object.scale, 'y').min(0).max(.1).step(.001)
+        gui.add(object.scale, 'z').min(0).max(.1).step(.001)
+        object.children[1].material = frameMaterial;
+        object.children[0].material.map = paintingMap;
+        paintingParent.add(object)
+        // scene.add(object)
     },
     () => {
         console.log('progress')
     },
-    () => {
-        console.log('error')
+    (error) => {
+        console.log('error', error)
     }
 )
+
+/*
+    Test Object
+*/
+
+const cubeGeometry = new THREE.BoxGeometry(1,1,1);
+const cubeMaterial = new THREE.MeshPhongMaterial();
+const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial);
+const axesHelper2 = new THREE.AxesHelper(1);
+cubeMesh.add(axesHelper2);
+// scene.add(cubeMesh);
+
+
 /*
     Camera
 */
@@ -103,19 +159,26 @@ scene.add(camera)
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
 scene.add(ambientLight)
 
+const ambientLightFolder = gui.addFolder("Ambient Light");
+ambientLight.color.set(0xffeed1)
+ambientLightFolder.addColor(ambientLight, "color");
+ambientLightFolder.add(ambientLight, "intensity").min(0).max(1);
+
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
 scene.add(directionalLight)
 directionalLight.position.set(-3.3, 5, 3.3);
+directionalLight.color.set(0xf4deb8);
 
 const lightHelper = new THREE.DirectionalLightHelper(directionalLight, 1); // 0.2 is the size of the helper
-scene.add(lightHelper);
+// scene.add(lightHelper);
 
 
-gui.add(directionalLight.position, "x").min(-10).max(10)
-gui.add(directionalLight.position, "y").min(-10).max(10)
-gui.add(directionalLight.position, "z").min(-10).max(10)
-gui.add(directionalLight, "intensity").min(0).max(1)
-gui.addColor(directionalLight, 'color')
+const directionalLightFolder = gui.addFolder("Directional Light")
+directionalLightFolder.add(directionalLight.position, "x").min(-10).max(10)
+directionalLightFolder.add(directionalLight.position, "y").min(-10).max(10)
+directionalLightFolder.add(directionalLight.position, "z").min(-10).max(10)
+directionalLightFolder.add(directionalLight, "intensity").min(0).max(1)
+directionalLightFolder.addColor(directionalLight, 'color')
 
 
 
@@ -124,6 +187,9 @@ gui.addColor(directionalLight, 'color')
 */
 let renderer;
 let controls;
+let prevTarget = new THREE.Vector3();
+let target = new THREE.Vector3();
+const lerpAmount = 0.01;
 export const createScene = (el) => {
 
     renderer = new THREE.WebGLRenderer({
@@ -136,7 +202,7 @@ export const createScene = (el) => {
 
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio,2))
-    renderer.setClearColor(0x333333);
+    // renderer.setClearColor(0x333333);
 
     window.addEventListener('resize', () => {
 
@@ -157,18 +223,43 @@ export const createScene = (el) => {
     
         camera.aspect = sizes.width / sizes.height
         camera.updateProjectionMatrix()
-    
         renderer.setSize(sizes.width, sizes.height)
+    });
+
+    window.addEventListener('mousemove', (event) => {
+        const rect = el.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        const pointNDC = new THREE.Vector3(x, y, 0.5);
+        pointNDC.unproject(camera);
+        const dir = pointNDC.sub(camera.position).normalize();
+        target = camera.position.clone().add(dir.multiplyScalar(2));
+        //prevTarget.lerp(target, lerpAmount);
+        
+        // if(paintingMesh){
+        //     paintingMesh.lookAt(pointNDC);
+        // }
+        // paintingParent.lookAt(prevTarget);
+        // cubeMesh.lookAt(target);
     })
+
     
     tick()
 }
 /*
     Update Function
 */
+let elapsedTime = 0;
 const tick = () => {
 
     const time = clock.getDelta();
+    elapsedTime += time;
+    prevTarget.lerp(target, lerpAmount);
+    paintingParent.lookAt(prevTarget);
+
+    if(paintingMesh){
+        paintingParent.position.y = Math.sin(elapsedTime * 1) * .0 ;
+    }
 
     renderer.render(scene,camera)
     controls.update();
