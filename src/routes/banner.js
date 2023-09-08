@@ -139,7 +139,7 @@ const tick = () => {
 
     const time = clock.getDelta();
     TWEEN.update();
-    if(textMesh && hover){
+    if(textMesh && hover && false){
         elapsedTime += time;
         //textMesh.rotation.x = Math.sin(elapsedTime);
         textMesh.rotation.x = -.3

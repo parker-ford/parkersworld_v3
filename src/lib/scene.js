@@ -38,7 +38,8 @@ const gui = new GUI()
 gui.domElement.id = 'gui';
 gui.domElement.style.display = 'none';
 const parameters = {
-    color: 0xffffff
+    color: 0xffffff,
+    repeat: 1,
 }
 
 /*
@@ -49,16 +50,21 @@ const bumpMap = textureLoader.load('./models/Frame/frame_new/frame_bump.png');
 const diffuseMap = textureLoader.load('./models/Frame/frame_new/frame_diff.png');
 const reflectionMap = textureLoader.load('./models/Frame/frame_new/frame_refl.png');
 
-const paintingMap = textureLoader.load('./images/portrait/ai_portrait.gif');
 const normalMap = textureLoader.load('./images/portrait/normal2.jpg');
+gui.add(parameters, "repeat").min(1).max(6).onChange((val) => {
+
+    normalMap.repeat.set(val,val);
+})
+
 
 /*
     Video
 */
 const video = document.createElement('video');
-video.src = './images/portrait/vid2.mp4'
+video.src = './images/portrait/vid3_compressed.mp4'
 video.loop = true;
 video.muted = true;
+video.playbackRate = 0.8;
 video.play();
 const videoTexture = new THREE.VideoTexture(video);
 
@@ -97,11 +103,18 @@ const planeMaterial = new THREE.MeshStandardMaterial(
     {
         map: videoTexture,
         normalMap: normalMap,
-        normalScale: new THREE.Vector2(0.2,0.2),
-        metalness: 0.3,
-        roughness: 0.7
+        normalScale: new THREE.Vector2(0.1,0.1),
+        metalness: 0.15,
+        roughness: 0.5
     }
 );
+const paintingMaterialFolder = gui.addFolder("Painting Material");
+paintingMaterialFolder.add(planeMaterial, "metalness").min(0).max(1);
+paintingMaterialFolder.add(planeMaterial, "roughness").min(0).max(1);
+parameters.normalScale = 1;
+paintingMaterialFolder.add(parameters, "normalScale").min(0).max(1).onChange((val) => {
+    planeMaterial.normalScale.set(val,val);
+})
 const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
 scene.add(planeMesh)
 planeMesh.position.set(0,0,.05)
@@ -121,7 +134,7 @@ fbxLoader.load(
         gui.add(object.scale, 'y').min(0).max(.1).step(.001)
         gui.add(object.scale, 'z').min(0).max(.1).step(.001)
         object.children[1].material = frameMaterial;
-        object.children[0].material.map = paintingMap;
+        // object.children[0].material.map = paintingMap;
         paintingParent.add(object)
         // scene.add(object)
     },
@@ -186,7 +199,7 @@ directionalLightFolder.addColor(directionalLight, 'color')
     Create Scene
 */
 let renderer;
-let controls;
+// let controls;
 let prevTarget = new THREE.Vector3();
 let target = new THREE.Vector3();
 const lerpAmount = 0.01;
@@ -197,8 +210,8 @@ export const createScene = (el) => {
         antialias: true
     })
 
-    controls = new OrbitControls(camera, el)
-    controls.enableDamping = true;
+    // controls = new OrbitControls(camera, el)
+    // controls.enableDamping = true;
 
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio,2))
@@ -233,7 +246,7 @@ export const createScene = (el) => {
         const pointNDC = new THREE.Vector3(x, y, 0.5);
         pointNDC.unproject(camera);
         const dir = pointNDC.sub(camera.position).normalize();
-        target = camera.position.clone().add(dir.multiplyScalar(2));
+        target = camera.position.clone().add(dir.multiplyScalar(1.75));
         //prevTarget.lerp(target, lerpAmount);
         
         // if(paintingMesh){
@@ -258,7 +271,7 @@ const tick = () => {
     paintingParent.lookAt(prevTarget);
 
     if(paintingMesh){
-        paintingParent.position.y = Math.sin(elapsedTime * 1) * .0 ;
+        paintingParent.position.y = Math.sin(elapsedTime * 1.1) * .11 ;
     }
 
     renderer.render(scene,camera)
