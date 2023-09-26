@@ -1,17 +1,46 @@
 <script>
   export let data;
-  console.log(data)
-  //export let summaries = [];
-  //$: console.log(summaries)
-
+  import { bannerLoaded } from './stores.js'
 	import { onMount } from 'svelte';
-    import './style.css'
-    let el;
-    onMount(async () =>{
-        const {createScene} = await import('../lib/scene')
-        createScene(el)
-    })
+  import { fade } from 'svelte/transition'
+  import './style.css'
+  let el;
+  let isSceneLoaded = false;
+  let allLoaded = false;
+  onMount(async () =>{
+      const {createScene} = await import('../lib/scene')
+      createScene(el, () => isSceneLoaded = true)
+  });
+
+  $: if (isSceneLoaded) {
+    console.log("scene is loaded");
+    checkAllLoaded()
+  }
+
+  let isBannerLoaded = false;
+  bannerLoaded.subscribe(value => {
+    isBannerLoaded = value;
+  });
+
+  $: if (isBannerLoaded) {
+    console.log("banner loaded in page");
+    checkAllLoaded()
+  }
+
+  const checkAllLoaded = () => {
+    if(isBannerLoaded && isSceneLoaded){
+      console.log("all loaded")
+      allLoaded = true;
+    }
+  }
+
 </script>
+
+{#if !allLoaded}
+<div class="loading-screen" transition:fade={{duration: 1000}}>
+    <p>Loading...</p>
+</div>
+{/if}
 
 <div class="main">
     <div class="main__container">

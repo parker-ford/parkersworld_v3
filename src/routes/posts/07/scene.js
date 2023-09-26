@@ -18,7 +18,7 @@ let startTime = performance.now();
 const gui = new GUI()
 gui.domElement.id = 'gui';
 const parameters = {
-    shaderIndex: 4,
+    shaderIndex: 2,
     shaders: shaderCode,
     shaderNames: ["WhiteNoise", "ValueNoise", "PerlinNoise", "SimplexNoise", "WorleyNoise"],
     shader: "",
