@@ -1,15 +1,37 @@
 <script>
 	import { onMount } from 'svelte';
     import '../../style.css'
+    import { bannerLoaded } from '../../stores.js'
+    import { fade } from 'svelte/transition'
     let el;
+    let sceneLoaded = false;
+    let allLoaded = false;
     onMount(async () =>{
         const {createScene} = await import('./scene')
-        createScene(el)
-    })
-    const title = "Learning ThreeJS Part 1: Scenes, Objects, Materials"
-    const date = "1/16/2023"
-    const text_content = ``;
+        createScene(el, () => sceneLoaded = true)
+    });
+
+    let isBannerLoaded = false;
+    bannerLoaded.subscribe(value => {
+        isBannerLoaded = value;
+    });
+
+    const checkAllLoaded = () => {
+        if(isBannerLoaded && sceneLoaded){
+            allLoaded = true;
+        }
+    }
+
+    $: if(sceneLoaded){
+        checkAllLoaded()
+    }
+
+    $: if(isBannerLoaded){
+        checkAllLoaded();
+    }
+
 </script>
+
 <script context="module">
     export const metadata = {
         title : "Learning ThreeJS Part 1: Scenes, Objects, Materials",
@@ -19,13 +41,19 @@
     }
 </script>
 
+{#if !allLoaded}
+<div class="loading-screen" transition:fade={{duration: 500}}>
+    <p>Loading...</p>
+</div>
+{/if}
+
 <div class="page__main">
     <div class = "page__content">
         <div class="page__canvas__container">
             <canvas class="page__canvas" bind:this={el}></canvas>
         </div>
         <div class ="page__title__container">
-            <h1 class="page__title">{title}</h1>
+            <h1 class="page__title">{metadata.title}</h1>
         </div>
         <div class="page__text__container">
             <h3 class="page__subtitle">Scene Setup</h3>

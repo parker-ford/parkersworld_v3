@@ -43,20 +43,8 @@ scene.add(pointLight);
 */
 const loadingManager = new THREE.LoadingManager();
 
-loadingManager.onStart = () => {
-    console.log("onStart")
-}
-
-loadingManager.onLoad = () => {
-    console.log('onLoad')
-}
-
-loadingManager.onProgress = () => {
-    console.log('onProgress')
-}
-
 loadingManager.onError = () => {
-    console.log('onError')
+    console.error('error loading')
 }
 
 const textureLoader = new THREE.TextureLoader(loadingManager);
@@ -235,11 +223,16 @@ positionFolder.add(parameters, 'animatePosition').onChange((value) => {
 */
 let renderer;
 let controls;
-export const createScene = (el) => {
+export const createScene = (el, onLoaded) => {
 
     renderer = new THREE.WebGLRenderer({
         canvas: el
     })
+
+    loadingManager.onLoad = () => {
+        onLoaded()
+    }
+    
 
     controls = new OrbitControls(camera, el)
     controls.enableDamping = true;

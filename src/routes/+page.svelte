@@ -37,7 +37,7 @@
 </script>
 
 {#if !allLoaded}
-<div class="loading-screen" transition:fade={{duration: 1000}}>
+<div class="loading-screen" transition:fade={{duration: 500}}>
     <p>Loading...</p>
 </div>
 {/if}
