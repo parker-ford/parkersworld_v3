@@ -26,7 +26,7 @@
 </script>
 <script context="module">
     export const metadata = {
-        title : "Cellular Automota: Game of Life Cellular Automota: Game of Life Cellular Automota: Game of Life",
+        title : "Cellular Automota: Game of Life",
         description : "test description",
         date : "1/1/2000",
         image : "images/misc/bug.jpg"

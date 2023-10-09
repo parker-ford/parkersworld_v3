@@ -53,15 +53,18 @@
       </div>
     </div>
     <div class="posts__selector">
-      <h1>Posts</h1>
-      <h1>Projects</h1>
+      <h1>Blog Posts</h1>
+      <!-- <h1>Projects</h1> -->
     </div>
     <div class="main__posts" id="main__posts">
         {#each data.summaries as {name, description, date, image, page}}
             <div class="post" on:click={()=>window.location.href = page} on:keydown={() => console.log('test')}>
                 <div class="post__text">
-                    <h1 class="post__title">{name}</h1>
-                    <p class="post__date">{date}</p>
+                  <p class="post__date">{date}</p>
+                  <h1 class="post__title">{name}</h1>
+                  <div class="post__tech-icons">
+                    <img src="./images/logos/webgpu-horizontal.svg" alt="Tech 1">
+                </div>
                 </div>
                 <div class="post__img__container">
                     <img class="post__img" src={image} alt="dog">

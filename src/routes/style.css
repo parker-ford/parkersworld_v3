@@ -30,6 +30,7 @@ html {
     top: 0;
     z-index: 999;
     width: 100%;
+    cursor: pointer;
 }
 
 .navbar__logo {
@@ -40,6 +41,16 @@ html {
 
 .main {
     background-color: black;
+}
+/* 
+--text: #f5f5f5;
+--background: #000000;
+--primary: #31FB04;
+--secondary: #171717;
+--accent: #7d7d7d;
+*/
+.main * {
+    color: #F5F5F5;
 }
 
 .main__container {
@@ -56,49 +67,104 @@ html {
     padding: 0 50px;
 }
 
+.main__container h1 {
+    font-size: 3em;
+    font-weight: 700;
+}
+
+.main__container p {
+    font-size: 1.2em;
+    line-height: 1.3;
+    
+}
+
 .main__posts {
-    /* height: 90vh; */
     width: 100%;
     max-width: 1400px;
-    /* background-color: orange; */
-    /* display: grid; */
-    /* align-items: center; */
     justify-self: center;
     margin: 0 auto;
     padding: 20px;
 }
 
+.posts__selector h1 {
+    /* border: 3px solid #31FB04; */
+    /* background-color: #31fb0415; */
+    /* color: #31FB04; */
+    color: white;
+    font-weight: 700;
+    /* text-shadow:
+    -1px -1px 0 #31FB04,
+    1px -1px 0 #31FB04,
+    -1px 1px 0 #31FB04,
+    1px 1px 0 #31FB04; 
+    font-size: 2.8em; */
+    font-size: 1em;
+    border-radius: 6px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 60px;
+    padding-right: 60px;
+    margin-bottom: 15px;
+}
+
 .post {
     width: 100%;
-    /* height: 10vh; */
-    height: 20vh;
-    background-color: white;
+    min-height: 200px;
+    background-color: #000;
+    border: 3px solid #424242;
     z-index: 4;
     margin-bottom: 20px;
     display: flex;
     flex-direction: row;
     cursor: pointer;
     border-radius: 6px;
+    align-items: stretch;
+    filter: brightness(80%);
+    transition: filter 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post:hover {
+    filter: brightness(100%);
+    /* box-shadow: 0px 0px 15px 5px rgba(255, 255, 255, 0.6); */
+    box-shadow: 0px 0px 15px 5px #31fb0489;
 }
 
 .post__text {
-    /* margin: 20px;
-    max-height: 20vh; */
-    /* height: 20vh; */
-    /* background-color: blue; */
     display: flex;
     flex-direction: column;
     flex: 5;
     margin: 20px;
-    padding: 0px;
+    padding: 30px;
+    padding-bottom: 10px;
     overflow: hidden;
-    --max-lines: 7;
-    max-height: calc(var(--lh) * var(--max-lines));
-    overflow: hidden;
-    /* overflow: hidden;
-    text-overflow: ellipsis; */
+    justify-content: center;
+    align-items: start;
+    line-height: 1;
+
 }
 
+.post__date {
+    color: #7d7d7d;
+    margin-bottom: 15px;
+}
+
+.post__title {
+    margin-bottom: 20px;
+}
+
+.post__tech-icons {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.post__tech-icons img {
+    max-width: 100px; /* You can adjust this value as needed */
+    max-height: 100px; /* You can adjust this value as needed */
+    width: auto;
+    height: auto;
+}
 
 .post__img__container {
 
@@ -108,50 +174,70 @@ html {
     align-items: center;
     flex: 2;
     perspective: 1000px;
+    transition: transform 0.5s ease;
 }
 
 .post__img {
     position: relative;
     max-height: 150px;
     max-width: 300px;
-    transition: all 0.3s ease;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1;
+    transition: box-shadow 0.3s ease, transform 0.3s ease, filter 0.3s ease;
 }
 
-.post__img::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.2) 25%, transparent 50%, rgba(0, 0, 0, 0.2) 75%);
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    opacity: 0;
+.post:hover .post__img__container{
+    /* transform: translateY(-20px) rotateX(30deg); */
 }
 
-.post__img:hover {
-    transform: translateY(-20px) rotateX(30deg);
+.post:hover .post__img{
     box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.1);
-    animation: rotation 4s infinite alternate;
+    animation: rotateAnimation 2s infinite linear;
 }
 
-.post__img:hover::before {
-    opacity: 1;
-    animation: lighting 4s infinite alternate;
-}
+@keyframes rotateAnimation {
+    0% { 
+        transform: translateY(-10px) rotateX(20deg) rotateY(0deg);
+        filter: brightness(100%); 
+    }
+    25% { 
+        transform: translateY(-10px) rotateX(20deg) rotateY(20deg);
+        filter: brightness(90%); 
+    }
+    50% { 
+        transform: translateY(-10px) rotateX(20deg) rotateY(0deg); 
+        filter: brightness(100%);
+    }
+    75% { 
+        transform: translateY(-10px) rotateX(20deg) rotateY(-20deg);
+        filter: brightness(90%); 
+    }
+    100% { 
+        transform: translateY(-10px) rotateX(20deg) rotateY(0deg);
+        filter: brightness(100%); 
+    }
+  }
 
-@keyframes rotation {
+/* @keyframes rotation {
     0% {
       transform: translateY(-10px) rotateX(20deg) rotateY(0deg);
     }
-    50% {
+    33% {
+      transform: translateY(-10px) rotateX(20deg) rotateY(15deg);
+    }
+    66% {
+      transform: translateY(-10px) rotateX(20deg) rotateY(-15deg);
+    }
+    100% {
+        transform: translateY(-10px) rotateX(20deg) rotateY(0deg);
+    }
+} */
+@keyframes rotation {
+    0% {
       transform: translateY(-10px) rotateX(20deg) rotateY(15deg);
     }
     100% {
-      transform: translateY(-10px) rotateX(20deg) rotateY(-15deg);
+        transform: translateY(-10px) rotateX(20deg) rotateY(-15deg);
     }
 }
 
@@ -228,6 +314,7 @@ html {
 
     .main__content{
         text-align: center;
+        margin-top: 100px;
         margin-bottom: 4rem;
     }
 
@@ -260,7 +347,7 @@ html {
     
     .post__img__container{
         height: 75%;
-        background-color: rgb(48, 48, 48);
+        background-color: rgb(29, 29, 29);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -275,6 +362,7 @@ html {
     }
     
     .post__text {
+        padding: 0;
         margin: 0;
         height: 25%;
         display: flex;
@@ -287,6 +375,7 @@ html {
 
     .post__title {
         font-size: 1rem;
+        width: 100%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -295,6 +384,11 @@ html {
 
     .post__date {
         font-size: .8rem;
+        color: black;
+    }
+
+    .post__tech-icons img {
+        display: none;
     }
 } 
 

@@ -320,7 +320,7 @@ scene.add(boxMesh);
 let renderer;
 let controls;
 let prevTarget = new THREE.Vector3();
-let target = new THREE.Vector3(-1,0,3);
+let target = isMobile ? new THREE.Vector3(0,0,3) : new THREE.Vector3(-1,0,3);
 const lerpAmount = 0.01;
 let composer;
 export const createScene = (el, onLoaded) => {

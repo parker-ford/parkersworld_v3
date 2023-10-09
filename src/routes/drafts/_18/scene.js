@@ -228,7 +228,7 @@ const tick = () => {
 
     renderer.render(scene,camera)
     controls.update();
-    // window.requestAnimationFrame(tick) 
+    window.requestAnimationFrame(tick) 
 
 }
 
