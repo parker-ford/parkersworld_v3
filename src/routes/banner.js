@@ -224,7 +224,7 @@ window.addEventListener('mousemove', (event) => {
         mouse.y = -((event.clientY - canvasBounds.top) / canvasBounds.height) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
         const intersects = raycaster.intersectObjects(objectsToCheck);
-        if(intersects.length > 0){
+        if(intersects !== null && intersects.length > 0){
             isIntersecting = true;
             // if(particleSystem.parent !== scene){
             //     scene.add(particleSystem);

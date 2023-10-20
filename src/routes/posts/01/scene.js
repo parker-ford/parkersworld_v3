@@ -72,6 +72,7 @@ scene.add(mesh);
 const gui = new GUI()
 gui.domElement.id = 'gui';
 
+
 const parameters = {
     color: 0xff0000,
     animateRotation: true,
@@ -232,6 +233,17 @@ export const createScene = (el, onLoaded) => {
     loadingManager.onLoad = () => {
         onLoaded()
     }
+
+    const alignGUIWithCanvas = () => {
+        const canvasRect = el.getBoundingClientRect();
+        const guiRect = gui.domElement.getBoundingClientRect();
+        gui.domElement.style.position = 'absolute';
+        gui.domElement.style.top = `222px`;
+        gui.domElement.style.left = `${canvasRect.right - guiRect.width - 2}px`;
+        // gui.domElement.style.left = `${canvasRect.right}px`;
+        console.log("testing gui align");
+        console.log(guiRect)
+    }
     
 
     controls = new OrbitControls(camera, el)
@@ -239,6 +251,8 @@ export const createScene = (el, onLoaded) => {
 
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio,2))
+
+    alignGUIWithCanvas();
 
     window.addEventListener('resize', () => {
         sizes.width = Math.min(document.body.clientWidth, 1400),
@@ -248,30 +262,10 @@ export const createScene = (el, onLoaded) => {
         camera.updateProjectionMatrix
     
         renderer.setSize(sizes.width, sizes.height)
+
+        alignGUIWithCanvas();
     })
     
-
-    // window.addEventListener('dblclick', () => {
-
-    //     const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
-
-    //     // if(!fullscreenElement){
-    //     //     if(el.requestFullscreen){
-    //     //         el.requestFullscreen()
-    //     //     }
-    //     //     else if(el.webkitRequestFullscreen){
-    //     //         el.webkitRequestFullscreen()
-    //     //     }
-    //     // }
-    //     // else{
-    //     //     if(document.exitFullscreen){
-    //     //         document.exitFullscreen();
-    //     //     }
-    //     //     else if(document.webkitExitFullscreen){
-    //     //         document.webkitExitFullscreen();
-    //     //     }
-    //     // }
-    // })
     tick()
 }
 
