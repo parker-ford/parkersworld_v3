@@ -204,12 +204,12 @@ const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
 */
 
 //Sphere for testing
-const sphereGeometry = new THREE.SphereGeometry(.03, 32, 32);
-const sphereMaterial = new THREE.MeshBasicMaterial();
-const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-scene.add(sphere);
+// const sphereGeometry = new THREE.SphereGeometry(.03, 32, 32);
+// const sphereMaterial = new THREE.MeshBasicMaterial();
+// const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+// scene.add(sphere);
 
-let objectsToCheck;
+let objectsToCheck = {};
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 const intersectPoint = new THREE.Vector3();
@@ -223,21 +223,23 @@ window.addEventListener('mousemove', (event) => {
         mouse.x = ((event.clientX - canvasBounds.left) / canvasBounds.width) * 2 - 1;
         mouse.y = -((event.clientY - canvasBounds.top) / canvasBounds.height) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObjects(objectsToCheck);
-        if(intersects !== null && intersects.length > 0){
-            isIntersecting = true;
-            // if(particleSystem.parent !== scene){
-            //     scene.add(particleSystem);
-            // }
-            intersectPoint.copy(intersects[0].point);
-            sphere.position.copy(intersects[0].point);
-            // particleSystem.position.copy(intersects[0].point);
-        }
-        else{
-            isIntersecting = false;
-            // if(particleSystem.parent === scene){
-            //     scene.remove(particleSystem);
-            // }
+        if(raycaster !== null && objectsToCheck !== null){
+            const intersects = raycaster.intersectObjects(objectsToCheck);
+            if(intersects !== null && intersects.length > 0){
+                isIntersecting = true;
+                // if(particleSystem.parent !== scene){
+                //     scene.add(particleSystem);
+                // }
+                intersectPoint.copy(intersects[0].point);
+                //sphere.position.copy(intersects[0].point);
+                // particleSystem.position.copy(intersects[0].point);
+            }
+            else{
+                isIntersecting = false;
+                // if(particleSystem.parent === scene){
+                //     scene.remove(particleSystem);
+                // }
+            }
         }
     }
 }, false)
@@ -284,7 +286,7 @@ export const createScene = (el, onLoaded) => {
         hover = false;
     });
     el.addEventListener('mouseout', () => {
-        tweenBack.stop();
+        tweenForward.stop();
         tweenBack.start();
         hover = true;
     })

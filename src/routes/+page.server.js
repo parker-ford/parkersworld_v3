@@ -10,6 +10,7 @@ export async function load() {
                 name: post.metadata.title,
                 description: post.metadata.description,
                 date: post.metadata.date,
+                image_static: post.metadata.image_static,
                 image: post.metadata.image,
                 page: `/posts/${path.split('/')[2]}/`
             });

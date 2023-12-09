@@ -37,7 +37,8 @@
         title : "Learning ThreeJS Part 1: Scenes, Objects, Materials",
         description : "test description",
         date : "1/1/2000",
-        image : "images/misc/bug.jpg"
+        image_static : "images/thumbnails/post01_test1.jpg",
+        image: "images/thumbnails/post01_test1.gif"
     }
 </script>
 

@@ -57,8 +57,8 @@
       <!-- <h1>Projects</h1> -->
     </div>
     <div class="main__posts" id="main__posts">
-        {#each data.summaries as {name, description, date, image, page}}
-            <div class="post" on:click={()=>window.location.href = page} on:keydown={() => console.log('test')}>
+        {#each data.summaries as {name, description, date, image, image_static, page, hovered}}
+            <div class="post" on:click={()=>window.location.href = page} on:keydown={() => console.log('test')} on:mouseover = {() => hovered = true} on:focus = {() => hovered = true} on:mouseout = {() => hovered = false} on:blur={() => hovered = false}>
                 <div class="post__text">
                   <p class="post__date">{date}</p>
                   <h1 class="post__title">{name}</h1>
@@ -67,7 +67,7 @@
                 </div>
                 </div>
                 <div class="post__img__container">
-                    <img class="post__img" src={image} alt="dog">
+                    <img class="post__img" src={hovered ? image : image_static} alt="dog">
                 </div>
             </div>
         {/each}

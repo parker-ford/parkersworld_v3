@@ -130,6 +130,7 @@ fn perlin_noise_2D(in: vec2f) -> f32 {
     var bl: vec2f = vec2f(id.x, id.y + i);
     var br: vec2f = vec2f(id.x + i, id.y + i);
 
+
     //Vector from corners of cell to point
     var v_tl: vec2f = map_vec2_dist(vec2f((p.x - id.x), p.y - id.y));
     var v_tr: vec2f = map_vec2_dist(vec2f(p.x - id.x - i, p.y - id.y));
@@ -140,7 +141,7 @@ fn perlin_noise_2D(in: vec2f) -> f32 {
     var gv_tl: vec2f = gradient_vector(tl);
     var gv_tr: vec2f = gradient_vector(tr); 
     var gv_bl: vec2f = gradient_vector(bl); 
-    var gv_br: vec2f = gradient_vector(br);  
+    var gv_br: vec2f = gradient_vector(br); 
 
     //Fade values
     var fx: f32 = fade(fract(p.x * cellSize));
