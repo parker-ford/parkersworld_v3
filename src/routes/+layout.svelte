@@ -3,18 +3,22 @@
 	import { onMount } from 'svelte';
   import './style.css'
   import {bannerLoaded} from './stores.js'
+
   let el;
   let sceneLoaded = false;
   bannerLoaded.set(false);
+
   onMount(async () =>{
+    try{
       const {createScene} = await import('./banner.js')
       createScene(el, () => sceneLoaded = true)
+    }
+    catch(e){
+      console.log("Error creating scene", e);
+    }
   });
 
-  $: if (sceneLoaded) {
-    console.log("banner is loaded");
-    bannerLoaded.set(true);
-  }
+  $: bannerLoaded.set(sceneLoaded);
 </script>
 
 <nav class="navbar">
