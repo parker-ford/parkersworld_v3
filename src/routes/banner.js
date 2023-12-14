@@ -122,7 +122,7 @@ function addLettersToScene(){
             scene.add(letterMesh);
             letterOffset += letterGeometry.boundingBox.max.x - letterGeometry.boundingBox.min.x;
         });
-        objectsToCheck = scene.children.filter(child => !(child == sphere || child == particleSystem));
+        // objectsToCheck = scene.children.filter(child => !(child == sphere || child == particleSystem));
     }
    );
 }
@@ -299,7 +299,6 @@ export const createScene = (el, onLoaded) => {
 const noiseGenerator = createNoise2D();
 
 
-console.log(noiseGenerator(10, 0))
 function updateLetterPostion(t){
     let i = 1;
     const waveSpeed = .6;

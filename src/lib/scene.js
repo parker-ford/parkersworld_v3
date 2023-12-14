@@ -338,7 +338,6 @@ export const createScene = (el, onLoaded) => {
     })
 
     checkAllAssetsLoaded = () => {
-        console.log("test")
         if(modelsLoaded && videoReady){
             onLoaded();
             scene.remove(boxMesh);
