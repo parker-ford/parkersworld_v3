@@ -240,7 +240,6 @@ export const createScene = (el, onLoaded) => {
         gui.domElement.style.position = 'absolute';
         gui.domElement.style.top = `222px`;
         gui.domElement.style.left = `${canvasRect.right - guiRect.width - 2}px`;
-        // gui.domElement.style.left = `${canvasRect.right}px`;
         console.log("testing gui align");
         console.log(guiRect)
     }

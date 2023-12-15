@@ -67,7 +67,14 @@ materialFolder.add(parameters, 'wireframe').onChange((value) => {
 /*
     Textures
 */
-const textureLoader = new THREE.TextureLoader();
+const loadingManager = new THREE.LoadingManager();
+
+loadingManager.onError = () => {
+    console.error('error loading')
+}
+
+
+const textureLoader = new THREE.TextureLoader(loadingManager);
 const matcapTexture = textureLoader.load('/images/matcaps/1.png')
 const matcapTextures = new Array(8);
 matcapTextures[0] = textureLoader.load('/images/matcaps/matcap_1.png')
@@ -175,17 +182,33 @@ addDonutsToScene()
 */
 let renderer;
 let controls;
-export const createScene = (el) => {
+export const createScene = (el, onLoaded) => {
 
     renderer = new THREE.WebGLRenderer({
         canvas: el
     })
+
+    loadingManager.onLoad = () => {
+        onLoaded()
+    }
+
+    const alignGUIWithCanvas = () => {
+        const canvasRect = el.getBoundingClientRect();
+        const guiRect = gui.domElement.getBoundingClientRect();
+        gui.domElement.style.position = 'absolute';
+        gui.domElement.style.top = `220px`;
+        gui.domElement.style.left = `${canvasRect.right - guiRect.width}px`;
+        console.log("testing gui align");
+        console.log(guiRect)
+    }
 
     controls = new OrbitControls(camera, el)
     controls.enableDamping = true;
 
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio,2))
+
+    alignGUIWithCanvas();
 
     window.addEventListener('resize', () => {
         sizes.width = Math.min(document.body.clientWidth, 1400),
@@ -195,30 +218,10 @@ export const createScene = (el) => {
         camera.updateProjectionMatrix
     
         renderer.setSize(sizes.width, sizes.height)
+
+        alignGUIWithCanvas();
     })
     
-
-    // window.addEventListener('dblclick', () => {
-
-    //     const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
-
-    //     // if(!fullscreenElement){
-    //     //     if(el.requestFullscreen){
-    //     //         el.requestFullscreen()
-    //     //     }
-    //     //     else if(el.webkitRequestFullscreen){
-    //     //         el.webkitRequestFullscreen()
-    //     //     }
-    //     // }
-    //     // else{
-    //     //     if(document.exitFullscreen){
-    //     //         document.exitFullscreen();
-    //     //     }
-    //     //     else if(document.webkitExitFullscreen){
-    //     //         document.webkitExitFullscreen();
-    //     //     }
-    //     // }
-    // })
     tick()
 }
 /*
