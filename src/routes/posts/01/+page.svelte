@@ -2,9 +2,10 @@
 	export const metadata = {
 		title: 'Learning ThreeJS Part 1: Scenes, Objects, Materials',
 		description: 'test description',
-		date: '1/1/2000',
+		date: '06/30/2022',
 		image_static: 'images/thumbnails/post01/threejsPart1.jpg',
-		image: 'images/thumbnails/post01/threejsPart1.gif'
+		image: 'images/thumbnails/post01/threejsPart1.gif',
+        logo: 'images/logos/threeJSLogo.png',
 	};
 </script>
 

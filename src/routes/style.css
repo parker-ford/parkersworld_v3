@@ -160,8 +160,8 @@ html {
 }
 
 .post__tech-icons img {
-    max-width: 100px; /* You can adjust this value as needed */
-    max-height: 100px; /* You can adjust this value as needed */
+    max-width: 50px; /* You can adjust this value as needed */
+    max-height: 50px; /* You can adjust this value as needed */
     width: auto;
     height: auto;
 }

@@ -35,7 +35,7 @@
 		<h1>Blog Posts</h1>
 	</div>
 	<div class="main__posts" id="main__posts">
-		{#each data.summaries as { name, description, date, image, image_static, page, hovered }}
+		{#each data.summaries as { name, description, date, image, image_static, logo, page, hovered }}
 			<div
 				class="post"
 				on:click={() => (window.location.href = page)}
@@ -49,7 +49,7 @@
 					<p class="post__date">{date}</p>
 					<h1 class="post__title">{name}</h1>
 					<div class="post__tech-icons">
-						<img src="./images/logos/webgpu-horizontal.svg" alt="Tech 1" />
+						<img src={logo} alt="Tech 1" />
 					</div>
 				</div>
 				<div class="post__img__container">
