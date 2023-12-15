@@ -3,8 +3,8 @@
 		title: 'Learning ThreeJS Part2: 3D Text, Matcaps',
 		description: 'test description',
 		date: '1/16/2023',
-		image_static: 'images/thumbnails/post01/threejsPart1.jpg',
-		image: 'images/thumbnails/post01/threejsPart1.gif',
+		image_static: 'images/thumbnails/post02/threejsPart2.jpg',
+		image: 'images/thumbnails/post02/threejsPart2.gif',
         logo: 'images/logos/threeJSLogo.png',
 	};
 </script>
