@@ -6,20 +6,34 @@ export const createScene = async (el, onLoaded) => {
 
     let wgsltxt = `
     
+        struct vsout {
+            @builtin(position) Position: vec4<f32>,
+            @location(0) p : vec3<f32>,
+        };
+
         @vertex
-        fn main_vs(@builtin(vertex_index) VertexIndex : u32) -> @builtin(position) vec4<f32> {
+        fn main_vs(@builtin(vertex_index) VertexIndex : u32) -> vsout {
             var pos = array<vec2<f32>, 3>(
                 vec2<f32>(0.0, 0.5),
                 vec2<f32>(-0.5, -0.5),
                 vec2<f32>(0.5, -0.5)
             );
-            return vec4<f32>(pos[VertexIndex], 0.0, 1.0);
+            var ret : vsout;
+            ret.Position = vec4<f32>(pos[VertexIndex], 0.0, 1.0);
+            ret.p = vec3<f32>(pos[VertexIndex], 0.0);
+            return ret;
         }
         
+        fn random(st:vec2<f32>) -> f32 {
+            return fract(sin(dot(st.xy, vec2<f32>(12.9898,78.233))) * 43758.5453123);
+        }
 
         @fragment
-        fn main_fs() -> @location(0) vec4<f32> {
-            return vec4<f32>(1.0, 1.0, 0.0, 1.0);
+        fn main_fs(@location(0)p : vec3<f32>) -> @location(0) vec4<f32> {
+            var r = random(p.xy);
+            var g = random(p.xy * 2.0);
+            var b = random(p.xy * 3.0);
+            return vec4<f32>(r, g, b, 1.0);
         }
     
     `;
