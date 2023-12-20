@@ -47,7 +47,7 @@ export class Renderer {
 
         this.context = this.canvas.getContext('webgpu');
         this.devicePixelRatio = window.devicePixelRatio || 1;
-        this.presentationSize = [ this.canvas.clientWidth * devicePixelRatio, this.canvas.clientHeight * devicePixelRatio ];
+        this.presentationSize = [this.canvas.clientWidth * devicePixelRatio, this.canvas.clientHeight * devicePixelRatio];
         this.presentationFormat = this.gpu.getPreferredCanvasFormat();
         let configuration = {
             device: this.device,
@@ -68,33 +68,42 @@ export class Renderer {
         if (!(scene instanceof Scene)) {
             throw new TypeError('render must take in a Scene object');
         }
-        this.commandBuffers = [];
+
+        const commandEncoder = this.device.createCommandEncoder();
+        const renderPassDescriptor = {
+            colorAttachments: [
+                {
+                    loadOp: "clear",
+                    clearValue: { r: 0, g: 0, b: 0, a: 1 },
+                    storeOp: "store"
+                }
+            ]
+        }
+        renderPassDescriptor.colorAttachments[0].view = this.context.getCurrentTexture().createView();
+        const renderPass = commandEncoder.beginRenderPass(renderPassDescriptor);
+
         scene.objects.forEach(element => {
-            this.renderObject(element);
+            this.renderObject(renderPass, element);
         });
-        this.device.queue.submit(this.commandBuffers);
+
+        renderPass.end();
+        this.device.queue.submit([commandEncoder.finish()]);
     }
 
-    renderObject(element) {
+    renderObject(renderPass, element) {
         switch (element.constructor) {
             case BasicTriangle:
-                this.renderBasicTriangle(element);
+                this.renderBasicTriangle(renderPass, element);
                 break;
             default:
                 console.log("non renderable object in scene");
         }
     }
 
-    renderBasicTriangle(triangle) {
-        triangle.renderPassDescriptor.colorAttachments[0].view = this.context.getCurrentTexture().createView();
-        const commandEncoder = this.device.createCommandEncoder();
-        const renderPass = commandEncoder.beginRenderPass(triangle.renderPassDescriptor);
+    renderBasicTriangle(renderPass, triangle) {
         renderPass.setPipeline(triangle.pipeline);
         renderPass.setVertexBuffer(0, triangle.vertexBuffer);
         renderPass.draw(3);
-        renderPass.end();
-        this.commandBuffers.push(commandEncoder.finish());
-        //this.device.queue.submit([commandEncoder.finish()]);
     }
 
     renderTest() {

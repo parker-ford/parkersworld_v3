@@ -8,16 +8,6 @@ export class BasicTriangle {
         this.shader = options.shader;
         this.constructBuffers();
         this.setupShaders();
-
-        this.renderPassDescriptor = {
-            colorAttachments: [
-                {
-                    loadOp: "clear",
-                    clearValue: { r: 0, g: 0, b: 0, a: 1 },
-                    storeOp: "store"
-                }
-            ]
-        }
     }
 
     constructBuffers() {
