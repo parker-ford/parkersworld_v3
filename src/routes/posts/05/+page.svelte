@@ -15,7 +15,7 @@
     let el;
     import { sceneLoaded } from '../../stores.js';
     onMount(async () =>{
-        const {createScene} = await import('./simpleRayTracer')
+        const {createScene} = await import('./scene')
         createScene(el, () => sceneLoaded.set(true))
     })
 
