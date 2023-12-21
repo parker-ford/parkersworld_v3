@@ -15,20 +15,15 @@ export const createScene = async (el, onLoaded) => {
     const scene = new PW.Scene();
 
     const triangle = new PW.BasicTriangle({
-        points: [[-1.0, -1.0, 0.0, 1.0], [0.0, 0.5, 0.0, 1.0], [0.5, -1.0, 0.0, 1.0]],
+        points: [[-1.0, -1.0, 0.0, 1.0], [0.0, 1.0, 0.0, 1.0], [1.0, -1.0, 0.0, 1.0]],
         colors: [[1.0, 0.0, 0.0, 1.0], [0.0, 1.0, 0.0, 1.0], [0.0, 0.0, 1.0, 1.0]],
         shader: basicTriangleShader
     });
     scene.add(triangle);
 
-    const triangle2 = new PW.BasicTriangle({
-        points: [[0.6, -1.0, 0.0, 1.0], [0.0, 0.5, 0.0, 1.0], [1.0, -1.0, 0.0, 1.0]],
-        colors: [[1.0, 0.0, 0.0, 1.0], [0.0, 1.0, 0.0, 1.0], [0.0, 0.0, 1.0, 1.0]],
-        shader: basicTriangleShader
-    });
-    scene.add(triangle2);
 
     function frame(){
+        
         renderer.render(scene);
         requestAnimationFrame(frame);
     }

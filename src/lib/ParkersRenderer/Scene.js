@@ -6,4 +6,8 @@ export class Scene {
     add(object) {
         this.objects.push(object);
     }
+
+    clear() {
+        this.objects = [];
+    }
 }
