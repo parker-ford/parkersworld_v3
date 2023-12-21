@@ -14,8 +14,14 @@ export const createScene = async (el, onLoaded) => {
 
     const scene = new PW.Scene();
 
+    const radius = 0.5;
+    const angles = [0,120,240]
     const triangle = new PW.BasicTriangle({
-        points: [[-1.0, -1.0, 0.0, 1.0], [0.0, 1.0, 0.0, 1.0], [1.0, -1.0, 0.0, 1.0]],
+        points: [
+            [Math.sin(angles[0] * PW.Math.Deg2Rad) * radius, Math.cos(angles[0] * PW.Math.Deg2Rad) * radius, 0.0, 1.0], 
+            [Math.sin(angles[1] * PW.Math.Deg2Rad) * radius, Math.cos(angles[1] * PW.Math.Deg2Rad) * radius, 0.0, 1.0], 
+            [Math.sin(angles[2] * PW.Math.Deg2Rad) * radius, Math.cos(angles[2] * PW.Math.Deg2Rad) * radius, 0.0, 1.0]
+        ],
         colors: [[1.0, 0.0, 0.0, 1.0], [0.0, 1.0, 0.0, 1.0], [0.0, 0.0, 1.0, 1.0]],
         shader: basicTriangleShader
     });
