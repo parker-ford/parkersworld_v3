@@ -82,6 +82,7 @@
         </div>
         <div class ="page__title__container">
             <h1 class="page__title">{title}</h1>
+            <h5>{metadata.date}</h5>
         </div>
         <div class="page__text__container">
             <h3 class="page__subtitle">Particles</h3>

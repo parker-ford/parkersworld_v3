@@ -37,6 +37,8 @@
 	<div class="main__posts" id="main__posts">
 		{#each data.summaries as { name, description, date, image, image_static, logo, page, hovered }}
 			<div
+				role="button"
+				tabindex="0"
 				class="post"
 				on:click={() => (window.location.href = page)}
 				on:keydown={() => console.log('test')}
