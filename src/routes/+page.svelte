@@ -11,6 +11,11 @@
 		const { createScene } = await import('../lib/scene');
 		console.log('creating scene');
 		createScene(el, () => sceneLoaded.set(true));
+
+		data.summaries.forEach(element => {
+			const img = new Image();
+			img.src = element.image;
+		});
 	});
 </script>
 
