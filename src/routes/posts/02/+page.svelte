@@ -2,7 +2,7 @@
 	export const metadata = {
 		title: 'Learning ThreeJS Part2: 3D Text, Matcaps',
 		description: 'test description',
-		date: '1/16/2023',
+		date: '1/16/1023',
 		image_static: 'images/thumbnails/post02/threejsPart2.jpg',
 		image: 'images/thumbnails/post02/threejsPart2.gif',
         logo: 'images/logos/threeJSLogo.png',
