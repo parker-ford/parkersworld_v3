@@ -1,4 +1,4 @@
-import { Renderer } from './Renderer.js';
+import { BasicTriangleRenderer } from './BasicTriangleRenderer.js';
 
 export class BasicTriangle {
     constructor(options) {
@@ -43,7 +43,7 @@ export class BasicTriangle {
             vertexData.set(this.colors.subarray(i, i + 4), j + 4);
         }
 
-        this.vertexBuffer = Renderer.instance.getDevice().createBuffer({
+        this.vertexBuffer = BasicTriangleRenderer.instance.getDevice().createBuffer({
             size: vertexData.byteLength,
             usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
             mappedAtCreation: true
@@ -54,8 +54,8 @@ export class BasicTriangle {
     }
 
     setupShaders() {
-        this.shaderModule = Renderer.instance.getDevice().createShaderModule({ code: this.shader });
-        this.pipeline = Renderer.instance.getDevice().createRenderPipeline({
+        this.shaderModule = BasicTriangleRenderer.instance.getDevice().createShaderModule({ code: this.shader });
+        this.pipeline = BasicTriangleRenderer.instance.getDevice().createRenderPipeline({
             layout: 'auto',
             vertex: {
                 module: this.shaderModule,
@@ -66,7 +66,7 @@ export class BasicTriangle {
                 module: this.shaderModule,
                 entryPoint: "fragment_main",
                 targets: [
-                    { format: Renderer.instance.presentationFormat }
+                    { format: BasicTriangleRenderer.instance.presentationFormat }
                 ],
                 primitive: {
                     topology: 'triangle-list',

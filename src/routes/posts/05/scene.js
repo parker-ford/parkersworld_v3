@@ -7,7 +7,7 @@ export const createScene = async (el, onLoaded) => {
     el.width = Math.min(document.body.clientWidth, 1400) * .5
     el.height = Math.min(document.body.clientWidth, 1400) * .5
 
-    const renderer = new PW.Renderer(el);
+    const renderer = new PW.BasicTriangleRenderer(el);
     if (! await renderer.init()) {
         console.log("renderer initialization failed");
     }

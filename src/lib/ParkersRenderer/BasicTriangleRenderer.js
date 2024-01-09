@@ -1,13 +1,13 @@
 import { Scene } from "./Scene";
 import { BasicTriangle } from "./BasicTriangle";
 
-export class Renderer {
+export class BasicTriangleRenderer {
     static instance;
 
     constructor(canavs) {
 
-        if (Renderer.instance) {
-            return Renderer.instance;
+        if (BasicTriangleRenderer.instance) {
+            return BasicTriangleRenderer.instance;
         }
 
         this.canvas = canavs;
@@ -18,7 +18,7 @@ export class Renderer {
         this.commandBuffers = [];
         this.renderFuncrions = [];
 
-        Renderer.instance = this;
+        BasicTriangleRenderer.instance = this;
     }
 
     async init() {
