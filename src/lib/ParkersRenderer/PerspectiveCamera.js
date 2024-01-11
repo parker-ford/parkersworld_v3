@@ -36,6 +36,9 @@ export class PerspectiveCamera {
     }
 
     controllsUpdate(){
+        if(Input.isMouseDown(0)){
+            console.log("mouse down");
+        }
         if(Input.isKeyDown('w')){
             vec3.add(this.transform.position, this.transform.position, vec3.scale(vec3.create(), this.transform.forward, this.speed * Time.deltaTime));
         }
