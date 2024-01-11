@@ -10,4 +10,12 @@ export class Scene {
     clear() {
         this.objects = [];
     }
+
+    update(){
+        this.objects.forEach(element => {
+            if(typeof element.update === 'function'){
+                element.update();
+            }
+        });
+    }
 }

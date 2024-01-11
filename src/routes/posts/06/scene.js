@@ -1,4 +1,5 @@
 import * as PW from '$lib/ParkersRenderer'
+import { vec3 } from 'gl-matrix';
 
 export const createScene = async (el, onLoaded) => {
     onLoaded();
@@ -31,8 +32,17 @@ export const createScene = async (el, onLoaded) => {
 
     scene.add(triangle);
 
+    const camera = new PW.PerspectiveCamera({
+        fov: 45,
+        aspect: el.width / el.height,
+        near: 0.1,
+        far: 10,
+    });
+
+    scene.add(camera);
+
     function frame() {
-        renderer.render(scene);
+        renderer.render(scene, camera);
         requestAnimationFrame(frame);
     }
     frame();

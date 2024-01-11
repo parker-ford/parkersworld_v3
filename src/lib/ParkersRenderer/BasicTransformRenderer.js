@@ -142,28 +142,28 @@ export class BasicTransformRenderer {
         return this.device;
     }
 
-    render(scene) {
+    render(scene, camera) {
         if (!(scene instanceof Scene)) {
             throw new TypeError('render must take in a Scene object');
         }
 
+        //Update everything in the scene
+        scene.update();
+
         //Create matrices for transform shader
         const projection = mat4.create();
-        // mat4.identity(projection)
         mat4.perspective(projection, 45 * Math.PI / 180, this.canvas.width/this.canvas.height, 0.1, 10);
 
         const view = mat4.create();
         mat4.lookAt(view, [0 , 0, 1], [0, 0, 0], [0, 1, 0]);
-        // mat4.identity(view);
-
+        
         const model = mat4.create();
-        mat4.rotate(model, model, this.rotation, [0, 1, 0]);
+        mat4.rotate(model, model, this.rotation, [1, 0, 1]);
         this.rotation += 0.01;
-        // mat4.identity(model);
 
         this.device.queue.writeBuffer(this.uniformBuffer, 0, model);
-        this.device.queue.writeBuffer(this.uniformBuffer, 64, view);
-        this.device.queue.writeBuffer(this.uniformBuffer, 128, projection);
+        this.device.queue.writeBuffer(this.uniformBuffer, 64, camera.viewMatrix);
+        this.device.queue.writeBuffer(this.uniformBuffer, 128, camera.projectionMatrix);
 
         const commandEncoder = this.device.createCommandEncoder();
         const renderPassDescriptor = {
@@ -192,7 +192,7 @@ export class BasicTransformRenderer {
                 this.renderBasicTriangleTransform(renderPass, element);
                 break;
             default:
-                console.log("non renderable object in scene");
+                //console.log("non renderable object in scene");
         }
     }
 

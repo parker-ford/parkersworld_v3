@@ -1,4 +1,5 @@
 import { BasicTransformRenderer } from './BasicTransformRenderer.js';
+import { Transform } from './Transform.js';
 
 export class BasicTriangleTransform {
     constructor(options) {
@@ -6,6 +7,7 @@ export class BasicTriangleTransform {
         this.colors = new Float32Array(options.colors.flat());
         this.indices = new Uint32Array([0, 1, 2]);
         this.constructBuffers();
+        this.transform = new Transform({});
     }
 
     constructBuffers() {
