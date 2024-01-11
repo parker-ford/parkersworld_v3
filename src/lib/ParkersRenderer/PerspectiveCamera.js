@@ -37,22 +37,22 @@ export class PerspectiveCamera {
 
     controllsUpdate(){
         if(Input.isKeyDown('w')){
-            this.transform.position[2] += this.speed * Time.deltaTime;
+            vec3.add(this.transform.position, this.transform.position, vec3.scale(vec3.create(), this.transform.forward, this.speed * Time.deltaTime));
         }
         if(Input.isKeyDown('s')){
-            this.transform.position[2] -= this.speed * Time.deltaTime;
+            vec3.add(this.transform.position, this.transform.position, vec3.scale(vec3.create(), this.transform.forward, -1 * this.speed * Time.deltaTime));
         }
         if(Input.isKeyDown('a')){
-            this.transform.position[0] -= this.speed * Time.deltaTime;
+            vec3.add(this.transform.position, this.transform.position, vec3.scale(vec3.create(), this.transform.right, -1 * this.speed * Time.deltaTime));
         }
         if(Input.isKeyDown('d')){
-            this.transform.position[0] += this.speed * Time.deltaTime;
+            vec3.add(this.transform.position, this.transform.position, vec3.scale(vec3.create(), this.transform.right, this.speed * Time.deltaTime));
         }
         if(Input.isKeyDown('q')){
-            this.transform.position[1] -= this.speed * Time.deltaTime;
+            vec3.add(this.transform.position, this.transform.position, vec3.scale(vec3.create(), this.transform.up, -1 * this.speed * Time.deltaTime));
         }
         if(Input.isKeyDown('e')){
-            this.transform.position[1] += this.speed * Time.deltaTime;
+            vec3.add(this.transform.position, this.transform.position, vec3.scale(vec3.create(), this.transform.up, this.speed * Time.deltaTime));
         }
     }
 }

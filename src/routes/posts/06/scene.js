@@ -47,6 +47,9 @@ export const createScene = async (el, onLoaded) => {
     scene.add(camera);
 
     function frame() {
+        // let rot = quat.create();
+        // quat.setAxisAngle(rot, vec3.fromValues(0, 1, 0), .01);
+        // quat.multiply(camera.transform.rotation, rot, camera.transform.rotation);
         renderer.render(scene, camera);
         requestAnimationFrame(frame);
     }

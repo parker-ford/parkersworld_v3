@@ -5,27 +5,16 @@ import { mat4, vec3, quat } from "gl-matrix";
 export class Transform {
     constructor(options) {
 
-        if(options.position){
-            this.position = options.position;
-        }
-        else{
-            this.position = vec3.create();
-        }
+        this.position = vec3.create();
 
-        if(options.rotation){
-            this.rotation = options.rotation;
-        }
-        else{
-            this.rotation = quat.create();
-            quat.identity(this.rotation);
-        }
+        this.rotation = quat.create();
+        quat.identity(this.rotation);
 
-        if(options.scale){
-            this.scale = options.scale;
-        }
-        else{
-            this.scale = vec3.fromValues(1,1,1);
-        }
+        this.scale = vec3.fromValues(1,1,1);
+
+        this.up = vec3.fromValues(0,1,0);
+        this.forward = vec3.fromValues(0,0,1);
+        this.right = vec3.fromValues(1,0,0);
 
         this.TRS = mat4.create();
         this.updateTRS();
@@ -47,7 +36,14 @@ export class Transform {
         mat4.multiply(this.TRS, this.TRS, scale);
     }
 
+    updateDirectionVectors(){
+        vec3.transformQuat(this.up, vec3.fromValues(0,1,0), this.rotation);
+        vec3.transformQuat(this.forward, vec3.fromValues(0,0,1), this.rotation);
+        vec3.transformQuat(this.right, vec3.fromValues(1,0,0), this.rotation);
+    }
+
     update(){
         this.updateTRS();
+        
     }
 }
