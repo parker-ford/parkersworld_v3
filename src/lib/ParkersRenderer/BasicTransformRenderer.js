@@ -150,12 +150,6 @@ export class BasicTransformRenderer {
         //Update everything in the scene
         scene.update();
 
-        //Create matrices for transform shader
-        const projection = mat4.create();
-        mat4.perspective(projection, 45 * Math.PI / 180, this.canvas.width/this.canvas.height, 0.1, 10);
-
-        const view = mat4.create();
-        mat4.lookAt(view, [0 , 0, 1], [0, 0, 0], [0, 1, 0]);
         
         const model = mat4.create();
         mat4.rotate(model, model, this.rotation, [1, 0, 1]);

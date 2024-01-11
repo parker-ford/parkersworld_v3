@@ -1,5 +1,5 @@
 import * as PW from '$lib/ParkersRenderer'
-import { vec3 } from 'gl-matrix';
+import { quat, vec3, mat4 } from 'gl-matrix';
 
 export const createScene = async (el, onLoaded) => {
     onLoaded();
@@ -38,6 +38,11 @@ export const createScene = async (el, onLoaded) => {
         near: 0.1,
         far: 10,
     });
+
+    camera.transform.position[2] = -2;
+    // console.log(camera.viewMatrix);
+    // console.log(mat4.fromScaling(mat4.create(), vec3.fromValues(1, 1, -1)))
+    console.log(camera.projectionMatrix);
 
     scene.add(camera);
 
