@@ -31,4 +31,9 @@ export class BasicTriangleTransform {
         new Float32Array(this.vertexBuffer.getMappedRange()).set(vertexData);
         this.vertexBuffer.unmap();
     }
+
+
+    update(){
+        this.transform.update();
+    }
 }
