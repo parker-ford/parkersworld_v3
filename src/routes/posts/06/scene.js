@@ -40,16 +40,10 @@ export const createScene = async (el, onLoaded) => {
     });
 
     camera.transform.position[2] = -2;
-    // console.log(camera.viewMatrix);
-    // console.log(mat4.fromScaling(mat4.create(), vec3.fromValues(1, 1, -1)))
-    console.log(camera.projectionMatrix);
 
     scene.add(camera);
 
     function frame() {
-        // let rot = quat.create();
-        // quat.setAxisAngle(rot, vec3.fromValues(0, 1, 0), .01);
-        // quat.multiply(camera.transform.rotation, rot, camera.transform.rotation);
         renderer.render(scene, camera);
         requestAnimationFrame(frame);
     }

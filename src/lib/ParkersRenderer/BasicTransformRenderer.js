@@ -152,7 +152,7 @@ export class BasicTransformRenderer {
 
         
         const model = mat4.create();
-        mat4.rotate(model, model, this.rotation, [1, 0, 1]);
+        //mat4.rotate(model, model, this.rotation, [1, 0, 1]);
         this.rotation += 0.01;
 
         this.device.queue.writeBuffer(this.uniformBuffer, 0, model);

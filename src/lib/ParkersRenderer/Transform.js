@@ -44,6 +44,6 @@ export class Transform {
 
     update(){
         this.updateTRS();
-        
+        this.updateDirectionVectors();
     }
 }

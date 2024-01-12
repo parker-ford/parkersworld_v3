@@ -1,6 +1,8 @@
 export class Input {
     static keys = {};
     static mouseButtons = {};
+    static mousePosition = { x: 0, y: 0 };
+    static deltaMouse = { x: 0, y: 0 };
 
     static initialized = false;
 
@@ -23,8 +25,20 @@ export class Input {
             });
 
             window.addEventListener('mousemove', function(event) {
+
+                if (Input.mouseStopTimeout) {
+                    clearTimeout(Input.mouseStopTimeout);
+                }
+
+                Input.deltaMouse.x = Input.mousePosition.x - event.clientX;
+                Input.deltaMouse.y = Input.mousePosition.y - event.clientY;
                 Input.mousePosition.x = event.clientX;
                 Input.mousePosition.y = event.clientY;
+
+                Input.mouseStopTimeout = setTimeout(function() {
+                    Input.deltaMouse.x = 0;
+                    Input.deltaMouse.y = 0;
+                }, 10);
             });
 
             this.initialized = true;

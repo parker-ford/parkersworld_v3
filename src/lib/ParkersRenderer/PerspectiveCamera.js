@@ -1,4 +1,4 @@
-import { mat4, vec3 } from "gl-matrix";
+import { mat4, vec3, vec2, quat } from "gl-matrix";
 import { Transform } from "./Transform";
 import { Input } from "./Input";
 import { Time } from "./Time";
@@ -16,6 +16,7 @@ export class PerspectiveCamera {
 
         this.useControlls = true;
         this.speed = 5;
+        this.rotateSpeed = 0.6;
 
         this.projectionMatrix = mat4.create();
         mat4.perspective(this.projectionMatrix, this.fov, this.aspect, this.near, this.far);
@@ -35,10 +36,9 @@ export class PerspectiveCamera {
         mat4.multiply(this.viewMatrix, flipZ, this.viewMatrix);
     }
 
+
     controllsUpdate(){
-        if(Input.isMouseDown(0)){
-            console.log("mouse down");
-        }
+
         if(Input.isKeyDown('w')){
             vec3.add(this.transform.position, this.transform.position, vec3.scale(vec3.create(), this.transform.forward, this.speed * Time.deltaTime));
         }
@@ -56,6 +56,21 @@ export class PerspectiveCamera {
         }
         if(Input.isKeyDown('e')){
             vec3.add(this.transform.position, this.transform.position, vec3.scale(vec3.create(), this.transform.up, this.speed * Time.deltaTime));
+        }
+
+        if(Input.isMouseDown(0)){
+            const deltaMouse = vec2.fromValues(Input.deltaMouse.x, Input.deltaMouse.y);
+            // const qX = quat.rotateY(quat.create(), quat.create(), -deltaMouse[0] * Time.deltaTime * this.rotateSpeed);
+            const qX = quat.setAxisAngle(quat.create(), this.transform.up, -deltaMouse[0] * Time.deltaTime * this.rotateSpeed);
+            const qY = quat.rotateX(quat.create(), quat.create(), -deltaMouse[1] * Time.deltaTime * this.rotateSpeed);
+            const q = quat.multiply(quat.create(), qX, qY);
+            const R = mat4.fromQuat(mat4.create(), q);
+            const invP = mat4.fromTranslation(mat4.create(), this.transform.position);
+            mat4.multiply(R, invP, R);
+            mat4.multiply(R, R, mat4.invert(mat4.create(), invP));
+            vec3.transformMat4(this.transform.position, this.transform.position, R);
+            quat.multiply(this.transform.rotation, q, this.transform.rotation);
+
         }
     }
 }
