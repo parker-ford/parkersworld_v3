@@ -34,7 +34,15 @@ export const createScene = async (el, onLoaded) => {
 
     scene.add(camera);
 
+    var rotation = 0;
     function frame() {
+
+        quat.rotateY(triangle.transform.rotation, triangle.transform.rotation, PW.Time.deltaTime);
+        quat.rotateX(triangle2.transform.rotation, triangle2.transform.rotation, PW.Time.deltaTime);
+
+
+        rotation += PW.Time.deltaTime * 10;
+
         renderer.render(scene, camera);
         requestAnimationFrame(frame);
     }
