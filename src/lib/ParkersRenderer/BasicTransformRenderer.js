@@ -65,7 +65,47 @@ export class BasicTransformRenderer {
         this.context.configure(configuration);
 
 
+        //Setting up depth stencil
+
+        this.depthStencilState = {
+            format: 'depth24plus-stencil8',
+            depthWriteEnabled: true,
+            depthCompare: 'less-equal',
+        }
+        
+        const size = {
+            width: this.canvas.width,
+            height: this.canvas.height,
+            depthOrArrayLayers: 1,
+        }
+
+        const depthBufferDescriptor = {
+            size: size,
+            format: this.depthStencilState.format,
+            usage: GPUTextureUsage.RENDER_ATTACHMENT,
+        }
+
+        this.depthStencilBuffer = this.device.createTexture(depthBufferDescriptor);
+
+        const viewDescriptor = {
+            format: this.depthStencilState.format,
+            dimension: '2d',
+            aspect: 'all',
+        }
+        this.depthStencilView = this.depthStencilBuffer.createView(viewDescriptor);
+
+        this.depthStencilAttachment = {
+            view: this.depthStencilView,
+            depthClearValue: 1.0,
+            depthLoadOp: 'clear',
+            depthStoreOp: 'store',
+            stencilLoadOp: 'clear',
+            stencilStoreOp: 'discard',
+        }
+
+
         //Setting up pipeline
+
 
         this.objectsBuffer = this.device.createBuffer({
             size: 64 * 1024,
@@ -153,7 +193,8 @@ export class BasicTransformRenderer {
                 primitive: {
                     topology: 'triangle-list',
                 }
-            }
+            },
+            depthStencil: this.depthStencilState,
         });
 
 
@@ -174,15 +215,6 @@ export class BasicTransformRenderer {
         scene.update();
 
         
-        //const model = mat4.create();
-        //mat4.rotate(model, model, this.rotation, [1, 0, 1]);
-        //this.rotation += 0.01;
-
-        //this.device.queue.writeBuffer(this.uniformBuffer, 0, model);
-        if(this.printOD){
-            console.log(scene.object_data);
-            this.printOD = false;
-        }
         this.device.queue.writeBuffer(this.objectsBuffer, 0, scene.object_data, 0, scene.object_data.length);
         this.device.queue.writeBuffer(this.uniformBuffer, 0, camera.viewMatrix);
         this.device.queue.writeBuffer(this.uniformBuffer, 64, camera.projectionMatrix);
@@ -195,7 +227,8 @@ export class BasicTransformRenderer {
                     clearValue: { r: 0, g: 0, b: 0, a: 1 },
                     storeOp: "store"
                 }
-            ]
+            ],
+            depthStencilAttachment: this.depthStencilAttachment,
         }
         renderPassDescriptor.colorAttachments[0].view = this.context.getCurrentTexture().createView();
         const renderPass = commandEncoder.beginRenderPass(renderPassDescriptor);
