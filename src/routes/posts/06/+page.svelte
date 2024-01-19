@@ -30,7 +30,9 @@
             <h1 class="page__title">{metadata.title}</h1>
         </div>
         <div class="page__text__container">
-            <h3 class="page__subtitle">Title</h3>
+            <h3 class="page__subtitle">Transforms</h3>
+
+            <h3 class="page__subtitle">Projections</h3>
         </div>
     </div>
 </div>
