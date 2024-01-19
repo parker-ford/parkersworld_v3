@@ -6,10 +6,8 @@ import { Time } from "./Time";
 export class PerspectiveCamera {
     constructor(options) {
 
-        this.position = [0, 0, 1]; //Hard coded for now
         this.transform = new Transform( {} );
-
-        this.fov = options.fov * Math.PI / 180 //Input is deg, convert to radians
+        this.fov = options.fov * Math.PI / 180;
         this.aspect = options.aspect;
         this.near = options.near;
         this.far = options.far;
@@ -60,9 +58,8 @@ export class PerspectiveCamera {
 
         if(Input.isMouseDown(0)){
             const deltaMouse = vec2.fromValues(Input.deltaMouse.x, Input.deltaMouse.y);
-            // const qX = quat.rotateY(quat.create(), quat.create(), -deltaMouse[0] * Time.deltaTime * this.rotateSpeed);
-            const qX = quat.setAxisAngle(quat.create(), this.transform.up, -deltaMouse[0] * Time.deltaTime * this.rotateSpeed);
-            const qY = quat.rotateX(quat.create(), quat.create(), -deltaMouse[1] * Time.deltaTime * this.rotateSpeed);
+            const qX = quat.setAxisAngle(quat.create(), vec3.fromValues(0,1,0), -deltaMouse[0] * Time.deltaTime * this.rotateSpeed);
+            const qY = quat.setAxisAngle(quat.create(), this.transform.right , -deltaMouse[1] * Time.deltaTime * this.rotateSpeed);
             const q = quat.multiply(quat.create(), qX, qY);
             const R = mat4.fromQuat(mat4.create(), q);
             const invP = mat4.fromTranslation(mat4.create(), this.transform.position);
