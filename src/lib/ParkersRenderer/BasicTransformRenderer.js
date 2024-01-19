@@ -19,6 +19,9 @@ export class BasicTransformRenderer {
         this.context = null;
         this.commandBuffers = [];
         this.renderFuncrions = [];
+        
+        //DEBUGGIN
+        this.printOD = true;
 
         //Will remove this later
         this.rotation = 1;
@@ -63,8 +66,14 @@ export class BasicTransformRenderer {
 
 
         //Setting up pipeline
+
+        this.objectsBuffer = this.device.createBuffer({
+            size: 64 * 1024,
+            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+        })
+
         this.uniformBuffer = this.device.createBuffer({
-            size: 64 * 3,
+            size: 64 * 2,
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
 
@@ -74,6 +83,14 @@ export class BasicTransformRenderer {
                     binding: 0,
                     visibility: GPUShaderStage.VERTEX,
                     buffer: {type: 'uniform'}
+                },
+                {
+                    binding: 1,
+                    visibility: GPUShaderStage.VERTEX,
+                    buffer: {
+                        type: 'read-only-storage',
+                        hasDynamicOffset: false
+                    }
                 }
             ]
         });
@@ -85,6 +102,12 @@ export class BasicTransformRenderer {
                     binding: 0,
                     resource: {
                         buffer: this.uniformBuffer
+                    }
+                },
+                {
+                    binding: 1,
+                    resource: {
+                        buffer: this.objectsBuffer
                     }
                 }
             ]
@@ -141,7 +164,7 @@ export class BasicTransformRenderer {
     getDevice() {
         return this.device;
     }
-
+    
     render(scene, camera) {
         if (!(scene instanceof Scene)) {
             throw new TypeError('render must take in a Scene object');
@@ -151,13 +174,18 @@ export class BasicTransformRenderer {
         scene.update();
 
         
-        const model = mat4.create();
+        //const model = mat4.create();
         //mat4.rotate(model, model, this.rotation, [1, 0, 1]);
-        this.rotation += 0.01;
+        //this.rotation += 0.01;
 
-        this.device.queue.writeBuffer(this.uniformBuffer, 0, model);
-        this.device.queue.writeBuffer(this.uniformBuffer, 64, camera.viewMatrix);
-        this.device.queue.writeBuffer(this.uniformBuffer, 128, camera.projectionMatrix);
+        //this.device.queue.writeBuffer(this.uniformBuffer, 0, model);
+        if(this.printOD){
+            console.log(scene.object_data);
+            this.printOD = false;
+        }
+        this.device.queue.writeBuffer(this.objectsBuffer, 0, scene.object_data, 0, scene.object_data.length);
+        this.device.queue.writeBuffer(this.uniformBuffer, 0, camera.viewMatrix);
+        this.device.queue.writeBuffer(this.uniformBuffer, 64, camera.projectionMatrix);
 
         const commandEncoder = this.device.createCommandEncoder();
         const renderPassDescriptor = {
@@ -173,27 +201,27 @@ export class BasicTransformRenderer {
         const renderPass = commandEncoder.beginRenderPass(renderPassDescriptor);
 
         scene.objects.forEach(element => {
-            this.renderObject(renderPass, element);
+            this.renderObject(renderPass, element, scene.object_count);
         });
 
         renderPass.end();
         this.device.queue.submit([commandEncoder.finish()]);
     }
 
-    renderObject(renderPass, element) {
+    renderObject(renderPass, element, count) {
         switch (element.constructor) {
             case BasicTriangleTransform:
-                this.renderBasicTriangleTransform(renderPass, element);
+                this.renderBasicTriangleTransform(renderPass, element, count);
                 break;
             default:
                 //console.log("non renderable object in scene");
         }
     }
 
-    renderBasicTriangleTransform(renderPass, triangle) {
+    renderBasicTriangleTransform(renderPass, triangle, count) {
         renderPass.setPipeline(this.pipeline);
         renderPass.setVertexBuffer(0, triangle.vertexBuffer);
         renderPass.setBindGroup(0, this.bindGroup);
-        renderPass.draw(3);
+        renderPass.draw(3, count, 0, 0);
     }
 }

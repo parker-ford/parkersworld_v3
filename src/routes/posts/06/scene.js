@@ -14,23 +14,14 @@ export const createScene = async (el, onLoaded) => {
 
     const scene = new PW.Scene();
 
-    const sideLength = 0.5;
-    const height = sideLength * Math.sqrt(3) / 2;
-
-    const triangle = new PW.BasicTriangleTransform({
-        points: [
-            [-sideLength / 2, -height / 2, 0.0, 1.0],
-            [0, height / 2, 0.0, 1.0],
-            [sideLength / 2, -height / 2, 0.0, 1.0]
-        ],
-        colors: [
-            [1.0, 0.0, 0.0, 1.0], 
-            [0.0, 1.0, 0.0, 1.0], 
-            [0.0, 0.0, 1.0, 1.0]
-        ],
-    });
-
+    const triangle = new PW.BasicTriangleTransform({});
+    triangle.transform.position = vec3.fromValues(0.5, 0, 0);
     scene.add(triangle);
+
+    const triangle2 = new PW.BasicTriangleTransform({});
+    triangle2.transform.position = vec3.fromValues(-0.5, 0, 0);
+    scene.add(triangle2);
+  
 
     const camera = new PW.PerspectiveCamera({
         fov: 45,
