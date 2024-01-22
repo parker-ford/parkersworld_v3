@@ -3,8 +3,6 @@ import { Transform } from './Transform.js';
 
 export class BasicTriangleTransform {
     constructor(options) {
-        // this.points = new Float32Array(options.points.flat());
-        //this.colors = new Float32Array(options.colors.flat());
         this.indices = new Uint32Array([0, 1, 2]);
         this.transform = new Transform({});
         this.points = new Float32Array(
