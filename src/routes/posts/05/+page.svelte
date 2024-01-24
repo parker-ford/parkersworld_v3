@@ -32,6 +32,8 @@
         </div>
         <div class="page__text__container">
 
+            <h4 class="page__sub-subtitle">Overview</h4>
+
             <p class="page__body">
                 This is the first post in a series I am doing on creating my own renering engine using the WebGPU API. The goal of this project is to learn as much as I can about how a real-time rendering system works. I hope to use this series as a way to explore as many topics as I can relating to rendering. 
             </p>

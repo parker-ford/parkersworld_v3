@@ -32,6 +32,16 @@
         </div>
         <div class="page__text__container">
 
+            <h4 class="page__sub-subtitle">Controls</h4>
+
+            <img class="controls__image" src="../images/icons/controls.png" alt="Transformations" />
+
+            <h4 class="page__sub-subtitle">Overview</h4>
+
+            <p class="page__body">
+                This is the second post in a series I am doing on creating my own renering engine using the WebGPU API. In this post I document everything I learned about transforms and object spaces, and how they are used to manipulate 3D objects in a virtual world. I also created a little demo to visualize the different types of transforms. You can see the demo above.
+            </p>
+
             <h3 class="page__subtitle">Transforms</h3>
 
             <p class="page__body">
