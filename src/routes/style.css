@@ -478,6 +478,7 @@ html {
 }
 
 .page__body{
+    font-size: 1.1rem;
     margin-bottom: 40px;
     line-height: 1.6;
     font-family: 'local-opensans', sans-serif;  

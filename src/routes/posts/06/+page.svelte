@@ -39,7 +39,7 @@
             <h4 class="page__sub-subtitle">Overview</h4>
 
             <p class="page__body">
-                This is the second post in a series I am doing on creating my own renering engine using the WebGPU API. In this post I document everything I learned about transforms and object spaces, and how they are used to manipulate 3D objects in a virtual world. I also created a little demo to visualize the different types of transforms. You can see the demo above.
+                This is the second post in a series I am doing on creating my own renering engine using the WebGPU API. In this post I document everything I learned about transformations and object spaces while implimenting them into my rendering engine. You can see this in action in the interactive demo above.
             </p>
 
             <h3 class="page__subtitle">Transforms</h3>
