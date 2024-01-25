@@ -56,9 +56,13 @@
                 <br>
                 <br>
                 This all still applies to the graphics pipeline. The difference is that instead of the input being raw materials and the output being a car, the input is data, and the output is an image.
-                In general, the stages of the graphics pipeline are: the application stage, the geometry processing stage, the rasterization stage, and the pixel processing stage.
+                In general, the stages of the graphics pipeline are: the application stage, the geometry processing stage, the rasterization stage, and the pixel processing stage. In the following sections, I will go over each individually.
 
             </p>
+
+
+            <img class = "page__img" src="../images/posts/05/graphics_pipeline.png" alt="Graphics pipeline" width="75%">
+
 
             <h3 class="page__subtitle">Application Stage</h3>
 
@@ -75,10 +79,11 @@
                 This stage can be divided into multiple sub-stages. The first sub-stage is the vertex shading stage, which is fully programmable, meaning that it can be completely controlled by the developer.
                 The way you control this stage is with a program known as a vertex shader. A vertex shader allows you to write code that can be run by the GPU. The goal of this vertex shader is to perform positional operations on vertices to change where they appear on the screen.
                 Another goal of the vertex shader is to assign per-vertex data that will be used in later portions of the pipeline. In this example, no changes to the vertex data are made in the vertex shader. The position and color of each vertex are set in the application stage
-                However, I could extend this vertex shader to move each vertex of the triangle in a certain way, for example, each vertex could be moved gradually up and down in a wave pattern. The benefits of the vertex shader will be more clear in later posts, especially once we start talking about transforms.                
-                <br>
-                <br>
-                There are a few optional sub stages that can take place here: the tesselation stage and the geometry stage. I will not be going over these stages here because they have more niche use cases and also at the time of writing this, they are not available for use in the WebGPU API.
+                However, I could extend this vertex shader to move each vertex of the triangle in a certain way, for example, each vertex could be moved gradually up and down in a wave pattern. Or perhaps another example could be having each vertex of a sphere be displaced by some ammount giving it a 'bumpy' appearance.
+
+                <img class = "page__img" src="../images/posts/05/Noisy_sphere.gif" alt="Bumpy sphere" width="35%">
+
+                After the vertex shahding stage, there are a few optional sub stages that can take place: the tesselation stage and the geometry stage. I will not be going over these stages here because they have more niche use cases and also at the time of writing this, they are not available for use in the WebGPU API.
                 <br>
                 <br>
                 After the optional stages, the next stage is the clipping stage. The purpose of this stage is to remove any pieces of data that will not be viewable in the final image. For example, if the triangle we are viewing were behind the camera, there would be no point in processing the vertices because we can't see them, and they would not affect the final image.
@@ -94,7 +99,11 @@
             
             <p class = "page__body">
                 So far in the pipeline, you may have noticed that we have only been mentioning vertices and how each individual vertex is processed. It is the job of this stage, the rasterization stage, to take the three vertices that represent the triangle and determine which pixels should be used to represent it.
-                In other words, this stage's job is to identify which pixels lie within the three vertices. This stage is non-programmable, so you don't have to worry about doing this yourself; it is handled by the GPU. The output of this stage is data tied to each pixel that has been found to be within the triangle.
+                In other words, this stage's job is to identify which pixels lie within our three vertices.
+                This stage is non-programmable, so you don't have to worry about doing this yourself; it is handled by the GPU. The output of this stage is data tied to each pixel that has been found to be within the triangle.
+                
+                <img class = "page__img" src="../images/posts/05/rasterization.png" alt="Rasterization" width="60%">
+
                 What's cool about this stage is that it doesn't just determine which pixels are within the triangle; it also interpolates the data that the pixel should have between the vertices. For example, in the application stage, I specified only three total colors, one for each vertex. However, you can see in the render that the colors are blended throughout the triangle. This blending occurs because the rasterizer interpolates color values based on the pixel's position within the triangle.
                 Once all this data has been processed, it is passed on to the next stage: the pixel processing stage.
             </p>
@@ -104,9 +113,10 @@
             <p class="page__body">
                 The final stage of the rendering pipeline is the pixel processing stage, which can also be divided into sub-stages. The first of these is the pixel shading sub-stage, similar to the geometry shading stage in that it is fully programmable. This stage is controlled by a program called a pixel (or fragment) shader.
                 While in the geometry shading stage we were writing a program to control the position of a vertex, in this stage, our shader is controlling the color of a pixel. There are many techniques that can be implemented to achieve really cool effects in the pixel shader, which I will explore in future posts.
-                For this example, the fragment shader is very simple; it just outputs the color it received from the rasterization stage. If I wanted, I could manipulate the color value in this shader, such as dimming or brightening the colors, but we'll delve into more complex uses of the fragment shader soon.
-                <br>
-                <br>
+                For this example, the fragment shader is very simple; it just outputs the color it received from the rasterization stage. If I wanted, I could manipulate the color value in this shader, such as dimming or brightening the colors, or even adding a cool rainbow effect. We'll delve into more complex uses of the fragment shader soon.
+
+                <img class = "page__img" src="../images/posts/05/rainbow_triangle.gif" alt="Rainbow Triangle" width="20%">
+
                 Once we have determined a pixel color through the fragment shader, the last step is to pass it to the final sub-stage: the merging stage. The merging stage controls how a given pixel's color is displayed in the final image. In this stage, we work with what is called a screen buffer, which can be thought of as a large 2D array that stores a color value for each pixel on the screen.
                 However, after the pixel-shader outputs a color for that pixel position, we can't simply add that color to the color buffer.
                 For instance, if the triangle we are rendering is behind another triangle already rendered into the screen buffer, the pixel color we just calculated can be disregarded because it won't be seen in the final image.
@@ -114,6 +124,16 @@
                 This is all handled by the merging configuration.In the end, you should have a screen buffer with a color value at each index. This buffer is then displayed on the screen as a 2D image. And with that, we have reached the end of the graphics pipeline!
             </p>
 
+            <h4 class="page__sub-subtitle">Resources</h4>
+            <p class="page__body">
+                <a href="https://www.realtimerendering.com/">Real-Time Rendering 4th Edition - Tomas Akenine-Moller et al.</a>
+                <br>
+                <a href="https://en.wikipedia.org/wiki/Geometry_processing">Geometry Processing - Wikipedia</a>
+                <br>
+                <a href="https://jtsorlinis.github.io/rendering-tutorial/">Rasterising a triangle - Jason Tsorlinis</a>
+                <br>
+                <a href="https://www.deviantart.com/10binary/art/rainbow-triangle-tunnel-286748152">rainbow triangle tunnel - 10binary</a>
+            </p>
 
         </div>
     </div>
