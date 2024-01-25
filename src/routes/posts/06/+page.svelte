@@ -2,9 +2,9 @@
     export const metadata = {
         title : "Transforms & Object Spaces",
         date : "01/23/2024",
-        image_static: 'images/thumbnails/placeholder/placeholder.jpg',
-		image: 'images/thumbnails/placeholder/placeholder.jpg',
-        logo: 'images/logos/threeJSLogo.png',
+        image_static: 'images/thumbnails/transforms/transforms.jpg',
+		image: 'images/thumbnails/transforms/transforms.gif',
+        logo: 'images/logos/webGPULogo.png',
     }
 </script>
 
