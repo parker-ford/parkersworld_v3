@@ -24,9 +24,6 @@ export class Scene {
         this.object_count = 0;
     }
 
-    // getObjectData(){
-    //     return Float32Array.from(this.object_data);
-    // }
 
     update(){
         var transformOffset = 0;

@@ -20,12 +20,17 @@ export const createScene = async (el, onLoaded) => {
         far: 100,
     });
 
-    camera.transform.position[2] = -1;
+    camera.transform.position[2] = -2;
 
     scene.add(camera);
 
-    const plane = new PW.Plane({});
-    scene.add(plane);
+    const plane1 = new PW.Plane({});
+    scene.add(plane1);
+    plane1.transform.position[0] = -1;
+
+    const plane2 = new PW.Plane({});
+    scene.add(plane2);
+    plane2.transform.position[0] = 1;
 
 
     function frame() {
