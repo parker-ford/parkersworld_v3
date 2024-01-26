@@ -1,4 +1,5 @@
 import * as PW from '$lib/ParkersRenderer'
+import { vec4 } from 'gl-matrix';
 export const createScene = async (el, onLoaded) => {
     onLoaded();
 
@@ -24,33 +25,26 @@ export const createScene = async (el, onLoaded) => {
 
     scene.add(camera);
 
-    // const plane1 = new PW.Plane({});
-    // scene.add(plane1);
-    // plane1.transform.position[0] = -1;
 
-    // const plane2 = new PW.Plane({});
-    // scene.add(plane2);
-    // plane2.transform.position[0] = 1;
-
+    
+    const plane2 = new PW.Renderable({
+        mesh: new PW.PlaneMesh({}),
+        material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
+    });
+    scene.add(plane2);
+    plane2.transform.position[0] = 1;
+    
     const plane1 = new PW.Renderable({
         mesh: new PW.PlaneMesh({}),
-        material: new PW.BasicMaterial({}),
+        material: new PW.BasicMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
     });
     scene.add(plane1);
     plane1.transform.position[0] = -1;
 
-    const plane2 = new PW.Renderable({
-        mesh: new PW.PlaneMesh({}),
-        material: new PW.BasicMaterial({}),
-    });
-    scene.add(plane2);
-    plane2.transform.position[0] = 1;
-
-
     function frame() {
 
         renderer.render(scene, camera);
-        //requestAnimationFrame(frame);
+        requestAnimationFrame(frame);
     }
     frame();
 }

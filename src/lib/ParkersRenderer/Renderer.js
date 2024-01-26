@@ -8,6 +8,7 @@ import { Renderable } from "./Renderable.js";
 export class Renderer {
 
     static instance;
+    static drawnObjects = 0;
 
     constructor(canavs) {
 
@@ -127,7 +128,7 @@ export class Renderer {
 
         this.setupDepthStencil();
         this.setupBuffers();
-        
+
         return true;
     }
 
@@ -139,6 +140,8 @@ export class Renderer {
         if (!(scene instanceof Scene)) {
             throw new TypeError('render must take in a Scene object');
         }
+
+        Renderer.drawnObjects = 0;
 
         //Update everything in the scene
         scene.update();
@@ -163,7 +166,7 @@ export class Renderer {
         const renderPass = commandEncoder.beginRenderPass(renderPassDescriptor);
 
         scene.objects.forEach(element => {
-            this.renderObject(renderPass, element, scene.object_count);
+            this.renderObject(renderPass, element);
         });
 
         renderPass.end();
@@ -180,11 +183,11 @@ export class Renderer {
         }
     }
 
-    renderRenderable(renderPass, element, count) {
-        console.log(element.material.getPipeline());
+    renderRenderable(renderPass, element) {
         renderPass.setPipeline(element.material.getPipeline());
         renderPass.setVertexBuffer(0, element.mesh.vertexBuffer);
         renderPass.setBindGroup(0, element.material.bindGroup);
-        renderPass.draw(3, count, 0, 0);
+        renderPass.draw(3, 1, 0, Renderer.drawnObjects)
+        Renderer.drawnObjects++;
     }
 }

@@ -1,3 +1,4 @@
+import { vec4 } from 'gl-matrix';
 import { Material } from './Material.js';
 import { Renderer } from './Renderer.js';
 import basicMaterialShader from './shaders/basicMaterialShader.wgsl?raw';
@@ -5,21 +6,66 @@ import basicMaterialShader from './shaders/basicMaterialShader.wgsl?raw';
 export class BasicMaterial extends Material {
     static pipeline = null;
     static bindGroupLayout = null;
+    static colorBuffer = null;
+    static count = 0;
 
     constructor(options) {
         super();
-        this.color = options.color;
+        this.id = BasicMaterial.count++;
+        this.color = options.color ? options.color : vec4.fromValues(1, 0, 0, 1);
     }
 
     init(options){
+        // if(!BasicMaterial.colorBuffer){
+        //     BasicMaterial.colorBuffer = this.createMaterialBuffers();
+        // }
         if(!BasicMaterial.bindGroupLayout){
             BasicMaterial.bindGroupLayout = this.createBindGroupLayout();
         }
         if(!BasicMaterial.pipeline) {
             BasicMaterial.pipeline = this.createPipeline(options);
         }
+        this.createMaterialBuffers();
+        this.createBindGroup();
+    }
 
-        this.bindGroup = this.createBindGroup();
+    createMaterialBuffers(){
+        this.colorBuffer = Renderer.instance.getDevice().createBuffer({
+            label: 'basic-material-color-buffer' + this.id,
+            size: 16,
+            usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+            mappedAtCreation: true
+        });
+        new Float32Array(this.colorBuffer.getMappedRange()).set(this.color);
+        this.colorBuffer.unmap();
+        //Renderer.instance.getDevice().queue.writeBuffer(this.colorBuffer, 0, this.color);
+    }
+
+    createBindGroup(){
+        this.bindGroup = Renderer.instance.getDevice().createBindGroup({
+            label: 'basic-material-bind-group' + this.id,
+            layout: BasicMaterial.bindGroupLayout,
+            entries: [
+                {
+                    binding: 0,
+                    resource: {
+                        buffer: Renderer.instance.uniformBuffer
+                    }
+                },
+                {
+                    binding: 1,
+                    resource: {
+                        buffer: Renderer.instance.objectsBuffer
+                    }
+                },
+                {
+                    binding: 2,
+                    resource: {
+                        buffer: this.colorBuffer
+                    }
+                }
+            ]
+        });
     }
 
     createBindGroupLayout(){
@@ -37,6 +83,11 @@ export class BasicMaterial extends Material {
                         type: 'read-only-storage',
                         hasDynamicOffset: false
                     }
+                },
+                {
+                    binding: 2,
+                    visibility: GPUShaderStage.FRAGMENT,
+                    buffer: {type: 'uniform'}
                 }
             ]
         });
@@ -44,30 +95,8 @@ export class BasicMaterial extends Material {
         return bindGroupLayout;
     }
 
-    createBindGroup(){
-        const bindGroup = Renderer.instance.getDevice().createBindGroup({
-            layout: BasicMaterial.bindGroupLayout,
-            entries: [
-                {
-                    binding: 0,
-                    resource: {
-                        buffer: Renderer.instance.uniformBuffer
-                    }
-                },
-                {
-                    binding: 1,
-                    resource: {
-                        buffer: Renderer.instance.objectsBuffer
-                    }
-                }
-            ]
-        });
-
-        return  bindGroup;
-    }
 
     createPipeline(options){
-        //Not sure about this, but will leave it for now
         const pipelineLayout = Renderer.instance.getDevice().createPipelineLayout({
             bindGroupLayouts: [BasicMaterial.bindGroupLayout]
         })

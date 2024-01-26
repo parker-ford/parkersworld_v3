@@ -9,6 +9,7 @@ struct ObjectData {
 
 @binding(0) @group(0) var<uniform> transformUBO: TransformData;
 @binding(1) @group(0) var<storage, read> objects: ObjectData;
+@binding(2) @group(0) var<uniform> color: vec4<f32>;
 
 struct VertexOutput {
     @builtin(position) position : vec4<f32>,
@@ -25,5 +26,6 @@ fn vertex_main(@builtin(instance_index) id: u32, @location(0) position: vec4<f32
 
 @fragment
 fn fragment_main(fragData: VertexOutput) -> @location(0) vec4<f32>{
-    return vec4<f32>(1.0, 0.0, 0.0, 1.0);
+    return color;
+    // return vec4<f32>(1.0, 0.0, 0.0, 1.0);
 }
