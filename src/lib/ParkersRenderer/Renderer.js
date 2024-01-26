@@ -116,91 +116,6 @@ export class Renderer {
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
 
-        this.vertexBufferDescriptors = [
-            {
-                attributes: [
-                    {
-                        shaderLocation: 0,
-                        offset: 0,
-                        format: "float32x4"
-                    },
-                    {
-                        shaderLocation: 1,
-                        offset: 16,
-                        format: "float32x4"
-                    },
-                ],
-                arrayStride: 32,
-                stepMode: "vertex",
-            }
-        ];
-    }
-
-    setupBindGroup(){
-
-        this.bindGroupLayout = this.device.createBindGroupLayout({
-            entries: [
-                {
-                    binding: 0,
-                    visibility: GPUShaderStage.VERTEX,
-                    buffer: {type: 'uniform'}
-                },
-                {
-                    binding: 1,
-                    visibility: GPUShaderStage.VERTEX,
-                    buffer: {
-                        type: 'read-only-storage',
-                        hasDynamicOffset: false
-                    }
-                }
-            ]
-        });
-
-        this.bindGroup = this.device.createBindGroup({
-            layout: this.bindGroupLayout,
-            entries: [
-                {
-                    binding: 0,
-                    resource: {
-                        buffer: this.uniformBuffer
-                    }
-                },
-                {
-                    binding: 1,
-                    resource: {
-                        buffer: this.objectsBuffer
-                    }
-                }
-            ]
-        });
-    }
-
-    setupPipeline(){
-
-        this.pipelineLayout = this.device.createPipelineLayout({
-            bindGroupLayouts: [this.bindGroupLayout]
-        })
-
-        this.shaderModule = this.device.createShaderModule({ code: transformShader });
-        this.pipeline = this.device.createRenderPipeline({
-            layout: this.pipelineLayout,
-            vertex: {
-                module: this.shaderModule,
-                entryPoint: "vertex_main",
-                buffers: this.vertexBufferDescriptors
-            },
-            fragment: {
-                module: this.shaderModule,
-                entryPoint: "fragment_main",
-                targets: [
-                    { format: Renderer.instance.presentationFormat }
-                ],
-                primitive: {
-                    topology: 'triangle-list',
-                }
-            },
-            depthStencil: this.depthStencilState,
-        });
     }
 
     async init() {
@@ -212,9 +127,7 @@ export class Renderer {
 
         this.setupDepthStencil();
         this.setupBuffers();
-        this.setupBindGroup();
-        this.setupPipeline();
-
+        
         return true;
     }
 
@@ -271,7 +184,7 @@ export class Renderer {
         console.log(element.material.getPipeline());
         renderPass.setPipeline(element.material.getPipeline());
         renderPass.setVertexBuffer(0, element.mesh.vertexBuffer);
-        renderPass.setBindGroup(0, this.bindGroup);
+        renderPass.setBindGroup(0, element.material.bindGroup);
         renderPass.draw(3, count, 0, 0);
     }
 }

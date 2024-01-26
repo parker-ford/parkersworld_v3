@@ -32,12 +32,19 @@ export const createScene = async (el, onLoaded) => {
     // scene.add(plane2);
     // plane2.transform.position[0] = 1;
 
-    const plane = new PW.Renderable({
+    const plane1 = new PW.Renderable({
         mesh: new PW.PlaneMesh({}),
         material: new PW.BasicMaterial({}),
     });
+    scene.add(plane1);
+    plane1.transform.position[0] = -1;
 
-    scene.add(plane);
+    const plane2 = new PW.Renderable({
+        mesh: new PW.PlaneMesh({}),
+        material: new PW.BasicMaterial({}),
+    });
+    scene.add(plane2);
+    plane2.transform.position[0] = 1;
 
 
     function frame() {
