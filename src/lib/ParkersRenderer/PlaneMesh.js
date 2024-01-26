@@ -1,3 +1,5 @@
+import { Mesh } from "./Mesh.js";
+import { Renderer } from "./Renderer.js";
 export class PlaneMesh extends Mesh {
     constructor(options){
         super();
@@ -9,11 +11,13 @@ export class PlaneMesh extends Mesh {
     //Hard coded for now
     calculateVertices(options){
 
-        this.positions = [
-            [-0.25, -0.5 * Math.sqrt(3) / 4, 0.0, 1.0],
-            [0, 0.5 * Math.sqrt(3) / 4, 0.0, 1.0],
-            [0.25, -0.5 * Math.sqrt(3) / 4, 0.0, 1.0]
-        ].flat()
+        this.positions = new Float32Array(
+            [
+                [-0.25, -0.5 * Math.sqrt(3) / 4, 0.0, 1.0],
+                [0, 0.5 * Math.sqrt(3) / 4, 0.0, 1.0],
+                [0.25, -0.5 * Math.sqrt(3) / 4, 0.0, 1.0]
+            ].flat()
+        );
 
         this.colors = new Float32Array(
             [

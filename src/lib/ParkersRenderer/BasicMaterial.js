@@ -1,3 +1,4 @@
+import { Material } from './Material.js';
 import { Renderer } from './Renderer.js';
 import basicMaterialShader from './shaders/basicMaterialShader.wgsl?raw';
 
@@ -17,11 +18,11 @@ export class BasicMaterial extends Material {
     createPipeline(options){
         //Not sure about this, but will leave it for now
         const pipelineLayout = Renderer.instance.getDevice().createPipelineLayout({
-            bindGroupLayouts: [Renderer.instance.bindGroupLoayout]
+            bindGroupLayouts: [Renderer.instance.bindGroupLayout]
         })
 
-        const shaderModule = this.device.createShaderModule({ code: basicMaterialShader });
-        const pipeline = this.device.createRenderPipeline({
+        const shaderModule = Renderer.instance.getDevice().createShaderModule({ code: basicMaterialShader });
+        const pipeline = Renderer.instance.getDevice().createRenderPipeline({
             layout: pipelineLayout,
             vertex: {
                 module: shaderModule,
@@ -44,5 +45,9 @@ export class BasicMaterial extends Material {
         });
 
         return pipeline;
+    }
+
+    getPipeline(){
+        return BasicMaterial.pipeline;
     }
 }

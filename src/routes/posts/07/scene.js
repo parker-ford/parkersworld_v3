@@ -24,19 +24,26 @@ export const createScene = async (el, onLoaded) => {
 
     scene.add(camera);
 
-    const plane1 = new PW.Plane({});
-    scene.add(plane1);
-    plane1.transform.position[0] = -1;
+    // const plane1 = new PW.Plane({});
+    // scene.add(plane1);
+    // plane1.transform.position[0] = -1;
 
-    const plane2 = new PW.Plane({});
-    scene.add(plane2);
-    plane2.transform.position[0] = 1;
+    // const plane2 = new PW.Plane({});
+    // scene.add(plane2);
+    // plane2.transform.position[0] = 1;
+
+    const plane = new PW.Renderable({
+        mesh: new PW.PlaneMesh({}),
+        material: new PW.BasicMaterial({}),
+    });
+
+    scene.add(plane);
 
 
     function frame() {
 
         renderer.render(scene, camera);
-        requestAnimationFrame(frame);
+        //requestAnimationFrame(frame);
     }
     frame();
 }

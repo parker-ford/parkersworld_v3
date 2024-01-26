@@ -7,7 +7,7 @@ export class Scene {
         this.object_data = new Float32Array();
 
         //Debug
-        this.print = false;
+        this.print = true;
     }
 
     add(object) {

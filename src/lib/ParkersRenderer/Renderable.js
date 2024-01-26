@@ -1,3 +1,7 @@
+import {Mesh} from './Mesh.js';
+import {Material} from './Material.js';
+import {Transform} from './Transform.js';
+
 export class Renderable{
     constructor(options){
 
@@ -11,7 +15,7 @@ export class Renderable{
         }
         this.material = options.material;
         this.material.init({
-            vertexBufferDescriptors: mesh.vertexBufferDescriptors
+            vertexBufferDescriptors: this.mesh.vertexBufferDescriptors
         });
 
         this.transform = new Transform({});

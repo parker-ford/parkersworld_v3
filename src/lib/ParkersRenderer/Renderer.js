@@ -3,6 +3,7 @@ import { BasicTriangleTransform } from "./BasicTriangleTransform";
 import {Plane} from './Plane.js';
 import transformShader from './shaders/transformShader.wgsl?raw';
 import { mat4 } from "gl-matrix";
+import { Renderable } from "./Renderable.js";
 
 export class Renderer {
 
@@ -229,7 +230,7 @@ export class Renderer {
         //Update everything in the scene
         scene.update();
 
-        
+        //Model, View, Projection Matrices
         this.device.queue.writeBuffer(this.objectsBuffer, 0, scene.object_data, 0, scene.object_data.length);
         this.device.queue.writeBuffer(this.uniformBuffer, 0, camera.viewMatrix);
         this.device.queue.writeBuffer(this.uniformBuffer, 64, camera.projectionMatrix);
@@ -258,17 +259,18 @@ export class Renderer {
 
     renderObject(renderPass, element, count) {
         switch (element.constructor) {
-            case Plane:
-                this.renderPlane(renderPass, element, count);
+            case Renderable:
+                this.renderRenderable(renderPass, element, count);
                 break;
             default:
                 //console.log("non renderable object in scene");
         }
     }
 
-    renderPlane(renderPass, triangle, count) {
-        renderPass.setPipeline(this.pipeline);
-        renderPass.setVertexBuffer(0, triangle.vertexBuffer);
+    renderRenderable(renderPass, element, count) {
+        console.log(element.material.getPipeline());
+        renderPass.setPipeline(element.material.getPipeline());
+        renderPass.setVertexBuffer(0, element.mesh.vertexBuffer);
         renderPass.setBindGroup(0, this.bindGroup);
         renderPass.draw(3, count, 0, 0);
     }
