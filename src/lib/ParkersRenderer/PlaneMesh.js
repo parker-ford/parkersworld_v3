@@ -6,21 +6,38 @@ export class PlaneMesh extends Mesh {
         
         this.calculateVertices(options);
         this.setupVertexBuffer();
+
+        //Hard coded for now
+        this.vertexCount = 6;
     }
 
     //Hard coded for now
     calculateVertices(options){
 
+        // this.positions = new Float32Array(
+        //     [
+        //         [-0.25, -0.5 * Math.sqrt(3) / 4, 0.0, 1.0],
+        //         [0, 0.5 * Math.sqrt(3) / 4, 0.0, 1.0],
+        //         [0.25, -0.5 * Math.sqrt(3) / 4, 0.0, 1.0]
+        //     ].flat()
+        // );
         this.positions = new Float32Array(
             [
-                [-0.25, -0.5 * Math.sqrt(3) / 4, 0.0, 1.0],
-                [0, 0.5 * Math.sqrt(3) / 4, 0.0, 1.0],
-                [0.25, -0.5 * Math.sqrt(3) / 4, 0.0, 1.0]
+                [-0.5, -0.5, 0.0, 1.0],
+                [-0.5,  0.5, 0.0, 1.0],
+                [ 0.5, -0.5, 0.0, 1.0],
+
+                [-0.5,  0.5, 0.0, 1.0],
+                [ 0.5,  0.5, 0.0, 1.0],
+                [ 0.5, -0.5, 0.0, 1.0]
             ].flat()
         );
 
         this.colors = new Float32Array(
             [
+                [1.0, 0.0, 0.0, 1.0], 
+                [0.0, 1.0, 0.0, 1.0], 
+                [0.0, 0.0, 1.0, 1.0],
                 [1.0, 0.0, 0.0, 1.0], 
                 [0.0, 1.0, 0.0, 1.0], 
                 [0.0, 0.0, 1.0, 1.0]

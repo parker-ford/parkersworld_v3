@@ -1,8 +1,4 @@
 import { Scene } from "./Scene";
-import { BasicTriangleTransform } from "./BasicTriangleTransform";
-import {Plane} from './Plane.js';
-import transformShader from './shaders/transformShader.wgsl?raw';
-import { mat4 } from "gl-matrix";
 import { Renderable } from "./Renderable.js";
 
 export class Renderer {
@@ -187,7 +183,7 @@ export class Renderer {
         renderPass.setPipeline(element.material.getPipeline());
         renderPass.setVertexBuffer(0, element.mesh.vertexBuffer);
         renderPass.setBindGroup(0, element.material.bindGroup);
-        renderPass.draw(3, 1, 0, Renderer.drawnObjects)
+        renderPass.draw(element.mesh.vertexCount, 1, 0, Renderer.drawnObjects)
         Renderer.drawnObjects++;
     }
 }
