@@ -28,14 +28,14 @@ export const createScene = async (el, onLoaded) => {
 
     
     const plane2 = new PW.Renderable({
-        mesh: new PW.PlaneMesh({}),
+        mesh: new PW.PlaneMesh({wireframe: true}),
         material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
     });
     scene.add(plane2);
     plane2.transform.position[0] = 1;
     
     const plane1 = new PW.Renderable({
-        mesh: new PW.PlaneMesh({}),
+        mesh: new PW.PlaneMesh({wireframe: true}),
         material: new PW.BasicMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
     });
     scene.add(plane1);

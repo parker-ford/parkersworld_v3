@@ -96,10 +96,13 @@ export class BasicMaterial extends Material {
     }
 
 
+    //TODO: Make seperate pipelines for wireframe
     createPipeline(options){
         const pipelineLayout = Renderer.instance.getDevice().createPipelineLayout({
             bindGroupLayouts: [BasicMaterial.bindGroupLayout]
         })
+
+        const topology = options.wireframe ? 'line-list' : 'triangle-list';
 
         const shaderModule = Renderer.instance.getDevice().createShaderModule({ code: basicMaterialShader });
         const pipeline = Renderer.instance.getDevice().createRenderPipeline({
@@ -116,11 +119,11 @@ export class BasicMaterial extends Material {
                 targets: [
                     { format: Renderer.instance.presentationFormat }
                 ],
-                primitive: {
-                    topology: 'triangle-list',
-                }
             },
-
+            primitive: {
+                topology: topology,
+            },
+            
             //Depth stencil may need to be per material rather than per renderer
             depthStencil: Renderer.instance.depthStencilState,
         });

@@ -10,6 +10,7 @@ struct ObjectData {
 @binding(0) @group(0) var<uniform> transformUBO: TransformData;
 @binding(1) @group(0) var<storage, read> objects: ObjectData;
 @binding(2) @group(0) var<uniform> color: vec4<f32>;
+// @binding(3) @group(0) var<uniform> vertexCoordinates: array<vec4<f32>>;
 
 struct VertexOutput {
     @builtin(position) position : vec4<f32>,

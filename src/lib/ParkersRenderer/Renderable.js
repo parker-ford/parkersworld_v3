@@ -15,7 +15,8 @@ export class Renderable{
         }
         this.material = options.material;
         this.material.init({
-            vertexBufferDescriptors: this.mesh.vertexBufferDescriptors
+            vertexBufferDescriptors: this.mesh.vertexBufferDescriptors,
+            wireframe: this.mesh.wireframe
         });
 
         this.transform = new Transform({});

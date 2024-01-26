@@ -183,7 +183,7 @@ export class Renderer {
         renderPass.setPipeline(element.material.getPipeline());
         renderPass.setVertexBuffer(0, element.mesh.vertexBuffer);
         renderPass.setBindGroup(0, element.material.bindGroup);
-        renderPass.draw(element.mesh.vertexCount, 1, 0, Renderer.drawnObjects)
+        renderPass.draw(element.mesh.getVertexCount(), 1, 0, Renderer.drawnObjects)
         Renderer.drawnObjects++;
     }
 }
