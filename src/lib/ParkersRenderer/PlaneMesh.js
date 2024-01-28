@@ -3,9 +3,11 @@ import { Renderer } from "./Renderer.js";
 export class PlaneMesh extends Mesh {
     constructor(options){
         super();
-        this.wireframe = options.wireframe || false; 
+        this.wireframe = options.wireframe || false;
+        this.width = options.width || 1;
+        this.height = options.height || 1; 
         this.calculateVertices();
-        this.setupVertexBuffer(options);
+        this.setupVertexBuffer();
 
         //Hard coded for now
         this.vertexCount = 6;
@@ -14,86 +16,103 @@ export class PlaneMesh extends Mesh {
 
     //Hard coded for now
     getVertexCount(){
-        return this.wireframe ? 10 : 6;
+        // return this.wireframe ? (this.width * this.height * 2 * 3 * 2) : (this.width * this.height * 2 * 3);
+        // return this.wireframe ? 6 : 14;
+        return this.wireframe ? this.positionsLine.length / 4: this.positionsTriangle.length / 4;
     }
 
     //Hard coded for now
-    calculateVertices(options){
+    calculateVertices(){
 
-        // this.positions = new Float32Array(
-        //     [
-        //         [-0.25, -0.5 * Math.sqrt(3) / 4, 0.0, 1.0],
-        //         [0, 0.5 * Math.sqrt(3) / 4, 0.0, 1.0],
-        //         [0.25, -0.5 * Math.sqrt(3) / 4, 0.0, 1.0]
-        //     ].flat()
-        // );
-        this.vertexCoordinates = [
-            [-0.5, -0.5, 0.0, 1.0], //0
-            [-0.5,  0.5, 0.0, 1.0], //1
-            [ 0.5, -0.5, 0.0, 1.0], //2
-            [ 0.5,  0.5, 0.0, 1.0]  //3
-        ]
-        this.positionsTriangle = new Float32Array(
-            [
-                this.vertexCoordinates[0],
-                this.vertexCoordinates[1],
-                this.vertexCoordinates[2],
+        this.vertexCoordinates = [];
+        const widthInterval = 1 / this.width;
+        const heightInterval = 1 / this.height;
+        for(let i = 0; i < this.width + 1; i++){
+            for(let j = 0; j < this.height + 1; j++){
+                this.vertexCoordinates.push([-0.5 + j * widthInterval, -0.5 + i * heightInterval, 0, 1]);
+            }
+        }
 
-                this.vertexCoordinates[1],
-                this.vertexCoordinates[3],
-                this.vertexCoordinates[2],
+        let coordinates = [];
 
-            ].flat()
-        );
+        for(let i = 0; i < this.width; i++){
+            for(let j = 0; j < this.height; j++){
+                // // Triangle 1
+                // coordinates.push(this.vertexCoordinates[i * (this.width + 1) + j]);
+                // coordinates.push(this.vertexCoordinates[i * (this.width + 1) + j + 1]);
+                // coordinates.push(this.vertexCoordinates[(i + 1) * (this.width + 1) + j]);
 
+                // // Triangle 2
+                // coordinates.push(this.vertexCoordinates[i * (this.width + 1) + j + 1]);
+                // coordinates.push(this.vertexCoordinates[(i + 1) * (this.width + 1) + j + 1]);
+                // coordinates.push(this.vertexCoordinates[(i + 1) * (this.width + 1) + j]);
+
+                //Top Triangle
+                coordinates.push(this.vertexCoordinates[j + (i * (this.width + 1))]);
+                coordinates.push(this.vertexCoordinates[(j + 1) + (i * (this.width + 1))]);
+                coordinates.push(this.vertexCoordinates[(j + 1) + ((i + 1) * (this.width + 1))]);
+
+                //Bottom Triangle
+                // coordinates.push(this.vertexCoordinates[]);
+                coordinates.push(this.vertexCoordinates[(j + 1) + ((i + 1) * (this.width + 1))]);
+                coordinates.push(this.vertexCoordinates[j + ((i + 1) * (this.width + 1))]);
+                coordinates.push(this.vertexCoordinates[j + (i * (this.width + 1))]);
+
+            }
+        }
+
+        this.positionsTriangle = new Float32Array(coordinates.flat());
+   
         this.colorsTriangle = new Float32Array(
-            [
-                [1.0, 0.0, 0.0, 1.0], 
-                [0.0, 1.0, 0.0, 1.0], 
-                [0.0, 0.0, 1.0, 1.0],
-                [1.0, 0.0, 0.0, 1.0], 
-                [0.0, 1.0, 0.0, 1.0], 
-                [0.0, 0.0, 1.0, 1.0]
-            ].flat()
+            Array(this.width * this.height * 2 * 3).fill([1.0, 1.0, 1.0, 1.0]).flat()
         );
 
-        this.positionsLine = new Float32Array(
-            [
-                this.vertexCoordinates[0],
-                this.vertexCoordinates[1],
 
-                this.vertexCoordinates[1],
-                this.vertexCoordinates[2],
+        let lines = [];
+        for(let i = 0; i < coordinates.length; i+=3){
+            //Line 1
+            lines.push(coordinates[i]);
+            lines.push(coordinates[i+1]);
 
-                this.vertexCoordinates[2],
-                this.vertexCoordinates[0],
+            //Line 2
+            lines.push(coordinates[i + 1]);
+            lines.push(coordinates[i + 2]);
 
-                this.vertexCoordinates[1],
-                this.vertexCoordinates[3],
+            //Line 3
+            lines.push(coordinates[i + 2]);
+            lines.push(coordinates[i]);
+        }
 
-                this.vertexCoordinates[3],
-                this.vertexCoordinates[2],
-            ].flat()
-        );
+        this.positionsLine = new Float32Array(lines.flat());
 
         this.colorsLine = new Float32Array(
-            [
-                [1.0, 0.0, 0.0, 1.0], 
-                [1.0, 0.0, 0.0, 1.0], 
+            Array(this.positionsLine.length).fill(1.0)
+        );
 
-                [0.0, 1.0, 0.0, 1.0], 
-                [0.0, 1.0, 0.0, 1.0], 
 
-                [0.0, 0.0, 1.0, 1.0],
-                [0.0, 0.0, 1.0, 1.0],
+        
+        // let lines = [];
+        // for(let i = 0; i < this.width; i++){
+        //     for(let j = 0; j < this.height; j++){
+        //         // Horizontal lines
+        //         lines.push(this.vertexCoordinates[i * (this.width + 1) + j]);
+        //         lines.push(this.vertexCoordinates[i * (this.width + 1) + j + 1]);
+        
+        //         // Vertical lines
+        //         lines.push(this.vertexCoordinates[i * (this.width + 1) + j]);
+        //         lines.push(this.vertexCoordinates[(i + 1) * (this.width + 1) + j]);
+        
+        //         // Diagonal lines
+        //         lines.push(this.vertexCoordinates[i * (this.width + 1) + j]);
+        //         lines.push(this.vertexCoordinates[(i + 1) * (this.width + 1) + j + 1]);
+        //     }
+        // }
+        // this.positionsLine = new Float32Array(lines.flat());
+        // console.log(this.positionsLine.length / 4);
 
-                [1.0, 0.0, 0.0, 1.0], 
-                [1.0, 0.0, 0.0, 1.0], 
-
-                [0.0, 1.0, 0.0, 1.0], 
-                [0.0, 1.0, 0.0, 1.0], 
-            ].flat()
-        )
+        // this.colorsLine = new Float32Array(
+        //     Array(this.width * this.height * 3 * 2 * 4).fill(1.0)
+        // );
 
     }
 

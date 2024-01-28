@@ -26,9 +26,12 @@ export const createScene = async (el, onLoaded) => {
     scene.add(camera);
 
 
-    
     const plane2 = new PW.Renderable({
-        mesh: new PW.PlaneMesh({wireframe: true}),
+        mesh: new PW.PlaneMesh({
+            wireframe: true,
+            height: 10,
+            width: 10,
+        }),
         material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
     });
     scene.add(plane2);
