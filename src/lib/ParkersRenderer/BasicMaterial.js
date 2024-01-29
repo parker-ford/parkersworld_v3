@@ -4,6 +4,7 @@ import { Renderer } from './Renderer.js';
 import basicMaterialShader from './shaders/basicMaterialShader.wgsl?raw';
 
 export class BasicMaterial extends Material {
+    static pipelines = {};
     static pipeline = null;
     static bindGroupLayout = null;
     static colorBuffer = null;
@@ -16,11 +17,15 @@ export class BasicMaterial extends Material {
     }
 
     init(options){
+        this.topology = options.wireframe ? 'line-list' : 'triangle-list';
         if(!BasicMaterial.bindGroupLayout){
             BasicMaterial.bindGroupLayout = this.createBindGroupLayout();
         }
         if(!BasicMaterial.pipeline) {
             BasicMaterial.pipeline = this.createPipeline(options);
+        }
+        if(!BasicMaterial.pipelines[this.topology]){
+            BasicMaterial.pipelines[this.topology] = this.createPipeline(options);
         }
         this.createMaterialBuffers();
         this.createBindGroup();
@@ -35,7 +40,6 @@ export class BasicMaterial extends Material {
         });
         new Float32Array(this.colorBuffer.getMappedRange()).set(this.color);
         this.colorBuffer.unmap();
-        //Renderer.instance.getDevice().queue.writeBuffer(this.colorBuffer, 0, this.color);
     }
 
     createBindGroup(){
@@ -99,7 +103,7 @@ export class BasicMaterial extends Material {
             bindGroupLayouts: [BasicMaterial.bindGroupLayout]
         })
 
-        const topology = options.wireframe ? 'line-list' : 'triangle-list';
+        //const topology = options.wireframe ? 'line-list' : 'triangle-list';
 
         const shaderModule = Renderer.instance.getDevice().createShaderModule({ code: basicMaterialShader });
         const pipeline = Renderer.instance.getDevice().createRenderPipeline({
@@ -118,7 +122,7 @@ export class BasicMaterial extends Material {
                 ],
             },
             primitive: {
-                topology: topology,
+                topology: this.topology,
             },
             
             //Depth stencil may need to be per material rather than per renderer
@@ -128,7 +132,10 @@ export class BasicMaterial extends Material {
         return pipeline;
     }
 
-    getPipeline(){
-        return BasicMaterial.pipeline;
+    // getPipeline(){
+    //     return BasicMaterial.pipeline;
+    // }
+    getPipeline(topology){
+        return BasicMaterial.pipelines[topology];
     }
 }

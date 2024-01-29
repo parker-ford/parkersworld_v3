@@ -180,7 +180,7 @@ export class Renderer {
     }
 
     renderRenderable(renderPass, element) {
-        renderPass.setPipeline(element.material.getPipeline());
+        renderPass.setPipeline(element.material.getPipeline(element.material.topology));
         renderPass.setVertexBuffer(0, element.mesh.vertexBuffer);
         renderPass.setBindGroup(0, element.material.bindGroup);
         renderPass.draw(element.mesh.getVertexCount(), 1, 0, Renderer.drawnObjects)

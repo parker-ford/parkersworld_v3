@@ -28,7 +28,7 @@ export const createScene = async (el, onLoaded) => {
 
     const plane2 = new PW.Renderable({
         mesh: new PW.PlaneMesh({
-            wireframe: false,
+            wireframe: true,
             height: 2,
             width: 10,
         }),
