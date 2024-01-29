@@ -16,9 +16,6 @@ export class BasicMaterial extends Material {
     }
 
     init(options){
-        // if(!BasicMaterial.colorBuffer){
-        //     BasicMaterial.colorBuffer = this.createMaterialBuffers();
-        // }
         if(!BasicMaterial.bindGroupLayout){
             BasicMaterial.bindGroupLayout = this.createBindGroupLayout();
         }

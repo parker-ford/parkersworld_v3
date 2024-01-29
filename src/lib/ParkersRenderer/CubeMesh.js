@@ -22,18 +22,67 @@ export class CubeMesh extends Mesh {
         const widthInterval = 1 / this.width;
         const heightInterval = 1 / this.height;
         const depthInterval = 1 / this.depth;
-
+        
         //Front Face
         for(let i = 0; i < this.width + 1; i++){
             for(let j = 0; j < this.height + 1; j++){
-                this.vertexCoordinates.push([-0.5 + j * widthInterval, -0.5 + i * heightInterval, 0.5, 1]);
+                this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5 + j * heightInterval, -0.5, 1]);
             }
         }
 
         //Back Face
-        for(let i = 0; i < this.width + 1; i++){
+        for(let i = this.width; i >= 0; i--){
             for(let j = 0; j < this.height + 1; j++){
-                this.vertexCoordinates.push([-0.5 + j * widthInterval, -0.5 + i * heightInterval, -0.5, 1]);
+                this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5 + j * heightInterval, 0.5, 1]);
+            }
+        }
+        
+        //Right Face
+        for(let i = 0; i < this.height + 1; i++){
+            for(let j = 0; j < this.depth + 1; j++){
+                this.vertexCoordinates.push([ 0.5, -0.5 + i * heightInterval, -0.5 + j * depthInterval, 1]);
+            }
+        }
+        
+        //Left Face
+        for(let i = this.height; i >= 0; i--){
+            for(let j = 0; j < this.depth + 1; j++){
+                this.vertexCoordinates.push([ -0.5, -0.5 + i * heightInterval, -0.5 + j * depthInterval, 1]);
+            }
+        }
+        
+        //Top Face
+        for(let i = 0; i < this.width + 1; i++){
+            for(let j = 0; j < this.depth + 1; j++){
+                this.vertexCoordinates.push([ -0.5 + i * widthInterval, 0.5, -0.5 + j * depthInterval, 1]);
+            }
+        }
+
+        //Bottom Face
+        for(let i = this.width; i >= 0; i--){
+            for(let j = 0; j < this.depth + 1; j++){
+                this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5, -0.5 + j * depthInterval, 1]);
+            }
+        }
+
+
+        
+    }
+
+    calculateFaceVertices(x, y, offset){
+        for(let i = 0; i < x; i++){
+            for(let j = 0; j < y; j++){
+            
+                //Top Triangle
+                this.triangleCoordinates.push(this.vertexCoordinates[(j + (i * (y + 1)) + offset)]);
+                this.triangleCoordinates.push(this.vertexCoordinates[((j + 1) + (i * (y + 1))) + offset]);
+                this.triangleCoordinates.push(this.vertexCoordinates[((j + 1) + ((i + 1) * (y + 1))) + offset]);
+
+                //Bottom Triangle
+                this.triangleCoordinates.push(this.vertexCoordinates[((j + 1) + ((i + 1) * (y + 1))) + offset]);
+                this.triangleCoordinates.push(this.vertexCoordinates[(j + ((i + 1) * (y + 1))) + offset ]);
+                this.triangleCoordinates.push(this.vertexCoordinates[(j + (i * (y + 1))) + offset]);
+
             }
         }
     }
@@ -41,23 +90,32 @@ export class CubeMesh extends Mesh {
     calculateTriangleVertices(){
         this.triangleCoordinates = [];
 
-        for(let side = 0; side < 2; side++){
-            for(let i = 0; i < this.width; i++){
-                for(let j = 0; j < this.height; j++){
-                
-                    //Top Triangle
-                    this.triangleCoordinates.push(this.vertexCoordinates[(j + (i * (this.width + 1)))]);
-                    this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + (i * (this.width + 1))]);
-                    this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + ((i + 1) * (this.width + 1))]);
+        let offset = 0;
 
-                    //Bottom Triangle
-                    this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + ((i + 1) * (this.width + 1))]);
-                    this.triangleCoordinates.push(this.vertexCoordinates[j + ((i + 1) * (this.width + 1))]);
-                    this.triangleCoordinates.push(this.vertexCoordinates[j + (i * (this.width + 1))]);
+        //Front Face
+        this.calculateFaceVertices(this.width, this.height, offset);
+        offset += (this.width + 1) * (this.height + 1);
 
-                }
-            }
-        }
+        //Back Face
+        this.calculateFaceVertices(this.width, this.height, offset);
+        offset += (this.width + 1) * (this.height + 1);
+
+        //Right Face
+        this.calculateFaceVertices(this.height, this.depth, offset);
+        offset += (this.height + 1) * (this.depth + 1);
+
+        //Left Face
+        this.calculateFaceVertices(this.height, this.depth, offset);
+        offset += (this.height + 1) * (this.depth + 1);
+
+        //Top Face
+        this.calculateFaceVertices(this.width, this.depth, offset);
+        offset += (this.width + 1) * (this.depth + 1);
+
+        //Bottom Face
+        this.calculateFaceVertices(this.width, this.depth,offset);
+
+
 
         this.triangleVertices = new Float32Array(this.triangleCoordinates.flat());
 

@@ -22,7 +22,7 @@ export class PlaneMesh extends Mesh {
         const heightInterval = 1 / this.height;
         for(let i = 0; i < this.width + 1; i++){
             for(let j = 0; j < this.height + 1; j++){
-                this.vertexCoordinates.push([-0.5 + j * heightInterval, -0.5 + i * widthInterval, 0, 1]);
+                this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5 + j * heightInterval, 0, 1]);
             }
         }
     }
