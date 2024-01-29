@@ -1,9 +1,10 @@
 import { Mesh } from "./Mesh.js";
-export class PlaneMesh extends Mesh {
+export class CubeMesh extends Mesh {
     constructor(options){
         super(options);
         this.width = options.width || 1;
-        this.height = options.height || 1; 
+        this.height = options.height || 1;
+        this.depth = options.depth || 1; 
         this.calculateVertices();
         this.setupVertexBuffer();
 
@@ -20,9 +21,19 @@ export class PlaneMesh extends Mesh {
         this.vertexCoordinates = [];
         const widthInterval = 1 / this.width;
         const heightInterval = 1 / this.height;
+        const depthInterval = 1 / this.depth;
+
+        //Front Face
         for(let i = 0; i < this.width + 1; i++){
             for(let j = 0; j < this.height + 1; j++){
-                this.vertexCoordinates.push([-0.5 + j * heightInterval, -0.5 + i * widthInterval, 0, 1]);
+                this.vertexCoordinates.push([-0.5 + j * widthInterval, -0.5 + i * heightInterval, 0.5, 1]);
+            }
+        }
+
+        //Back Face
+        for(let i = 0; i < this.width + 1; i++){
+            for(let j = 0; j < this.height + 1; j++){
+                this.vertexCoordinates.push([-0.5 + j * widthInterval, -0.5 + i * heightInterval, -0.5, 1]);
             }
         }
     }
@@ -30,19 +41,21 @@ export class PlaneMesh extends Mesh {
     calculateTriangleVertices(){
         this.triangleCoordinates = [];
 
-        for(let i = 0; i < this.width; i++){
-            for(let j = 0; j < this.height; j++){
-            
-                //Top Triangle
-                this.triangleCoordinates.push(this.vertexCoordinates[j + (i * (this.height + 1))]);
-                this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + (i * (this.height + 1))]);
-                this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + ((i + 1) * (this.height + 1))]);
+        for(let side = 0; side < 2; side++){
+            for(let i = 0; i < this.width; i++){
+                for(let j = 0; j < this.height; j++){
+                
+                    //Top Triangle
+                    this.triangleCoordinates.push(this.vertexCoordinates[(j + (i * (this.width + 1)))]);
+                    this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + (i * (this.width + 1))]);
+                    this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + ((i + 1) * (this.width + 1))]);
 
-                //Bottom Triangle
-                this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + ((i + 1) * (this.height + 1))]);
-                this.triangleCoordinates.push(this.vertexCoordinates[j + ((i + 1) * (this.height + 1))]);
-                this.triangleCoordinates.push(this.vertexCoordinates[j + (i * (this.height + 1))]);
+                    //Bottom Triangle
+                    this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + ((i + 1) * (this.width + 1))]);
+                    this.triangleCoordinates.push(this.vertexCoordinates[j + ((i + 1) * (this.width + 1))]);
+                    this.triangleCoordinates.push(this.vertexCoordinates[j + (i * (this.width + 1))]);
 
+                }
             }
         }
 

@@ -36,13 +36,31 @@ export const createScene = async (el, onLoaded) => {
     });
     scene.add(plane2);
     plane2.transform.position[0] = 1;
-    
-    const plane1 = new PW.Renderable({
-        mesh: new PW.PlaneMesh({wireframe: true}),
+
+    const plane = new PW.Renderable({
+        mesh: new PW.PlaneMesh({
+            wireframe: true,
+            height: 1,
+            width: 1,
+        }),
         material: new PW.BasicMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
     });
-    scene.add(plane1);
-    plane1.transform.position[0] = -1;
+    scene.add(plane);
+    plane.transform.position[0] = -1;
+    
+
+    // const cube  = new PW.Renderable({
+    //     mesh: new PW.CubeMesh(
+    //         {
+    //             wireframe: true,
+    //             height: 1,
+    //             width: 1,
+    //         }
+    //         ),
+    //     material: new PW.BasicMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
+    // })
+    // cube.transform.position[0] = -1
+    // scene.add(cube);
 
     function frame() {
 
