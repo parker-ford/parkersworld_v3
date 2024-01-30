@@ -1,5 +1,5 @@
 import * as PW from '$lib/ParkersRenderer'
-import { vec4, vec3 } from 'gl-matrix';
+import { vec4, vec3, quat } from 'gl-matrix';
 export const createScene = async (el, onLoaded) => {
     onLoaded();
 
@@ -32,36 +32,37 @@ export const createScene = async (el, onLoaded) => {
             height: 2,
             width: 2,
         }),
-        material: new PW.NormalMaterial({}),
+        material: new PW.UVMaterial({}),
     });
     scene.add(plane2);
     plane2.transform.position[0] = 1;
 
-    const plane = new PW.Renderable({
-        mesh: new PW.PlaneMesh({
-            wireframe: true,
-            height: 5,
-            width: 5,
-        }),
-        material: new PW.BasicMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
-    });
-    scene.add(plane);
-    plane.transform.position[0] = -1;
+    // const plane = new PW.Renderable({
+    //     mesh: new PW.PlaneMesh({
+    //         wireframe: false,
+    //         height: 5,
+    //         width: 5,
+    //     }),
+    //     material: new PW.NormalMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
+    // });
+    // scene.add(plane);
+    // plane.transform.scale = vec3.fromValues(1, 0.5, 1);
+    // plane.transform.position[0] = -1;
     
 
-    // const cube  = new PW.Renderable({
-    //     mesh: new PW.CubeMesh(
-    //         {
-    //             wireframe: true,
-    //             height: 10,
-    //             width: 10,
-    //             depth: 10,
-    //         }
-    //         ),
-    //     material: new PW.BasicMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
-    // })
-    // cube.transform.position[0] = -1
-    // scene.add(cube);
+    const cube  = new PW.Renderable({
+        mesh: new PW.CubeMesh(
+            {
+                wireframe: false,
+                height: 10,
+                width: 10,
+                depth: 10,
+            }
+            ),
+        material: new PW.UVMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
+    })
+    cube.transform.position[0] = -1
+    scene.add(cube);
 
 
     // const sphere = new PW.Renderable({
@@ -130,7 +131,13 @@ export const createScene = async (el, onLoaded) => {
     //     scene.add(sphereCube);
     // }
 
+    let rotate = false;
     function frame() {
+
+        if(rotate){
+            quat.rotateY(cube.transform.rotation, plane.transform.rotation,1 * PW.Time.deltaTime);
+            quat.rotateY(plane2.transform.rotation, plane2.transform.rotation,1 * PW.Time.deltaTime);
+        }
 
         renderer.render(scene, camera);
         requestAnimationFrame(frame);

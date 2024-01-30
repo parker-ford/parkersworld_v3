@@ -24,7 +24,7 @@ fn vertex_main(@builtin(instance_index) id: u32,
 ) -> VertexOutput {
     var output: VertexOutput;
     output.position = transformUBO.projection * transformUBO.view * objects.model[id] * position;
-    output.normal = (transformUBO.projection * transformUBO.view * vec4(normal,0)).xyz;
+    output.normal = ( transformUBO.projection * transformUBO.view * objects.model[id] * vec4(normal,0)).xyz;
     output.normal = normalize(output.normal);
     return output;
 }
