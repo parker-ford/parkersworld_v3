@@ -77,18 +77,31 @@ export const createScene = async (el, onLoaded) => {
     //     scene.add(sphere);
     //     sphere.transform.position[0] = 1;
 
-    const cylinder = new PW.Renderable({
-        mesh: new PW.CylinderMesh(
+    // const cylinder = new PW.Renderable({
+    //     mesh: new PW.CylinderMesh(
+    //         {
+    //             wireframe: true,
+    //             height: 8,
+    //             width: 32,
+    //         }
+    //     ),
+    //     material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
+    // });
+    // scene.add(cylinder);
+    // cylinder.transform.position[0] = 1;
+
+    const torus = new PW.Renderable({
+        mesh: new PW.TorusMesh(
             {
                 wireframe: true,
-                height: 8,
-                width: 32,
+                // innerRadius: 0.5,
+                // outerRadius: 1,
             }
         ),
         material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
     });
-    scene.add(cylinder);
-    cylinder.transform.position[0] = 1;
+    scene.add(torus);
+    torus.transform.position[0] = 1;
 
     // for(let i = 0; i < sphere.mesh.vertexCoordinates.length; i++){
     //     const sphereCube = new PW.Renderable({

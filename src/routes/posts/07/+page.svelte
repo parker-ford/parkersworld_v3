@@ -32,6 +32,11 @@
         </div>
         <div class="page__text__container">
             <h3 class="page__subtitle">Title</h3>
+
+            <h4 class="page__sub-subtitle">Resources</h4>
+            <p>
+                https://lindenreidblog.com/2017/11/07/procedural-sphere-ellipsoid-tutorial/
+            </p>
         </div>
     </div>
 </div>
