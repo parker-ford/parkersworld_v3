@@ -1,5 +1,5 @@
 import * as PW from '$lib/ParkersRenderer'
-import { vec4 } from 'gl-matrix';
+import { vec4, vec3 } from 'gl-matrix';
 export const createScene = async (el, onLoaded) => {
     onLoaded();
 
@@ -21,21 +21,21 @@ export const createScene = async (el, onLoaded) => {
         far: 100,
     });
 
-    camera.transform.position[2] = -2;
+    camera.transform.position[2] = -3;
 
     scene.add(camera);
 
 
-    const plane2 = new PW.Renderable({
-        mesh: new PW.PlaneMesh({
-            wireframe: true,
-            height: 2,
-            width: 10,
-        }),
-        material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
-    });
-    scene.add(plane2);
-    plane2.transform.position[0] = 1;
+    // const plane2 = new PW.Renderable({
+    //     mesh: new PW.PlaneMesh({
+    //         wireframe: true,
+    //         height: 2,
+    //         width: 10,
+    //     }),
+    //     material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
+    // });
+    // scene.add(plane2);
+    // plane2.transform.position[0] = 1;
 
     // const plane = new PW.Renderable({
     //     mesh: new PW.PlaneMesh({
@@ -52,7 +52,7 @@ export const createScene = async (el, onLoaded) => {
     const cube  = new PW.Renderable({
         mesh: new PW.CubeMesh(
             {
-                wireframe: false,
+                wireframe: true,
                 height: 10,
                 width: 10,
                 depth: 10,
@@ -62,6 +62,34 @@ export const createScene = async (el, onLoaded) => {
     })
     cube.transform.position[0] = -1
     scene.add(cube);
+
+
+    const sphere = new PW.Renderable({
+        mesh: new PW.SphereMesh(
+            {
+                wireframe: true,
+                resolution: 24
+            }
+        ),
+        material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
+    });
+
+    // for(let i = 0; i < sphere.mesh.vertexCoordinates.length; i++){
+    //     const sphereCube = new PW.Renderable({
+    //         mesh: new PW.CubeMesh(
+    //             {
+    //                 wireframe: true,
+    //             }
+    //         ),
+    //         material: new PW.BasicMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
+    //     });
+    //     sphereCube.transform.position = sphere.mesh.vertexCoordinates[i];
+    //     sphereCube.transform.scale = vec3.fromValues(0.01, 0.01, 0.01);
+    //     scene.add(sphereCube);
+    // }
+
+    scene.add(sphere);
+    sphere.transform.position[0] = 1;
 
     function frame() {
 
