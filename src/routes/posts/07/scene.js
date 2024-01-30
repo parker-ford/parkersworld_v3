@@ -26,16 +26,16 @@ export const createScene = async (el, onLoaded) => {
     scene.add(camera);
 
 
-    // const plane2 = new PW.Renderable({
-    //     mesh: new PW.PlaneMesh({
-    //         wireframe: true,
-    //         height: 2,
-    //         width: 10,
-    //     }),
-    //     material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
-    // });
-    // scene.add(plane2);
-    // plane2.transform.position[0] = 1;
+    const plane2 = new PW.Renderable({
+        mesh: new PW.PlaneMesh({
+            wireframe: false,
+            height: 2,
+            width: 2,
+        }),
+        material: new PW.UVMaterial({color: vec4.fromValues(0, 1, 1, 1)}),
+    });
+    scene.add(plane2);
+    plane2.transform.position[0] = 1;
 
     const plane = new PW.Renderable({
         mesh: new PW.PlaneMesh({

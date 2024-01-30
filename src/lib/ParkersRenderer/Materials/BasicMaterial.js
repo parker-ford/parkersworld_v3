@@ -11,17 +11,17 @@ export class BasicMaterial extends Material {
 
     constructor(options) {
         super();
-        this.id = BasicMaterial.count++;
+        this.id = this.constructor.count++;
         this.color = options.color ? options.color : vec4.fromValues(1, 0, 0, 1);
     }
 
     init(options){
         this.topology = options.wireframe ? 'line-list' : 'triangle-list';
-        if(!this.constructor.name.bindGroupLayout){
-            BasicMaterial.bindGroupLayout = this.createBindGroupLayout();
+        if(!this.constructor.bindGroupLayout){
+            this.constructor.bindGroupLayout = this.createBindGroupLayout();
         }
-        if(!BasicMaterial.pipelines[this.topology]){
-            BasicMaterial.pipelines[this.topology] = this.createPipeline(options);
+        if(!this.constructor.pipelines[this.topology]){
+            this.constructor.pipelines[this.topology] = this.createPipeline(options);
         }
         this.createMaterialBuffers();
         this.createBindGroup();
@@ -41,7 +41,7 @@ export class BasicMaterial extends Material {
     createBindGroup(){
         this.bindGroup = Renderer.instance.getDevice().createBindGroup({
             label: 'basic-material-bind-group' + this.id,
-            layout: BasicMaterial.bindGroupLayout,
+            layout: this.constructor.bindGroupLayout,
             entries: [
                 {
                     binding: 0,
@@ -94,7 +94,7 @@ export class BasicMaterial extends Material {
 
     createPipeline(options){
         const pipelineLayout = Renderer.instance.getDevice().createPipelineLayout({
-            bindGroupLayouts: [BasicMaterial.bindGroupLayout]
+            bindGroupLayouts: [this.constructor.bindGroupLayout]
         })
 
         const shaderModule = Renderer.instance.getDevice().createShaderModule({ code: basicMaterialShader });
@@ -125,6 +125,6 @@ export class BasicMaterial extends Material {
     }
 
     getPipeline(topology){
-        return BasicMaterial.pipelines[topology];
+        return this.constructor.pipelines[topology];
     }
 }

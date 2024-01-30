@@ -9,7 +9,12 @@ export * from './BasicTransformRenderer.js'
 export * from './BasicTriangleTransform.js'
 export * from './Renderer.js'
 export * from './Renderable.js'
+
+//Materials
 export * from './Materials/BasicMaterial.js'
+export * from './Materials/UVMaterial.js'
+
+//Meshes
 export * from './Meshes/PlaneMesh.js'
 export * from './Meshes/CubeMesh.js'
 export * from './Meshes/SphereMesh.js'
