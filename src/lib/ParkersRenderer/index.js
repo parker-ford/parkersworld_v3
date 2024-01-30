@@ -13,6 +13,7 @@ export * from './Renderable.js'
 //Materials
 export * from './Materials/BasicMaterial.js'
 export * from './Materials/UVMaterial.js'
+export * from './Materials/NormalMaterial.js'
 
 //Meshes
 export * from './Meshes/PlaneMesh.js'

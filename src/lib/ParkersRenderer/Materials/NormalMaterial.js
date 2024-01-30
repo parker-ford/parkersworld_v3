@@ -1,12 +1,11 @@
 import { vec4 } from 'gl-matrix';
 import { Material } from './Material.js';
 import { Renderer } from '../Renderer.js';
-import basicMaterialShader from './shaders/UVMaterialShader.wgsl?raw';
+import basicMaterialShader from './shaders/normalMaterialShader.wgsl?raw';
 
-export class UVMaterial extends Material {
+export class NormalMaterial extends Material {
     static pipelines = {};
     static bindGroupLayout = null;
-    static colorBuffer = null;
     static count = 0;
 
     constructor(options) {

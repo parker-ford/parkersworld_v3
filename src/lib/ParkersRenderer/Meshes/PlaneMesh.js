@@ -75,8 +75,12 @@ export class PlaneMesh extends Mesh {
             Array(this.triangleVertices.length).fill(1.0)
         );
 
+        this.triangleNormals = new Float32Array(
+            Array(this.normals.length * 3).fill(1.0)
+        )
+
         this.triangleUVs = new Float32Array(this.uvs.flat());
-        this.triangleNormals = new Float32Array(this.normals.flat());
+        // this.triangleNormals = new Float32Array(this.normals.flat());
 
     }
 
@@ -131,8 +135,8 @@ export class PlaneMesh extends Mesh {
         // this.lineUVs = new Float32Array(
         //     Array(lines.length * 2).fill(1.0)
         // );
-        // this.lineNormals = new Float32Array(
-        //     Array(lines.length * 3).fill(1.0)
-        // );
+        this.lineNormals = new Float32Array(
+            Array(lines.length * 3).fill(1.0)
+        );
     }
 }
