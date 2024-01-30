@@ -90,18 +90,31 @@ export const createScene = async (el, onLoaded) => {
     // scene.add(cylinder);
     // cylinder.transform.position[0] = 1;
 
-    const torus = new PW.Renderable({
-        mesh: new PW.TorusMesh(
+    // const torus = new PW.Renderable({
+    //     mesh: new PW.TorusMesh(
+    //         {
+    //             wireframe: true,
+    //             // innerRadius: 0.5,
+    //             // outerRadius: 1,
+    //         }
+    //     ),
+    //     material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
+    // });
+    // scene.add(torus);
+    // torus.transform.position[0] = 1;
+
+    const cone = new PW.Renderable({
+        mesh: new PW.ConeMesh(
             {
                 wireframe: true,
-                // innerRadius: 0.5,
-                // outerRadius: 1,
+                // height: 20,
+                // ringSegments: 32,
             }
         ),
         material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
     });
-    scene.add(torus);
-    torus.transform.position[0] = 1;
+    scene.add(cone);
+    cone.transform.position[0] = 1;
 
     // for(let i = 0; i < sphere.mesh.vertexCoordinates.length; i++){
     //     const sphereCube = new PW.Renderable({
