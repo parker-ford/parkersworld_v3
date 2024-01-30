@@ -18,17 +18,20 @@ export class PlaneMesh extends Mesh {
 
     calculateVertexCoordinates(){
         this.vertexCoordinates = [];
+        this.uvCoordinates = [];
         const widthInterval = 1 / this.width;
         const heightInterval = 1 / this.height;
         for(let i = 0; i < this.width + 1; i++){
             for(let j = 0; j < this.height + 1; j++){
                 this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5 + j * heightInterval, 0, 1]);
+                this.uvCoordinates.push([i * widthInterval, j * heightInterval]);
             }
         }
     }
 
     calculateTriangleVertices(){
         this.triangleCoordinates = [];
+        this.uvs = [];
 
         for(let i = 0; i < this.width; i++){
             for(let j = 0; j < this.height; j++){
@@ -37,11 +40,19 @@ export class PlaneMesh extends Mesh {
                 this.triangleCoordinates.push(this.vertexCoordinates[j + (i * (this.height + 1))]);
                 this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + (i * (this.height + 1))]);
                 this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + ((i + 1) * (this.height + 1))]);
+                
+                this.uvs.push(this.uvCoordinates[j + (i * (this.height + 1))]);
+                this.uvs.push(this.uvCoordinates[(j + 1) + (i * (this.height + 1))]);
+                this.uvs.push(this.uvCoordinates[(j + 1) + ((i + 1) * (this.height + 1))]);
 
                 //Bottom Triangle
                 this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + ((i + 1) * (this.height + 1))]);
                 this.triangleCoordinates.push(this.vertexCoordinates[j + ((i + 1) * (this.height + 1))]);
                 this.triangleCoordinates.push(this.vertexCoordinates[j + (i * (this.height + 1))]);
+
+                this.uvs.push(this.uvCoordinates[(j + 1) + ((i + 1) * (this.height + 1))]);
+                this.uvs.push(this.uvCoordinates[j + ((i + 1) * (this.height + 1))]);
+                this.uvs.push(this.uvCoordinates[j + (i * (this.height + 1))]);
 
             }
         }
@@ -51,9 +62,8 @@ export class PlaneMesh extends Mesh {
         this.triangleColors = new Float32Array(
             Array(this.triangleVertices.length).fill(1.0)
         );
-        this.triangleUVs = new Float32Array(
-            Array(this.triangleCoordinates.length * 2).fill(1.0)
-        );
+        
+        this.triangleUVs = new Float32Array(this.uvs.flat());
         this.triangleNormals = new Float32Array(
             Array(this.triangleCoordinates.length * 3).fill(1.0)
         );
