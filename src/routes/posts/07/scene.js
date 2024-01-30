@@ -64,15 +64,31 @@ export const createScene = async (el, onLoaded) => {
     scene.add(cube);
 
 
-    const sphere = new PW.Renderable({
-        mesh: new PW.SphereMesh(
+    // const sphere = new PW.Renderable({
+    //     mesh: new PW.SphereMesh(
+    //         {
+    //             wireframe: true,
+    //             resolution: 24
+    //         }
+    //     ),
+    //     material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
+    // });
+    
+    //     scene.add(sphere);
+    //     sphere.transform.position[0] = 1;
+
+    const cylinder = new PW.Renderable({
+        mesh: new PW.CylinderMesh(
             {
                 wireframe: true,
-                resolution: 24
+                height: 8,
+                width: 32,
             }
         ),
         material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
     });
+    scene.add(cylinder);
+    cylinder.transform.position[0] = 1;
 
     // for(let i = 0; i < sphere.mesh.vertexCoordinates.length; i++){
     //     const sphereCube = new PW.Renderable({
@@ -87,9 +103,6 @@ export const createScene = async (el, onLoaded) => {
     //     sphereCube.transform.scale = vec3.fromValues(0.01, 0.01, 0.01);
     //     scene.add(sphereCube);
     // }
-
-    scene.add(sphere);
-    sphere.transform.position[0] = 1;
 
     function frame() {
 
