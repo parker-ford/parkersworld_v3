@@ -104,7 +104,7 @@ export class Renderer {
     setupBuffers(){
 
         this.objectsBuffer = this.device.createBuffer({
-            size: 64 * 1024,
+            size: 64 * 2 * 1024,
             usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
         });
 

@@ -30,6 +30,7 @@ export class CubeMesh extends Mesh {
             for(let j = 0; j < this.height + 1; j++){
                 this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5 + j * heightInterval, -0.5, 1]);
                 this.uvCoordinates.push([i * widthInterval, j * heightInterval]);
+                this.normalCoordinates.push([0, 0, -1]);
             }
         }
 
@@ -38,6 +39,7 @@ export class CubeMesh extends Mesh {
             for(let j = 0; j < this.height + 1; j++){
                 this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5 + j * heightInterval, 0.5, 1]);
                 this.uvCoordinates.push([1 - (i * widthInterval), j * heightInterval]);
+                this.normalCoordinates.push([0, 0, 1]);
             }
         }
         
@@ -46,6 +48,7 @@ export class CubeMesh extends Mesh {
             for(let j = 0; j < this.depth + 1; j++){
                 this.vertexCoordinates.push([ 0.5, -0.5 + i * heightInterval, -0.5 + j * depthInterval, 1]);
                 this.uvCoordinates.push([ j * heightInterval, i * widthInterval]);
+                this.normalCoordinates.push([1, 0, 0]);
             }
         }
         
@@ -54,6 +57,7 @@ export class CubeMesh extends Mesh {
             for(let j = 0; j < this.depth + 1; j++){
                 this.vertexCoordinates.push([ -0.5, -0.5 + i * heightInterval, -0.5 + j * depthInterval, 1]);
                 this.uvCoordinates.push([1 - (j * heightInterval), i * widthInterval]);
+                this.normalCoordinates.push([-1, 0, 0]);
             }
         }
         
@@ -62,6 +66,7 @@ export class CubeMesh extends Mesh {
             for(let j = 0; j < this.depth + 1; j++){
                 this.vertexCoordinates.push([ -0.5 + i * widthInterval, 0.5, -0.5 + j * depthInterval, 1]);
                 this.uvCoordinates.push([i * widthInterval, j * heightInterval]);
+                this.normalCoordinates.push([0, 1, 0]);
             }
         }
 
@@ -70,6 +75,7 @@ export class CubeMesh extends Mesh {
             for(let j = 0; j < this.depth + 1; j++){
                 this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5, -0.5 + j * depthInterval, 1]);
                 this.uvCoordinates.push([i * widthInterval, 1 - (j * heightInterval)]);
+                this.normalCoordinates.push([0, -1, 0]);
             }
         }
 
@@ -90,6 +96,10 @@ export class CubeMesh extends Mesh {
                 this.uvs.push(this.uvCoordinates[((j + 1) + (i * (y + 1))) + offset]);
                 this.uvs.push(this.uvCoordinates[((j + 1) + ((i + 1) * (y + 1))) + offset]);
 
+                this.normals.push(this.normalCoordinates[(j + (i * (y + 1)) + offset)]);
+                this.normals.push(this.normalCoordinates[((j + 1) + (i * (y + 1))) + offset]);
+                this.normals.push(this.normalCoordinates[((j + 1) + ((i + 1) * (y + 1))) + offset]);
+
                 //Bottom Triangle
                 this.triangleCoordinates.push(this.vertexCoordinates[((j + 1) + ((i + 1) * (y + 1))) + offset]);
                 this.triangleCoordinates.push(this.vertexCoordinates[(j + ((i + 1) * (y + 1))) + offset ]);
@@ -99,6 +109,10 @@ export class CubeMesh extends Mesh {
                 this.uvs.push(this.uvCoordinates[(j + ((i + 1) * (y + 1))) + offset]);
                 this.uvs.push(this.uvCoordinates[(j + (i * (y + 1))) + offset]);
 
+                this.normals.push(this.normalCoordinates[((j + 1) + ((i + 1) * (y + 1))) + offset]);
+                this.normals.push(this.normalCoordinates[(j + ((i + 1) * (y + 1))) + offset]);
+                this.normals.push(this.normalCoordinates[(j + (i * (y + 1))) + offset]);
+
             }
         }
     }
@@ -106,6 +120,7 @@ export class CubeMesh extends Mesh {
     calculateTriangleVertices(){
         this.triangleCoordinates = [];
         this.uvs = [];
+        this.normals = [];
 
         let offset = 0;
 
@@ -140,9 +155,7 @@ export class CubeMesh extends Mesh {
             Array(this.triangleVertices.length).fill(1.0)
         );
         this.triangleUVs = new Float32Array(this.uvs.flat());
-        this.triangleNormals = new Float32Array(
-            Array(this.triangleCoordinates.length * 3).fill(1.0)
-        );
+        this.triangleNormals = new Float32Array(this.normals.flat());
 
     }
 

@@ -25,17 +25,39 @@ export const createScene = async (el, onLoaded) => {
 
     scene.add(camera);
 
+    const cube  = new PW.Renderable({
+        mesh: new PW.CubeMesh(
+            {
+                wireframe: false,
+                height: 10,
+                width: 10,
+                depth: 10,
+            }
+            ),
+        material: new PW.NormalMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
+    })
+    cube.transform.position[0] = -1
+
+
+
 
     const plane2 = new PW.Renderable({
-        mesh: new PW.PlaneMesh({
-            wireframe: false,
-            height: 2,
-            width: 2,
-        }),
-        material: new PW.UVMaterial({}),
+        mesh: new PW.CubeMesh(
+            {
+                wireframe: false,
+                height: 10,
+                width: 10,
+                depth: 10,
+            }
+        ),
+        material: new PW.NormalMaterial({}),
     });
-    scene.add(plane2);
     plane2.transform.position[0] = 1;
+    quat.rotateY(plane2.transform.rotation, plane2.transform.rotation, -90 * Math.PI / 180);
+
+
+    scene.add(cube);
+    scene.add(plane2);
 
     // const plane = new PW.Renderable({
     //     mesh: new PW.PlaneMesh({
@@ -50,19 +72,6 @@ export const createScene = async (el, onLoaded) => {
     // plane.transform.position[0] = -1;
     
 
-    const cube  = new PW.Renderable({
-        mesh: new PW.CubeMesh(
-            {
-                wireframe: false,
-                height: 10,
-                width: 10,
-                depth: 10,
-            }
-            ),
-        material: new PW.UVMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
-    })
-    cube.transform.position[0] = -1
-    scene.add(cube);
 
 
     // const sphere = new PW.Renderable({
@@ -131,11 +140,11 @@ export const createScene = async (el, onLoaded) => {
     //     scene.add(sphereCube);
     // }
 
-    let rotate = false;
+    let rotate = true;
     function frame() {
 
         if(rotate){
-            quat.rotateY(cube.transform.rotation, plane.transform.rotation,1 * PW.Time.deltaTime);
+            quat.rotateY(cube.transform.rotation, cube.transform.rotation,1 * PW.Time.deltaTime);
             quat.rotateY(plane2.transform.rotation, plane2.transform.rotation,1 * PW.Time.deltaTime);
         }
 

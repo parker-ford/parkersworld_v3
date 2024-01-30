@@ -17,11 +17,14 @@ export class Transform {
         this.right = vec3.fromValues(1,0,0);
 
         this.TRS = mat4.create();
+        this.TRS_I_T = mat4.create();
         this.updateTRS();
+
     }
 
     updateTRS(){
         mat4.identity(this.TRS);
+        mat4.identity(this.TRS_I_T);
 
         let translation = mat4.create();
         mat4.fromTranslation(translation, this.position);
@@ -34,6 +37,24 @@ export class Transform {
         let scale = mat4.create();
         mat4.fromScaling(scale, this.scale);
         mat4.multiply(this.TRS, this.TRS, scale);
+
+        
+        
+        
+        scale = mat4.create();
+        mat4.fromScaling(scale, this.scale);
+        mat4.multiply(this.TRS_I_T, this.TRS_I_T, scale);
+        
+        rotation = mat4.create();
+        mat4.fromQuat(rotation, this.rotation);
+        mat4.multiply(this.TRS_I_T, this.TRS_I_T, rotation);
+        
+        translation = mat4.create();
+        mat4.fromTranslation(translation, this.position);
+        mat4.multiply(this.TRS_I_T, this.TRS_I_T, translation);
+
+        mat4.invert(this.TRS_I_T, this.TRS_I_T);
+        mat4.transpose(this.TRS_I_T, this.TRS_I_T);
     }
 
     updateDirectionVectors(){
