@@ -1,5 +1,5 @@
 import { Mesh } from "./Mesh.js";
-export class ConeMesh extends Mesh {
+export class CylinderMesh extends Mesh {
     constructor(options){
         super(options);
         this.width = options.width || 6;
@@ -18,22 +18,25 @@ export class ConeMesh extends Mesh {
 
     calculateVertexCoordinates(){
         this.vertexCoordinates = [];
+        const widthInterval = 1 / this.width;
         const heightInterval = 1 / this.height;
-        let r = 0.5;
+        const r = 0.5;
 
         //Sides
         for(let i = 0; i < this.height + 1; i++){
-            r = 0.5 - i * heightInterval * 0.5;
             for(let j = 0; j < this.width + 1; j++){
                 const x = r * Math.cos(2 * Math.PI * j / this.width);
-                const y = -0.5 + i * heightInterval;
+                const y = -1 + i * heightInterval * 2;
                 const z = r * Math.sin(2 * Math.PI * j / this.width);
                 this.vertexCoordinates.push([x, y, z, 1]);
             }
         }
 
-        //Bot
-        this.vertexCoordinates.push([0, -0.5, 0, 1]);
+        //Top
+        this.vertexCoordinates.push([0, 1, 0, 1]);
+
+        //Bottom
+        this.vertexCoordinates.push([0, -1, 0, 1]);
 
     }
 
@@ -57,6 +60,13 @@ export class ConeMesh extends Mesh {
             }
         }
 
+        // Top
+        for(let i = 1; i < this.width + 1; i++){
+            this.triangleCoordinates.push(this.vertexCoordinates[this.vertexCoordinates.length - 2]);
+            this.triangleCoordinates.push(this.vertexCoordinates[this.vertexCoordinates.length - 1 - i]);
+            this.triangleCoordinates.push(this.vertexCoordinates[this.vertexCoordinates.length - 2 - i]);
+        }
+
         //Bot
         for(let i = 0; i < this.width; i++){
             this.triangleCoordinates.push(this.vertexCoordinates[this.vertexCoordinates.length - 1]);
@@ -64,11 +74,16 @@ export class ConeMesh extends Mesh {
             this.triangleCoordinates.push(this.vertexCoordinates[i + 1]);
         }
 
-
         this.triangleVertices = new Float32Array(this.triangleCoordinates.flat());
 
         this.triangleColors = new Float32Array(
             Array(this.triangleVertices.length).fill(1.0)
+        );
+        this.triangleUVs = new Float32Array(
+            Array(this.triangleCoordinates.length * 2).fill(1.0)
+        );
+        this.triangleNormals = new Float32Array(
+            Array(this.triangleCoordinates.length * 3).fill(1.0)
         );
 
     }
@@ -93,6 +108,12 @@ export class ConeMesh extends Mesh {
 
         this.lineColors = new Float32Array(
             Array(this.lineVertices.length).fill(1.0)
+        );
+        this.lineUVs = new Float32Array(
+            Array(lines.length * 2).fill(1.0)
+        );
+        this.lineNormals = new Float32Array(
+            Array(lines.length * 3).fill(1.0)
         );
     }
 }

@@ -1,6 +1,6 @@
 import { Scene } from "./Scene";
 import { BasicTriangleTransform } from "./BasicTriangleTransform";
-import transformShader from './shaders/transformShader.wgsl?raw';
+import transformShader from './Materials/shaders/transformShader.wgsl?raw';
 import { mat4 } from "gl-matrix";
 
 export class BasicTransformRenderer {

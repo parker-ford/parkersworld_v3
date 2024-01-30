@@ -68,6 +68,12 @@ export class SphereMesh extends Mesh {
         this.triangleColors = new Float32Array(
             Array(this.triangleVertices.length).fill(1.0)
         );
+        this.triangleUVs = new Float32Array(
+            Array(this.triangleCoordinates.length * 2).fill(1.0)
+        );
+        this.triangleNormals = new Float32Array(
+            Array(this.triangleCoordinates.length * 3).fill(1.0)
+        );
 
     }
 
@@ -91,6 +97,12 @@ export class SphereMesh extends Mesh {
 
         this.lineColors = new Float32Array(
             Array(this.lineVertices.length).fill(1.0)
+        );
+        this.lineUVs = new Float32Array(
+            Array(lines.length * 2).fill(1.0)
+        );
+        this.lineNormals = new Float32Array(
+            Array(lines.length * 3).fill(1.0)
         );
     }
 }

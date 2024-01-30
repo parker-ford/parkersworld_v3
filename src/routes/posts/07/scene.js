@@ -37,31 +37,31 @@ export const createScene = async (el, onLoaded) => {
     // scene.add(plane2);
     // plane2.transform.position[0] = 1;
 
-    // const plane = new PW.Renderable({
-    //     mesh: new PW.PlaneMesh({
-    //         wireframe: true,
-    //         height: 1,
-    //         width: 1,
-    //     }),
-    //     material: new PW.BasicMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
-    // });
-    // scene.add(plane);
-    // plane.transform.position[0] = -1;
+    const plane = new PW.Renderable({
+        mesh: new PW.PlaneMesh({
+            wireframe: true,
+            height: 5,
+            width: 5,
+        }),
+        material: new PW.BasicMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
+    });
+    scene.add(plane);
+    plane.transform.position[0] = -1;
     
 
-    const cube  = new PW.Renderable({
-        mesh: new PW.CubeMesh(
-            {
-                wireframe: true,
-                height: 10,
-                width: 10,
-                depth: 10,
-            }
-            ),
-        material: new PW.BasicMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
-    })
-    cube.transform.position[0] = -1
-    scene.add(cube);
+    // const cube  = new PW.Renderable({
+    //     mesh: new PW.CubeMesh(
+    //         {
+    //             wireframe: true,
+    //             height: 10,
+    //             width: 10,
+    //             depth: 10,
+    //         }
+    //         ),
+    //     material: new PW.BasicMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
+    // })
+    // cube.transform.position[0] = -1
+    // scene.add(cube);
 
 
     // const sphere = new PW.Renderable({
@@ -103,18 +103,18 @@ export const createScene = async (el, onLoaded) => {
     // scene.add(torus);
     // torus.transform.position[0] = 1;
 
-    const cone = new PW.Renderable({
-        mesh: new PW.ConeMesh(
-            {
-                wireframe: true,
-                // height: 20,
-                // ringSegments: 32,
-            }
-        ),
-        material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
-    });
-    scene.add(cone);
-    cone.transform.position[0] = 1;
+    // const cone = new PW.Renderable({
+    //     mesh: new PW.ConeMesh(
+    //         {
+    //             wireframe: false,
+    //             // height: 20,
+    //             // ringSegments: 32,
+    //         }
+    //     ),
+    //     material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
+    // });
+    // scene.add(cone);
+    // cone.transform.position[0] = 1;
 
     // for(let i = 0; i < sphere.mesh.vertexCoordinates.length; i++){
     //     const sphereCube = new PW.Renderable({

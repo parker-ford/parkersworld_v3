@@ -1,11 +1,10 @@
 import { vec4 } from 'gl-matrix';
 import { Material } from './Material.js';
-import { Renderer } from './Renderer.js';
+import { Renderer } from '../Renderer.js';
 import basicMaterialShader from './shaders/basicMaterialShader.wgsl?raw';
 
 export class BasicMaterial extends Material {
     static pipelines = {};
-    static pipeline = null;
     static bindGroupLayout = null;
     static colorBuffer = null;
     static count = 0;
@@ -18,11 +17,8 @@ export class BasicMaterial extends Material {
 
     init(options){
         this.topology = options.wireframe ? 'line-list' : 'triangle-list';
-        if(!BasicMaterial.bindGroupLayout){
+        if(!this.constructor.name.bindGroupLayout){
             BasicMaterial.bindGroupLayout = this.createBindGroupLayout();
-        }
-        if(!BasicMaterial.pipeline) {
-            BasicMaterial.pipeline = this.createPipeline(options);
         }
         if(!BasicMaterial.pipelines[this.topology]){
             BasicMaterial.pipelines[this.topology] = this.createPipeline(options);
@@ -96,14 +92,10 @@ export class BasicMaterial extends Material {
         return bindGroupLayout;
     }
 
-
-    //TODO: Make seperate pipelines for wireframe
     createPipeline(options){
         const pipelineLayout = Renderer.instance.getDevice().createPipelineLayout({
             bindGroupLayouts: [BasicMaterial.bindGroupLayout]
         })
-
-        //const topology = options.wireframe ? 'line-list' : 'triangle-list';
 
         const shaderModule = Renderer.instance.getDevice().createShaderModule({ code: basicMaterialShader });
         const pipeline = Renderer.instance.getDevice().createRenderPipeline({
@@ -132,9 +124,6 @@ export class BasicMaterial extends Material {
         return pipeline;
     }
 
-    // getPipeline(){
-    //     return BasicMaterial.pipeline;
-    // }
     getPipeline(topology){
         return BasicMaterial.pipelines[topology];
     }
