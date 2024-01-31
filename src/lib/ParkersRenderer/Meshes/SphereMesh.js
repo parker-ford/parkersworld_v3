@@ -17,14 +17,7 @@ export class SphereMesh extends Mesh {
 
     calculateVertexCoordinates(){
         this.vertexCoordinates = [];
-        
-        // const widthInterval = 1 / this.resolution;
-        // const heightInterval = 1 / this.resolution;
-        // for(let i = 0; i < this.resolution + 1; i++){
-        //     for(let j = 0; j < this.resolution + 1; j++){
-        //         this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5 + j * heightInterval, 0, 1]);
-        //     }
-        // }
+        this.uvCoordinates = [];
 
         const verticalInterval = 1 / this.resolution;
         let r = 0.5;
@@ -38,14 +31,15 @@ export class SphereMesh extends Mesh {
                 const z = Math.sin(Math.PI * i / this.resolution) * Math.sin(2 * Math.PI * j / this.resolution) * 0.5;
                 const y = Math.cos(Math.PI * i / this.resolution) * 0.5;
                 this.vertexCoordinates.push([x, y, z, 1]);
+
+                this.uvCoordinates.push([(j * verticalInterval), 1 - (i * verticalInterval)]);
             }
         }
-
-        console.log(this.vertexCoordinates);
     }
 
     calculateTriangleVertices(){
         this.triangleCoordinates = [];
+        this.uvs = [];
 
         for(let i = 0; i < this.resolution; i++){
             for(let j = 0; j < this.resolution; j++){
@@ -55,10 +49,18 @@ export class SphereMesh extends Mesh {
                 this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + (i * (this.resolution + 1))]);
                 this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + ((i + 1) * (this.resolution + 1))]);
 
+                this.uvs.push(this.uvCoordinates[j + (i * (this.resolution + 1))]);
+                this.uvs.push(this.uvCoordinates[(j + 1) + (i * (this.resolution + 1))]);
+                this.uvs.push(this.uvCoordinates[(j + 1) + ((i + 1) * (this.resolution + 1))]);
+
                 //Bottom Triangle
                 this.triangleCoordinates.push(this.vertexCoordinates[(j + 1) + ((i + 1) * (this.resolution + 1))]);
                 this.triangleCoordinates.push(this.vertexCoordinates[j + ((i + 1) * (this.resolution + 1))]);
                 this.triangleCoordinates.push(this.vertexCoordinates[j + (i * (this.resolution + 1))]);
+
+                this.uvs.push(this.uvCoordinates[(j + 1) + ((i + 1) * (this.resolution + 1))]);
+                this.uvs.push(this.uvCoordinates[j + ((i + 1) * (this.resolution + 1))]);
+                this.uvs.push(this.uvCoordinates[j + (i * (this.resolution + 1))]);
 
             }
         }
@@ -68,9 +70,7 @@ export class SphereMesh extends Mesh {
         this.triangleColors = new Float32Array(
             Array(this.triangleVertices.length).fill(1.0)
         );
-        this.triangleUVs = new Float32Array(
-            Array(this.triangleCoordinates.length * 2).fill(1.0)
-        );
+        this.triangleUVs = new Float32Array(this.uvs.flat());
         this.triangleNormals = new Float32Array(
             Array(this.triangleCoordinates.length * 3).fill(1.0)
         );
