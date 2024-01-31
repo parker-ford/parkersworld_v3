@@ -34,7 +34,7 @@ export const createScene = async (el, onLoaded) => {
                 depth: 10,
             }
             ),
-        material: new PW.UVMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
+        material: new PW.NormalMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
     })
     cube.transform.position[0] = -1
 
@@ -45,10 +45,10 @@ export const createScene = async (el, onLoaded) => {
         mesh: new PW.SphereMesh(
             {
                 wireframe: false,
-                resolution: 24
+                resolution: 64
             }
         ),
-        material: new PW.UVMaterial({}),
+        material: new PW.NormalMaterial({}),
     });
     plane2.transform.position[0] = 1;
     quat.rotateY(plane2.transform.rotation, plane2.transform.rotation, -90 * Math.PI / 180);
@@ -138,7 +138,7 @@ export const createScene = async (el, onLoaded) => {
     //     scene.add(sphereCube);
     // }
 
-    let rotate = false;
+    let rotate = true;
     function frame() {
 
         if(rotate){
