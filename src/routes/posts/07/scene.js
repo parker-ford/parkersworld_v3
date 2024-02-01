@@ -49,7 +49,7 @@ export const createScene = async (el, onLoaded) => {
                 height: 6,
             }
         ),
-        material: new PW.UVMaterial({}),
+        material: new PW.NormalMaterial({}),
     });
     plane2.transform.position[0] = 1;
     quat.rotateY(plane2.transform.rotation, plane2.transform.rotation, -90 * Math.PI / 180);
