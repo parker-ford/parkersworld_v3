@@ -40,40 +40,17 @@ export class CylinderMesh extends Mesh {
             }
         }
 
-        //TODO: Make vertices for entire base not just center
-
         //Top
-        // for(let i = 0; i < this.width + 1; i++){
-        //     const x = r * Math.cos(2 * Math.PI * i / this.width);
-        //     const y = 1;
-        //     const z = r * Math.sin(2 * Math.PI * i / this.width);
-        //     this.vertexCoordinates.push([x, y, z, 1]);
-        //     this.uvCoordinates.push([i * widthInterval, 1]);
-        //     this.normalCoordinate.push([0, 1, 0]);
-        // }
-        
-        // //Bottom
-        // for(let i = 0; i < this.width + 1; i++){
-        //     const x = r * Math.cos(2 * Math.PI * i / this.width);
-        //     const y = -1;
-        //     const z = r * Math.sin(2 * Math.PI * i / this.width);
-        //     this.vertexCoordinates.push([x, y, z, 1]);
-        //     this.uvCoordinates.push([i * widthInterval, 0]);
-        //     this.normalCoordinate.push([0, -1, 0]);
-        // }
-
-
-
         this.vertexCoordinates.push([0, 1, 0, 1]);
         this.uvCoordinates.push([0.5, 0.5]);
         this.normalCoordinate.push([0, 1, 0]);
+        
         //Bottom
         this.vertexCoordinates.push([0, -1, 0, 1]);
         this.uvCoordinates.push([0.5, 0.5]);
         this.normalCoordinate.push([0, -1, 0]);
 
 
-        // //Top
 
 
     }
@@ -117,27 +94,6 @@ export class CylinderMesh extends Mesh {
             }
         }
 
-        //Top
-        // for(let i = 0; i < this.width; i++){
-            
-        //     this.triangleCoordinates.push(this.vertexCoordinates[this.width * this.height + i]);
-        //     this.triangleCoordinates.push(this.vertexCoordinates[this.vertexCoordinates.length - 2]);
-        //     this.triangleCoordinates.push(this.vertexCoordinates[this.width * this.height + i + 1]);
-
-        //     this.uvs.push(this.uvCoordinates[this.width * this.height + i]);
-        //     this.uvs.push(this.uvCoordinates[this.vertexCoordinates.length - 2]);
-        //     this.uvs.push(this.uvCoordinates[this.width * this.height + i + 1]);
-
-        //     this.normals.push(this.normalCoordinate[this.width * this.height + i]);
-        //     this.normals.push(this.normalCoordinate[this.vertexCoordinates.length - 2]);
-        //     this.normals.push(this.normalCoordinate[this.width * this.height + i + 1]);
-
-        // }
-
-        //Bot
-        // for(let i = 0; i < this.width; i++){
-        //     this.triangleCoordinates.push(this.vertex)
-        // }
 
         // Top
         for(let i = 1; i < this.width + 2; i++){

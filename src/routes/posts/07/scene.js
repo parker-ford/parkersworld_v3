@@ -42,14 +42,14 @@ export const createScene = async (el, onLoaded) => {
 
 
     const plane2 = new PW.Renderable({
-        mesh: new PW.CylinderMesh(
+        mesh: new PW.ConeMesh(
             {
                 wireframe: false,
                 width: 12,
                 height: 6,
             }
         ),
-        material: new PW.NormalMaterial({}),
+        material: new PW.UVMaterial({}),
     });
     plane2.transform.position[0] = 1;
     quat.rotateY(plane2.transform.rotation, plane2.transform.rotation, -90 * Math.PI / 180);
