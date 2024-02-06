@@ -3,8 +3,13 @@ struct TransformData {
     projection: mat4x4<f32>
 };
 
+struct ModelData{
+    model: mat4x4<f32>,
+    model_i_t: mat4x4<f32>
+};
+
 struct ObjectData {
-    model: array<mat4x4<f32>>,
+    models: array<ModelData>,
 };
 
 @binding(0) @group(0) var<uniform> transformUBO: TransformData;
@@ -19,7 +24,7 @@ struct VertexOutput {
 fn vertex_main(@builtin(instance_index) id: u32, @location(0) position: vec4<f32>, @location(1) color: vec4<f32>) -> VertexOutput {
     var output: VertexOutput;
     // output.position = transformUBO.projection * transformUBO.view * transformUBO.model * position;
-    output.position = transformUBO.projection * transformUBO.view * objects.model[id] * position;
+    output.position = transformUBO.projection * transformUBO.view * objects.models[id].model * position;
     output.color = color;
     return output;
 }
