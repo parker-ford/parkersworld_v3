@@ -42,11 +42,11 @@ export const createScene = async (el, onLoaded) => {
 
 
     const plane2 = new PW.Renderable({
-        mesh: new PW.ConeMesh(
+        mesh: new PW.TorusMesh(
             {
                 wireframe: false,
-                width: 12,
-                height: 6,
+                ringSubdivisions: 32,
+                tubeSubdivisions: 32,
             }
         ),
         material: new PW.NormalMaterial({}),

@@ -1,3 +1,4 @@
+import { vec3 } from "gl-matrix";
 import { Mesh } from "./Mesh.js";
 export class TorusMesh extends Mesh {
     constructor(options){
@@ -21,6 +22,8 @@ export class TorusMesh extends Mesh {
 
     calculateVertexCoordinates(){
         this.vertexCoordinates = [];
+        this.uvCoordinates = [];
+        this.normalCoordinates = [];
 
         const outerRadius = 0.5;
 
@@ -39,6 +42,15 @@ export class TorusMesh extends Mesh {
                 const z = Math.sin(theta) * (outerRadius + Math.cos(phi) * this.innerRadius);
                 const y = Math.sin(phi) * this.innerRadius;
                 this.vertexCoordinates.push([x, y, z, 1]);
+
+                this.uvCoordinates.push([ i / this.tubeSubdivisions, (j / this.ringSubdivisions + 0.5) % 1 ]);
+
+                const nx = Math.cos(theta) * Math.cos(phi);
+                const ny = Math.sin(phi);
+                const nz = Math.sin(theta) * Math.cos(phi);
+
+                const normalVec = vec3.normalize(vec3.create(), vec3.fromValues(nx, ny, nz));
+                this.normalCoordinates.push([normalVec[0], normalVec[1], normalVec[2]]);
             }
         }
 
@@ -47,7 +59,9 @@ export class TorusMesh extends Mesh {
 
     calculateTriangleVertices(){
         this.triangleCoordinates = [];
-    
+        this.uvs = [];
+        this.normals = [];
+
         for(let stack = 0; stack < this.tubeSubdivisions; stack++){
             for(let slice = 0; slice < this.ringSubdivisions; slice++){
     
@@ -60,11 +74,27 @@ export class TorusMesh extends Mesh {
                 this.triangleCoordinates.push(this.vertexCoordinates[t1]);
                 this.triangleCoordinates.push(this.vertexCoordinates[t3]);
                 this.triangleCoordinates.push(this.vertexCoordinates[t4]);
+
+                this.uvs.push(this.uvCoordinates[t1]);
+                this.uvs.push(this.uvCoordinates[t3]);
+                this.uvs.push(this.uvCoordinates[t4]);
+
+                this.normals.push(this.normalCoordinates[t1]);
+                this.normals.push(this.normalCoordinates[t3]);
+                this.normals.push(this.normalCoordinates[t4]);
     
                 //Bottom Triangle
                 this.triangleCoordinates.push(this.vertexCoordinates[t1]);
                 this.triangleCoordinates.push(this.vertexCoordinates[t4]);
                 this.triangleCoordinates.push(this.vertexCoordinates[t2]);
+
+                this.uvs.push(this.uvCoordinates[t1]);
+                this.uvs.push(this.uvCoordinates[t4]);
+                this.uvs.push(this.uvCoordinates[t2]);
+
+                this.normals.push(this.normalCoordinates[t1]);
+                this.normals.push(this.normalCoordinates[t4]);
+                this.normals.push(this.normalCoordinates[t2]);
             }
         }
     
@@ -73,12 +103,8 @@ export class TorusMesh extends Mesh {
         this.triangleColors = new Float32Array(
             Array(this.triangleVertices.length).fill(1.0)
         );
-        this.triangleUVs = new Float32Array(
-            Array(this.triangleCoordinates.length * 2).fill(1.0)
-        );
-        this.triangleNormals = new Float32Array(
-            Array(this.triangleCoordinates.length * 3).fill(1.0)
-        );
+        this.triangleUVs = new Float32Array(this.uvs.flat());
+        this.triangleNormals = new Float32Array(this.normals.flat());
     }
 
     calculateLineVertices(){
