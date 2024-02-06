@@ -25,127 +25,30 @@ export const createScene = async (el, onLoaded) => {
 
     scene.add(camera);
 
-    const cube  = new PW.Renderable({
-        mesh: new PW.CubeMesh(
+    const numObjects = 6;
+
+    const planes = [];
+    for(let i = 0; i < numObjects; i++){
+        const plane = new PW.Renderable(
             {
-                wireframe: false,
-                height: 10,
-                width: 10,
-                depth: 10,
+                mesh: new PW.PlaneMesh({width: 1, height: 1, wireframe: true}),
+                material: new PW.BasicMaterial({color: [0.5, 0.5, 0.5, 1]}),
             }
-            ),
-        material: new PW.NormalMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
-    })
-    cube.transform.position[0] = -1
+        )
+        plane.transform.position[0] = -1 + (i / numObjects) * 2;
+        planes.push(plane);
+        scene.add(plane);
+    }
 
 
-
-
-    const plane2 = new PW.Renderable({
-        mesh: new PW.TorusMesh(
-            {
-                wireframe: false,
-                ringSubdivisions: 32,
-                tubeSubdivisions: 32,
-            }
-        ),
-        material: new PW.NormalMaterial({}),
-    });
-    plane2.transform.position[0] = 1;
-    quat.rotateY(plane2.transform.rotation, plane2.transform.rotation, -90 * Math.PI / 180);
-
-
-    scene.add(cube);
-    scene.add(plane2);
-
-    // const plane = new PW.Renderable({
-    //     mesh: new PW.PlaneMesh({
-    //         wireframe: false,
-    //         height: 5,
-    //         width: 5,
-    //     }),
-    //     material: new PW.NormalMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
-    // });
-    // scene.add(plane);
-    // plane.transform.scale = vec3.fromValues(1, 0.5, 1);
-    // plane.transform.position[0] = -1;
-    
-
-
-
-    // const sphere = new PW.Renderable({
-    //     mesh: new PW.SphereMesh(
-    //         {
-    //             wireframe: true,
-    //             resolution: 24
-    //         }
-    //     ),
-    //     material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
-    // });
-    
-    //     scene.add(sphere);
-    //     sphere.transform.position[0] = 1;
-
-    // const cylinder = new PW.Renderable({
-    //     mesh: new PW.CylinderMesh(
-    //         {
-    //             wireframe: true,
-    //             height: 8,
-    //             width: 32,
-    //         }
-    //     ),
-    //     material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
-    // });
-    // scene.add(cylinder);
-    // cylinder.transform.position[0] = 1;
-
-    // const torus = new PW.Renderable({
-    //     mesh: new PW.TorusMesh(
-    //         {
-    //             wireframe: true,
-    //             // innerRadius: 0.5,
-    //             // outerRadius: 1,
-    //         }
-    //     ),
-    //     material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
-    // });
-    // scene.add(torus);
-    // torus.transform.position[0] = 1;
-
-    // const cone = new PW.Renderable({
-    //     mesh: new PW.ConeMesh(
-    //         {
-    //             wireframe: false,
-    //             // height: 20,
-    //             // ringSegments: 32,
-    //         }
-    //     ),
-    //     material: new PW.BasicMaterial({color: vec4.fromValues(0, 1, 0, 1)}),
-    // });
-    // scene.add(cone);
-    // cone.transform.position[0] = 1;
-
-    // for(let i = 0; i < sphere.mesh.vertexCoordinates.length; i++){
-    //     const sphereCube = new PW.Renderable({
-    //         mesh: new PW.CubeMesh(
-    //             {
-    //                 wireframe: true,
-    //             }
-    //         ),
-    //         material: new PW.BasicMaterial({color: vec4.fromValues(1, 1, 0, 1)}),
-    //     });
-    //     sphereCube.transform.position = sphere.mesh.vertexCoordinates[i];
-    //     sphereCube.transform.scale = vec3.fromValues(0.01, 0.01, 0.01);
-    //     scene.add(sphereCube);
-    // }
 
     let rotate = true;
     function frame() {
 
-        if(rotate){
-            quat.rotateY(cube.transform.rotation, cube.transform.rotation,1 * PW.Time.deltaTime);
-            quat.rotateY(plane2.transform.rotation, plane2.transform.rotation,1 * PW.Time.deltaTime);
-        }
+        // if(rotate){
+        //     quat.rotateY(cube.transform.rotation, cube.transform.rotation,1 * PW.Time.deltaTime);
+        //     quat.rotateY(plane2.transform.rotation, plane2.transform.rotation,1 * PW.Time.deltaTime);
+        // }
 
         renderer.render(scene, camera);
         requestAnimationFrame(frame);
