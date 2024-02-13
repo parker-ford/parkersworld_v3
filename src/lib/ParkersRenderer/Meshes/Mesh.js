@@ -47,12 +47,7 @@ export class Mesh {
         }
         else{
             vertexData = new Float32Array(this.lineVertices.length + this.lineColors.length + this.lineUVs.length + this.lineNormals.length);
-            // for (let i = 0, j = 0; i < this.lineVertices.length; i += 4, j += 13) {
-            //     vertexData.set(this.lineVertices.subarray(i, i + 4), j);
-            //     vertexData.set(this.lineColors.subarray(i, i + 4), j + 4);
-            //     vertexData.set(this.lineUVs.subarray(i/2, i/2 + 2), j + 8);
-            //     vertexData.set(this.lineNormals.subarray(i, i + 3), j + 10);
-            // }
+
             for (let i = 0, vertex = 0, color = 0, uv = 0, normal = 0; i < vertexData.length; i += 13, vertex += 4, color += 4, uv += 2, normal += 3) {
                 vertexData[i] = this.lineVertices[vertex];
                 vertexData[i + 1] = this.lineVertices[vertex + 1];
@@ -85,21 +80,25 @@ export class Mesh {
         this.vertexBufferDescriptors = [
             {
                 attributes: [
+                    //Vertex Position
                     {
                         shaderLocation: 0,
                         offset: 0,
                         format: "float32x4"
                     },
+                    //Vertex Color
                     {
                         shaderLocation: 1,
                         offset: 16,
                         format: "float32x4"
                     },
+                    //Vertex UV
                     {
                         shaderLocation: 2,
                         offset: 32,
                         format: "float32x2"
                     },
+                    //Vertex Normal
                     {
                         shaderLocation: 3,
                         offset: 40,

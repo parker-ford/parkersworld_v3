@@ -146,7 +146,7 @@
             </p>
 
 
-            <h4 class="page__sub-subtitle">References</h4>
+            <h4 class="page__sub-subtitle">Resources</h4>
 
             <p class="page__body">
                 <a href="https://www.realtimerendering.com/">Real-Time Rendering 4th Edition - Tomas Akenine-Moller et al.</a>
