@@ -123,16 +123,14 @@ export class PlaneMesh extends Mesh {
             Array(this.lineVertices.length).fill(1.0)
         );
 
-        console.log(lines.length * 2)
-
         this.lineUVs = new Float32Array(line_uvs.flat());
         this.lineNormals = new Float32Array(line_normals.flat());
 
         // this.lineUVs = new Float32Array(
         //     Array(lines.length * 2).fill(1.0)
         // );
-        this.lineNormals = new Float32Array(
-            Array(lines.length * 3).fill(1.0)
-        );
+        // this.lineNormals = new Float32Array(
+        //     Array(lines.length * 3).fill(1.0)
+        // );
     }
 }
