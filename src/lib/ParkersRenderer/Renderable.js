@@ -22,6 +22,23 @@ export class Renderable{
         this.transform = new Transform({});
     }
 
+    changeMaterial(newMaterial){
+        this.material = newMaterial;
+        this.material.init({
+            vertexBufferDescriptors: this.mesh.vertexBufferDescriptors,
+            wireframe: this.mesh.wireframe
+        });
+    }
+
+    changeWireframe(useWireframe){
+        this.mesh.wireframe = useWireframe;
+        this.mesh.setupVertexBuffer();
+        this.material.init({
+            vertexBufferDescriptors: this.mesh.vertexBufferDescriptors,
+            wireframe: this.mesh.wireframe
+        });
+    }
+
     update(){
         this.transform.update();
     }

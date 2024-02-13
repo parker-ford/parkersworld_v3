@@ -171,7 +171,7 @@ materialFolder.add(parameters, 'material', ['Basic', 'Phong', "Lambert", "Normal
 
     updateMaterial()
     updateMaterialGUI()
-})
+});
 
 const colorController  = materialFolder.addColor(parameters, 'color').onChange((value) => {
     mesh.material.color.set(value);

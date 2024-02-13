@@ -1,12 +1,34 @@
 import * as PW from '$lib/ParkersRenderer'
 import { vec4, vec3, quat } from 'gl-matrix';
+import GUI from 'lil-gui'; 
+
+
 export const createScene = async (el, onLoaded) => {
     onLoaded();
 
 
-    el.width = Math.min(document.body.clientWidth, 1400)
-    el.height = Math.min(document.body.clientWidth, 1400) * .5
+    el.width = Math.min(document.body.clientWidth, 1400);
+    el.height = Math.min(document.body.clientWidth, 1400) * .5;
 
+    const gui = new GUI()
+    gui.domElement.id = 'gui';
+
+    const parameters= {
+        wireframe: true,
+        material: 'basic'
+    }
+
+    const alignGUIWithCanvas = () => {
+        const canvasRect = el.getBoundingClientRect();
+        const guiRect = gui.domElement.getBoundingClientRect();
+        gui.domElement.style.position = 'absolute';
+        gui.domElement.style.top = `222px`;
+        gui.domElement.style.left = `${canvasRect.right - guiRect.width - 2}px`;
+        console.log("testing gui align");
+        console.log(guiRect)
+    };
+    alignGUIWithCanvas();
+    
     const renderer = new PW.Renderer(el);
     if (! await renderer.init()) {
         console.log("renderer initialization failed");
@@ -63,10 +85,15 @@ export const createScene = async (el, onLoaded) => {
     const spheres = [];
     for(let i = 0; i < numObjects; i++){
         resolution = i * 2 + 3;
+        const r = i / numObjects;
+        const g = 3 / numObjects;
+        // const b = (numObjects - 3) / numObjects;
+        const b = 0;
+        const meshColor = [r,g,b,1];
         const sphere = new PW.Renderable(
             {
-                mesh: new PW.SphereMesh({resolution: resolution, wireframe: true}),
-                material: new PW.BasicMaterial({color: [0.5, 0.5, 0.5, 1]}),
+                mesh: new PW.SphereMesh({resolution: resolution, wireframe: false}),
+                material: new PW.BasicMaterial({color: meshColor}),
             }
         )
         sphere.transform.position[0] = (-1 + (i / (numObjects - 1)) * 2) * widthSpacing;
@@ -145,6 +172,39 @@ export const createScene = async (el, onLoaded) => {
         quat.rotateZ(torus.transform.rotation, torus.transform.rotation, - Math.PI / 6);
     });
 
+
+    const updateWireframe = (meshes, value) => {
+        meshes.forEach(element => {
+            element.changeWireframe(value);
+        })
+    }
+
+    const updateMaterials = (meshes, value) => {
+        meshes.forEach(element => {
+            switch (value){
+                case 'basic':
+                    element.changeMaterial(new PW.BasicMaterial({}));
+                    break;
+                case 'uv':
+                    element.changeMaterial( new PW.UVMaterial({}));
+                    break;
+                case 'normal':
+                    element.changeMaterial(new PW.NormalMaterial({}));
+                    break;
+                default:
+                    break;
+            }
+
+        });
+    }
+
+    gui.add(parameters, 'material', ['basic', 'uv', 'normal']).onChange((value) => {
+        updateMaterials(spheres, value);
+    });
+
+    gui.add(parameters, 'wireframe').onChange((value) => {
+        updateWireframe(spheres, value);
+    })
 
 
     let rotate = true;
