@@ -55,14 +55,19 @@ export const createScene = async (el, onLoaded) => {
     const planes = [];
     for(let i = 0; i < numObjects; i++){
         resolution = i * 2 + 1;
+        const r = i / (numObjects - 1);
+        const g = 5 / (numObjects - 1);
+        const b = 0.0;
+        const meshColor = [r,g,b,1];
         const plane = new PW.Renderable(
             {
                 mesh: new PW.PlaneMesh({width: resolution, height: resolution, wireframe: true}),
-                material: new PW.BasicMaterial({color: [0.5, 0.5, 0.5, 1]}),
+                material: new PW.BasicMaterial({color: meshColor}),
             }
         )
         plane.transform.position[0] = (-1 + (i / (numObjects - 1)) * 2) * widthSpacing;
         plane.transform.position[1] = (-1 + (5 / (numObjects - 1)) * 2) * heightSpacing;
+        plane.meshColor = meshColor;
         planes.push(plane);
         scene.add(plane);
     }
@@ -70,14 +75,19 @@ export const createScene = async (el, onLoaded) => {
     const cubes = [];
     for(let i = 0; i < numObjects; i++){
         resolution = resolution = i * 2 + 1;
+        const r = i / (numObjects - 1);
+        const g = 4 / (numObjects - 1);
+        const b = 0.1;
+        const meshColor = [r,g,b,1];
         const cube = new PW.Renderable(
             {
                 mesh: new PW.CubeMesh({width: resolution, depth: resolution, height: resolution, wireframe: true}),
-                material: new PW.BasicMaterial({color: [0.5, 0.5, 0.5, 1]}),
+                material: new PW.BasicMaterial({color:meshColor}),
             }
         )
         cube.transform.position[0] = (-1 + (i / (numObjects - 1)) * 2) * widthSpacing;
         cube.transform.position[1] = (-1 + (4 / (numObjects - 1)) * 2) * heightSpacing;
+        cube.meshColor = meshColor;
         cubes.push(cube);
         scene.add(cube);
     }
@@ -85,19 +95,20 @@ export const createScene = async (el, onLoaded) => {
     const spheres = [];
     for(let i = 0; i < numObjects; i++){
         resolution = i * 2 + 3;
-        const r = i / numObjects;
-        const g = 3 / numObjects;
+        const r = i / (numObjects - 1);
+        const g = 3 / (numObjects - 1);
         // const b = (numObjects - 3) / numObjects;
-        const b = 0;
+        const b = 0.2;
         const meshColor = [r,g,b,1];
         const sphere = new PW.Renderable(
             {
-                mesh: new PW.SphereMesh({resolution: resolution, wireframe: false}),
+                mesh: new PW.SphereMesh({resolution: resolution, wireframe: true}),
                 material: new PW.BasicMaterial({color: meshColor}),
             }
         )
         sphere.transform.position[0] = (-1 + (i / (numObjects - 1)) * 2) * widthSpacing;
         sphere.transform.position[1] = (-1 + (3 / (numObjects - 1)) * 2) * heightSpacing;
+        sphere.meshColor = meshColor;
         spheres.push(sphere);
         scene.add(sphere);
     }
@@ -105,14 +116,19 @@ export const createScene = async (el, onLoaded) => {
     const cylinders = [];
     for(let i = 0; i < numObjects; i++){
         resolution = i * 2 + 3;
+        const r = i / (numObjects - 1);
+        const g = 2 / (numObjects - 1);
+        const b = 0.3;
+        const meshColor = [r,g,b,1];
         const cylinder = new PW.Renderable(
             {
                 mesh: new PW.CylinderMesh({width: resolution, height: resolution, wireframe: true}),
-                material: new PW.BasicMaterial({color: [0.5, 0.5, 0.5, 1]}),
+                material: new PW.BasicMaterial({color: meshColor}),
             }
         )
         cylinder.transform.position[0] = (-1 + (i / (numObjects - 1)) * 2) * widthSpacing;
         cylinder.transform.position[1] = (-1 + (2 / (numObjects - 1)) * 2) * heightSpacing;
+        cylinder.meshColor = meshColor;
         cylinder.transform.scale = vec3.fromValues(0.5, 0.5, 0.5);
         cylinders.push(cylinder);
         scene.add(cylinder);
@@ -121,14 +137,19 @@ export const createScene = async (el, onLoaded) => {
     const cones = [];
     for(let i = 0; i < numObjects; i++){
         resolution = i * 2 + 3;
+        const r = i / (numObjects - 1);
+        const g = 1 / (numObjects - 1);
+        const b = 0.4;
+        const meshColor = [r,g,b,1];
         const cone = new PW.Renderable(
             {
                 mesh: new PW.ConeMesh({width: resolution, height: resolution, wireframe: true}),
-                material: new PW.BasicMaterial({color: [0.5, 0.5, 0.5, 1]}),
+                material: new PW.BasicMaterial({color:meshColor}),
             }
         )
         cone.transform.position[0] = (-1 + (i / (numObjects - 1)) * 2) * widthSpacing;
         cone.transform.position[1] = (-1 + (1 / (numObjects - 1)) * 2) * heightSpacing;
+        cone.meshColor = meshColor;
         cones.push(cone);
         scene.add(cone);
     }
@@ -136,14 +157,19 @@ export const createScene = async (el, onLoaded) => {
     const toruses = [];
     for(let i = 0; i < numObjects; i++){
         resolution = i * 2 + 4;
+        const r = i / (numObjects - 1);
+        const g = 0 / (numObjects - 1);
+        const b = 0.5;
+        const meshColor = [r,g,b,1];
         const torus = new PW.Renderable(
             {
                 mesh: new PW.TorusMesh({tubeSubdivisions: resolution, ringSubdivisions: resolution, wireframe: true}),
-                material: new PW.BasicMaterial({color: [0.5, 0.5, 0.5, 1]}),
+                material: new PW.BasicMaterial({color:meshColor}),
             }
         )
         torus.transform.position[0] = (-1 + (i / (numObjects - 1)) * 2) * widthSpacing;
         torus.transform.position[1] = (-1 + (0 / (numObjects - 1)) * 2) * heightSpacing;
+        torus.meshColor = meshColor;
         toruses.push(torus);
         scene.add(torus);
     }
@@ -183,7 +209,7 @@ export const createScene = async (el, onLoaded) => {
         meshes.forEach(element => {
             switch (value){
                 case 'basic':
-                    element.changeMaterial(new PW.BasicMaterial({}));
+                    element.changeMaterial(new PW.BasicMaterial({color: element.meshColor}));
                     break;
                 case 'uv':
                     element.changeMaterial( new PW.UVMaterial({}));
@@ -199,11 +225,21 @@ export const createScene = async (el, onLoaded) => {
     }
 
     gui.add(parameters, 'material', ['basic', 'uv', 'normal']).onChange((value) => {
+        updateMaterials(planes, value);
+        updateMaterials(cubes, value);
         updateMaterials(spheres, value);
+        updateMaterials(cylinders, value);
+        updateMaterials(cones, value);
+        updateMaterials(toruses, value);
     });
 
     gui.add(parameters, 'wireframe').onChange((value) => {
+        updateWireframe(planes, value);
+        updateWireframe(cubes, value);
         updateWireframe(spheres, value);
+        updateWireframe(cylinders, value);
+        updateWireframe(cones, value);
+        updateWireframe(toruses, value);
     })
 
 
