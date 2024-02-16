@@ -525,3 +525,55 @@ html {
     /* left: 1600px; */
     /* left: 77%; */
 }
+
+
+
+.resume__container {
+    justify-self: center;
+    margin: 0 auto;
+    height: 100%;
+    background-color: black;
+    z-index: 1;
+    width: 100%;
+    max-width: 1500px;
+    padding: 0 50px;
+    padding-top: 100px;
+}
+
+.resume__title{
+    font-weight: 800;
+    font-size: 1em;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.resume__section__title{
+    margin-bottom: 20px;    
+}
+
+.resume__section__title h2{
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.resume__item{
+    margin-bottom: 25px;
+}
+
+.resume__item * {
+    margin-bottom: 5px;
+}
+
+.resume__item h2 {
+    font-size: 1.4em;
+    font-weight: 700;
+}
+
+.resume__list{
+    padding-left: 30px;
+}
+
+.resume__spacer{
+    height: 75px;
+}

@@ -5,6 +5,7 @@ export class OBJMesh extends Mesh {
         super(options);
         this.filePath = options.filePath || "";
         this.loadedPromise = this.init();
+        this.quadFace = false;
     }
 
     async init() {
@@ -58,7 +59,12 @@ export class OBJMesh extends Mesh {
                 }
             });
 
-            console.log(this.faces);
+            if(this.faces[0].length === 3){
+                this.quadFace = false;
+            }
+            else{
+                this.quadFace = true;
+            }
 
 
         } catch (e) {
@@ -66,17 +72,13 @@ export class OBJMesh extends Mesh {
         }
     }
 
-    
-
-    calculateTriangleVertices(){
+    calculateTriangleVerticesQuadFace(){
         this.triangleCoordinates = [];
         this.uvs = [];
         this.normals = [];
 
 
         for(let i = 0; i < this.faces.length; i++){
-
-            const currentFace = this.faces[i];
         
             //Top Triangle
             this.triangleCoordinates.push(this.vertexCoordinates[this.faces[i][0][0]]);
@@ -106,7 +108,39 @@ export class OBJMesh extends Mesh {
 
         }
 
-        console.log(this.triangleCoordinates);
+        this.triangleVertices = new Float32Array(this.triangleCoordinates.flat());
+
+        this.triangleColors = new Float32Array(
+            Array(this.triangleVertices.length).fill(1.0)
+        );
+
+
+        this.triangleUVs = new Float32Array(this.uvs.flat());
+        this.triangleNormals = new Float32Array(this.normals.flat());
+    }
+
+    calculateTriangleVerticesTriangleFace(){
+        this.triangleCoordinates = [];
+        this.uvs = [];
+        this.normals = [];
+
+
+        for(let i = 0; i < this.faces.length; i++){
+
+            this.triangleCoordinates.push(this.vertexCoordinates[this.faces[i][0][0]]);
+            this.triangleCoordinates.push(this.vertexCoordinates[this.faces[i][1][0]]);
+            this.triangleCoordinates.push(this.vertexCoordinates[this.faces[i][2][0]]);
+
+            this.uvs.push(this.uvCoordinates[this.faces[i][0][1]]);
+            this.uvs.push(this.uvCoordinates[this.faces[i][1][1]]);
+            this.uvs.push(this.uvCoordinates[this.faces[i][2][1]]);
+
+            this.normals.push(this.normalCoordinates[this.faces[i][0][2]]);
+            this.normals.push(this.normalCoordinates[this.faces[i][1][2]]);
+            this.normals.push(this.normalCoordinates[this.faces[i][2][2]]);
+
+
+        }
 
         this.triangleVertices = new Float32Array(this.triangleCoordinates.flat());
 
@@ -117,14 +151,17 @@ export class OBJMesh extends Mesh {
 
         this.triangleUVs = new Float32Array(this.uvs.flat());
         this.triangleNormals = new Float32Array(this.normals.flat());
+    }
 
-        
-        // this.triangleUVs = new Float32Array(
-        //     Array(this.triangleVertices.length / 4 * 2).fill(1.0)
-        // );
-        // this.triangleNormals = new Float32Array(
-        //     Array(this.triangleVertices.length / 4 * 3).fill(1.0)
-        // );
+    
+
+    calculateTriangleVertices(){
+        if(this.quadFace){
+            this.calculateTriangleVerticesQuadFace();
+        }
+        else{
+            this.calculateTriangleVerticesTriangleFace();
+        }
 
     }
 
@@ -172,5 +209,11 @@ export class OBJMesh extends Mesh {
         );
         this.lineUVs = new Float32Array(line_uvs.flat());
         this.lineNormals = new Float32Array(line_normals.flat());
+
+        console.log(lines.flat().length);
+        console.log(line_uvs.flat().length);
+        console.log(line_normals.flat().length);
+        console.log(lines.flat().length + line_uvs.flat().length + line_normals.flat().length)
+
     }
 }
