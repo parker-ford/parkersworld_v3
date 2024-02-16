@@ -1,5 +1,4 @@
 <script>
-	export let data;
 	import { sceneLoaded } from '../stores.js';
 	import { onMount } from 'svelte';
 	import '../style.css';
