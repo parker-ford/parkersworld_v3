@@ -23,13 +23,22 @@
 	<div class="main__container">
 		<div class="main__content">
 			<h1>Hi, I'm Parker</h1>
-			<p>
-				Welcome to my website. I'm a programmer interested in learning graphics programming. This place is
-				basically my digital sketchbook—a spot where I get to share the projects I've been working
-				on. So go ahead, take your time, and browse around. Maybe you'll find
-				something cool or even pick up a new trick or two. Enjoy your stay, and thanks for dropping
-				by.
+			<h2>and I'm addicted to programming</h2>
+			<p class = "biography__body">
+				Welcome to my website. This is where I document my learning process and get to show off whatever
+				I am currently working on. Mostly everything on here will be graphics related so __________. All my stuff is
+				interactive so scroll down to whatever seems interesting to you and mess around with it.
+				Who knows, maybe you'll learn something new. Enjoy your stay, and thanks for dropping by.
+				<br>
+				<br>
 			</p>
+			<h2>My info:</h2>
+			<ul class="main__content__links">
+					
+					<li><span role="button" tabindex="0" on:click={() => (window.location.href = "/resume")} on:keydown={() => {}}>Resume</span></li>
+					<li><span role="button" tabindex="0" on:click={() => (window.location.href = "/portfolio")} on:keydown={() => {}}>Portfolio </span></li>
+					<li><span role="button" tabindex="0" on:click={() => (window.location.href = "https://github.com/parker-ford")} on:keydown={() => {}}>Github</span></li>
+			</ul>
 
 		</div>
 		<div class="main__img--container">

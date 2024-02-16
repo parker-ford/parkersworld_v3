@@ -278,7 +278,15 @@ html {
 }
 
 .main__content h1{
-    padding-bottom: 30px;
+    padding-bottom: 22px;
+}
+
+.main__content h2{
+    font-weight: 600;
+}
+
+.main__content p{
+    padding-top: 25px;
     
 }
 
@@ -600,4 +608,32 @@ html {
 
 .portfolio__spacer{
     height: 100px;
+}
+
+.small__text{
+    font-size: .3em;
+}
+
+.biography__body{
+    font-family: 'local-opensans', sans-serif;  
+    line-height: 1.7;
+}
+
+.main__content__links{
+    font-size: 1.2em;
+    line-height: 1.5;
+    padding-left: 45px;
+    padding-top: 10px;
+    display: block;
+}
+
+.main__content__links span{
+    transition: text-shadow 0.25s ease;
+    /* display: inline-block; */
+}
+
+.main__content__links span:hover {
+    /* color: #31FB04; */
+    text-shadow: 0 0 10px #31FB04, 0 0 20px #31FB04, 0 0 30px #31FB04, 0 0 40px #31FB04;
+    cursor: pointer;
 }
