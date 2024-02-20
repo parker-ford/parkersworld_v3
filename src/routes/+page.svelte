@@ -26,7 +26,7 @@
 			<h2>and I'm addicted to programming</h2>
 			<p class = "biography__body">
 				Welcome to my website. This is where I document my learning process and get to show off whatever
-				I am currently working on. Mostly everything on here will be graphics related so __________. All my stuff is
+				I am currently working on, most of which will be graphics programming related. All my stuff is
 				interactive so scroll down to whatever seems interesting to you and mess around with it.
 				Who knows, maybe you'll learn something new. Enjoy your stay, and thanks for dropping by.
 				<br>
