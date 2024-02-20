@@ -35,9 +35,9 @@
 			<h2>My info:</h2>
 			<ul class="main__content__links">
 					
-					<li><span role="button" tabindex="0" on:click={() => (window.location.href = "/resume")} on:keydown={() => {}}>Resume</span></li>
-					<li><span role="button" tabindex="0" on:click={() => (window.location.href = "/portfolio")} on:keydown={() => {}}>Portfolio </span></li>
-					<li><span role="button" tabindex="0" on:click={() => (window.location.href = "https://github.com/parker-ford")} on:keydown={() => {}}>Github</span></li>
+					<li><span role="button" tabindex="0" on:click={() => (window.location.href = "/resume")} on:keydown={() => {}} style="text-decoration: underline;">Resume</span></li>
+					<li><span role="button" tabindex="0" on:click={() => (window.location.href = "/portfolio")} on:keydown={() => {}} style="text-decoration: underline;">Portfolio </span></li>
+					<li><span role="button" tabindex="0" on:click={() => (window.location.href = "https://github.com/parker-ford")} on:keydown={() => {}} style="text-decoration: underline;">Github</span></li>
 			</ul>
 
 		</div>
