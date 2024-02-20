@@ -24,8 +24,7 @@ struct VertexOutput {
 @vertex
 fn vertex_main(@builtin(instance_index) id: u32, 
     @location(0) position: vec4<f32>, 
-    @location(1) color: vec4<f32>,
-    @location(2) uv: vec2<f32>
+    @location(1) uv: vec2<f32>
 ) -> VertexOutput {
     var output: VertexOutput;
     output.position = transformUBO.projection * transformUBO.view * objects.models[id].model * position;

@@ -204,16 +204,20 @@ export class OBJMesh extends Mesh {
 
         this.lineVertices = new Float32Array(lines.flat());
 
-        this.lineColors = new Float32Array(
-            Array(this.lineVertices.length).fill(1.0)
-        );
-        this.lineUVs = new Float32Array(line_uvs.flat());
-        this.lineNormals = new Float32Array(line_normals.flat());
+        // this.lineUVs = new Float32Array(line_uvs.flat());
+        // this.lineNormals = new Float32Array(line_normals.flat());
 
-        console.log(lines.flat().length);
-        console.log(line_uvs.flat().length);
-        console.log(line_normals.flat().length);
-        console.log(lines.flat().length + line_uvs.flat().length + line_normals.flat().length)
+        this.lineUVs = new Float32Array(
+            Array(lines.length * 2).fill(1.0)
+        );
+        this.lineNormals = new Float32Array(
+            Array(lines.length * 3).fill(1.0)
+        );
+
+        // console.log(lines.flat().length);
+        // console.log(line_uvs.flat().length);
+        // console.log(line_normals.flat().length);
+        // console.log(lines.flat().length + line_uvs.flat().length + line_normals.flat().length)
 
     }
 }

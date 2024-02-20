@@ -24,7 +24,7 @@ export const createScene = async (el, onLoaded) => {
 
     const objMesh = new PW.OBJMesh({
         filePath: "../models/Dragon/DragonShadeSmooth.obj",
-        wireframe: true
+        wireframe: false
     });
 
     const objMesh2 = new PW.OBJMesh({
