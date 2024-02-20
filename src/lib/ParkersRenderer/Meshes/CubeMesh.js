@@ -28,7 +28,7 @@ export class CubeMesh extends Mesh {
         //Front Face
         for(let i = 0; i < this.width + 1; i++){
             for(let j = 0; j < this.height + 1; j++){
-                this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5 + j * heightInterval, -0.5, 1]);
+                this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5 + j * heightInterval, -0.5]);
                 this.uvCoordinates.push([i * widthInterval, j * heightInterval]);
                 this.normalCoordinates.push([0, 0, -1]);
             }
@@ -37,7 +37,7 @@ export class CubeMesh extends Mesh {
         //Back Face
         for(let i = this.width; i >= 0; i--){
             for(let j = 0; j < this.height + 1; j++){
-                this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5 + j * heightInterval, 0.5, 1]);
+                this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5 + j * heightInterval, 0.5]);
                 this.uvCoordinates.push([1 - (i * widthInterval), j * heightInterval]);
                 this.normalCoordinates.push([0, 0, 1]);
             }
@@ -46,7 +46,7 @@ export class CubeMesh extends Mesh {
         //Right Face
         for(let i = 0; i < this.height + 1; i++){
             for(let j = 0; j < this.depth + 1; j++){
-                this.vertexCoordinates.push([ 0.5, -0.5 + i * heightInterval, -0.5 + j * depthInterval, 1]);
+                this.vertexCoordinates.push([ 0.5, -0.5 + i * heightInterval, -0.5 + j * depthInterval]);
                 this.uvCoordinates.push([ j * heightInterval, i * widthInterval]);
                 this.normalCoordinates.push([1, 0, 0]);
             }
@@ -55,7 +55,7 @@ export class CubeMesh extends Mesh {
         //Left Face
         for(let i = this.height; i >= 0; i--){
             for(let j = 0; j < this.depth + 1; j++){
-                this.vertexCoordinates.push([ -0.5, -0.5 + i * heightInterval, -0.5 + j * depthInterval, 1]);
+                this.vertexCoordinates.push([ -0.5, -0.5 + i * heightInterval, -0.5 + j * depthInterval]);
                 this.uvCoordinates.push([1 - (j * heightInterval), i * widthInterval]);
                 this.normalCoordinates.push([-1, 0, 0]);
             }
@@ -64,7 +64,7 @@ export class CubeMesh extends Mesh {
         //Top Face
         for(let i = 0; i < this.width + 1; i++){
             for(let j = 0; j < this.depth + 1; j++){
-                this.vertexCoordinates.push([ -0.5 + i * widthInterval, 0.5, -0.5 + j * depthInterval, 1]);
+                this.vertexCoordinates.push([ -0.5 + i * widthInterval, 0.5, -0.5 + j * depthInterval]);
                 this.uvCoordinates.push([i * widthInterval, j * heightInterval]);
                 this.normalCoordinates.push([0, 1, 0]);
             }
@@ -73,7 +73,7 @@ export class CubeMesh extends Mesh {
         //Bottom Face
         for(let i = this.width; i >= 0; i--){
             for(let j = 0; j < this.depth + 1; j++){
-                this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5, -0.5 + j * depthInterval, 1]);
+                this.vertexCoordinates.push([ -0.5 + i * widthInterval, -0.5, -0.5 + j * depthInterval]);
                 this.uvCoordinates.push([i * widthInterval, 1 - (j * heightInterval)]);
                 this.normalCoordinates.push([0, -1, 0]);
             }

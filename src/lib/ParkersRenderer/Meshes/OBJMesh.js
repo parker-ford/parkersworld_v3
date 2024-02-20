@@ -41,7 +41,7 @@ export class OBJMesh extends Mesh {
             lines.forEach((line) => {
                 const tokens = line.split(' ');
                 if(tokens[0] === 'v'){
-                    this.vertexCoordinates.push([parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3]), 1]);
+                    this.vertexCoordinates.push([parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3])]);
                 }
                 if(tokens[0] === 'vt'){
                     this.uvCoordinates.push([parseFloat(tokens[1]), parseFloat(tokens[2])]);

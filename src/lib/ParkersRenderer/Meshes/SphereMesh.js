@@ -32,7 +32,7 @@ export class SphereMesh extends Mesh {
                 const x = Math.sin(Math.PI * i / this.resolution) * Math.cos(2 * Math.PI * j / this.resolution) * 0.5;
                 const z = Math.sin(Math.PI * i / this.resolution) * Math.sin(2 * Math.PI * j / this.resolution) * 0.5;
                 const y = Math.cos(Math.PI * i / this.resolution) * 0.5;
-                this.vertexCoordinates.push([x, y, z, 1]);
+                this.vertexCoordinates.push([x, y, z]);
 
                 this.uvCoordinates.push([(j * verticalInterval), 1 - (i * verticalInterval)]);
                 const normalVec = vec3.normalize(vec3.create(), vec3.fromValues(x, y, z));

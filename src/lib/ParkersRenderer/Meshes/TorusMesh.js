@@ -41,7 +41,7 @@ export class TorusMesh extends Mesh {
                 const x = Math.cos(theta) * (outerRadius + Math.cos(phi) * this.innerRadius);
                 const z = Math.sin(theta) * (outerRadius + Math.cos(phi) * this.innerRadius);
                 const y = Math.sin(phi) * this.innerRadius;
-                this.vertexCoordinates.push([x, y, z, 1]);
+                this.vertexCoordinates.push([x, y, z]);
 
                 this.uvCoordinates.push([ i / this.tubeSubdivisions, (j / this.ringSubdivisions + 0.5) % 1 ]);
 

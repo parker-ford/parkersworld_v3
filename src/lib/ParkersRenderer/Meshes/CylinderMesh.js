@@ -31,7 +31,7 @@ export class CylinderMesh extends Mesh {
                 const x = r * Math.cos(2 * Math.PI * j / this.width);
                 const y = -1 + i * heightInterval * 2;
                 const z = r * Math.sin(2 * Math.PI * j / this.width);
-                this.vertexCoordinates.push([x, y, z, 1]);
+                this.vertexCoordinates.push([x, y, z]);
                 
                 this.uvCoordinates.push([j * widthInterval, (i * heightInterval)]);
 
@@ -41,12 +41,12 @@ export class CylinderMesh extends Mesh {
         }
 
         //Top
-        this.vertexCoordinates.push([0, 1, 0, 1]);
+        this.vertexCoordinates.push([0, 1, 0]);
         this.uvCoordinates.push([0.5, 0.5]);
         this.normalCoordinate.push([0, 1, 0]);
         
         //Bottom
-        this.vertexCoordinates.push([0, -1, 0, 1]);
+        this.vertexCoordinates.push([0, -1, 0]);
         this.uvCoordinates.push([0.5, 0.5]);
         this.normalCoordinate.push([0, -1, 0]);
 
@@ -126,10 +126,6 @@ export class CylinderMesh extends Mesh {
         }
 
         this.triangleVertices = new Float32Array(this.triangleCoordinates.flat());
-
-        this.triangleColors = new Float32Array(
-            Array(this.triangleVertices.length).fill(1.0)
-        );
         this.triangleUVs = new Float32Array(this.uvs.flat());
         this.triangleNormals = new Float32Array(this.normals.flat());   
 
@@ -173,10 +169,6 @@ export class CylinderMesh extends Mesh {
         }
 
         this.lineVertices = new Float32Array(lines.flat());
-
-        this.lineColors = new Float32Array(
-            Array(this.lineVertices.length).fill(1.0)
-        );
         this.lineUVs = new Float32Array(line_uvs.flat());
         this.lineNormals = new Float32Array(line_normals.flat());
     }

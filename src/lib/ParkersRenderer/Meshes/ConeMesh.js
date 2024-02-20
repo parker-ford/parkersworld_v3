@@ -32,7 +32,7 @@ export class ConeMesh extends Mesh {
                 const x = r * Math.cos(2 * Math.PI * j / this.width);
                 const y = -0.5 + i * heightInterval;
                 const z = r * Math.sin(2 * Math.PI * j / this.width);
-                this.vertexCoordinates.push([x, y, z, 1]);
+                this.vertexCoordinates.push([x, y, z]);
 
                 this.uvCoordinates.push([j * heightInterval, (i * heightInterval)]);
 
@@ -47,7 +47,7 @@ export class ConeMesh extends Mesh {
         }
 
         //Bot
-        this.vertexCoordinates.push([0, -0.5, 0, 1]);
+        this.vertexCoordinates.push([0, -0.5, 0]);
         this.uvCoordinates.push([0.5, 0.5]);
         this.normalCoordinates.push([0, -1, 0]);
 
