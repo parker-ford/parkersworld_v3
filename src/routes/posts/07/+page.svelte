@@ -2,8 +2,8 @@
     export const metadata = {
         title : "Meshes and Materials",
         date : "02/13/2024",
-        image_static: 'images/thumbnails/placeholder/placeholder.jpg',
-		image: 'images/thumbnails/placeholder/placeholder.jpg',
+        image_static: 'images/thumbnails/meshes/meshes.jpg',
+		image: 'images/thumbnails/meshes/meshes.gif',
         logo: 'images/logos/webGPULogo.png',
     }
 </script>
