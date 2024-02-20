@@ -143,12 +143,6 @@ export class OBJMesh extends Mesh {
         }
 
         this.triangleVertices = new Float32Array(this.triangleCoordinates.flat());
-
-        this.triangleColors = new Float32Array(
-            Array(this.triangleVertices.length).fill(1.0)
-        );
-
-
         this.triangleUVs = new Float32Array(this.uvs.flat());
         this.triangleNormals = new Float32Array(this.normals.flat());
     }
@@ -204,15 +198,15 @@ export class OBJMesh extends Mesh {
 
         this.lineVertices = new Float32Array(lines.flat());
 
-        // this.lineUVs = new Float32Array(line_uvs.flat());
-        // this.lineNormals = new Float32Array(line_normals.flat());
+        this.lineUVs = new Float32Array(line_uvs.flat());
+        this.lineNormals = new Float32Array(line_normals.flat());
 
-        this.lineUVs = new Float32Array(
-            Array(lines.length * 2).fill(1.0)
-        );
-        this.lineNormals = new Float32Array(
-            Array(lines.length * 3).fill(1.0)
-        );
+        // this.lineUVs = new Float32Array(
+        //     Array(lines.length * 2).fill(1.0)
+        // );
+        // this.lineNormals = new Float32Array(
+        //     Array(lines.length * 3).fill(1.0)
+        // );
 
         // console.log(lines.flat().length);
         // console.log(line_uvs.flat().length);

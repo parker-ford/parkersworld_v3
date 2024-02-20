@@ -1,9 +1,30 @@
 import * as PW from '$lib/ParkersRenderer'
 import { quat } from 'gl-matrix';
+import GUI from 'lil-gui'; 
+
 export const createScene = async (el, onLoaded) => {
 
     el.width = Math.min(document.body.clientWidth, 1400);
     el.height = Math.min(document.body.clientWidth, 1400) * .5;
+
+    const gui = new GUI()
+    gui.domElement.id = 'gui';
+
+    const parameters= {
+        wireframe: false,
+        model: 'bunny'
+    }
+
+    const alignGUIWithCanvas = () => {
+        const canvasRect = el.getBoundingClientRect();
+        const guiRect = gui.domElement.getBoundingClientRect();
+        gui.domElement.style.position = 'absolute';
+        gui.domElement.style.top = `222px`;
+        gui.domElement.style.left = `${canvasRect.right - guiRect.width - 2}px`;
+        console.log("testing gui align");
+        console.log(guiRect)
+    };
+    alignGUIWithCanvas();
 
     const renderer = new PW.Renderer(el);
     if (! await renderer.init()) {
@@ -22,49 +43,73 @@ export const createScene = async (el, onLoaded) => {
     scene.add(camera);
     camera.transform.position[2] = -5;
 
-    const objMesh = new PW.OBJMesh({
+    const dragonMesh = new PW.OBJMesh({
         filePath: "../models/Dragon/DragonShadeSmooth.obj",
         wireframe: false
     });
+    const dragonTransform = new PW.Transform();
+    dragonTransform.scale = [10,10,10];
+    dragonTransform.position[1] = -1;
+    quat.rotateX(dragonTransform.rotation, dragonTransform.rotation, Math.PI / 2);
 
-    const objMesh2 = new PW.OBJMesh({
-        filePath: "../models/Cube/Cube.obj"
+    const armadilloMesh = new PW.OBJMesh({
+        filePath: "../models/Armadillo/Armadillo.obj",
+        wireframe: false
     });
+    const armadilloTransform = new PW.Transform();
+    armadilloTransform.scale = [0.01,0.01,0.01];
 
-    await objMesh2.loaded();
-    await objMesh.loaded();
+    const bunnyMesh = new PW.OBJMesh({
+        filePath: "../models/StanfordBunny/StanfordBunnyShadeSmooth.obj",
+        wireframe: false
+    });
+    const bunnyTransform = new PW.Transform();
+    bunnyTransform.position = [0,-1,0];
+    bunnyTransform.scale = [8,8,8];
+    quat.rotateY(bunnyTransform.rotation, bunnyTransform.rotation, Math.PI );
+
+
+    await dragonMesh.loaded();
+    await armadilloMesh.loaded();
+    await bunnyMesh.loaded();
     onLoaded();
 
-    // const objMesh = new PW.CubeMesh({
-
-    // });
-
     const obj = new PW.Renderable({
-        mesh: objMesh,
+        mesh: bunnyMesh,
         material: new PW.NormalMaterial({color: [1, 0, 0, 1]})
     });
-    obj.transform.scale = [10,10,10]
-    obj.transform.position[1] = -1;
-    quat.rotateX(obj.transform.rotation, obj.transform.rotation, Math.PI / 2);
+    obj.transform = bunnyTransform;
+    
     scene.add(obj)
-
-    const obj2 = new PW.Renderable({
-        mesh: objMesh2,
-        material: new PW.NormalMaterial({color: [0, 1, 0, 1]})
-    });
-    //scene.add(obj2);
 
     let lastFrameTime = performance.now();
     let fps = 0;
 
+    gui.add(parameters, 'model', ['bunny', 'armadillo', 'dragon']).onChange((value) => {
+        if(value === 'bunny'){
+            obj.mesh = bunnyMesh;
+            obj.transform = bunnyTransform;
+        }
+        if(value === 'armadillo'){
+            obj.mesh = armadilloMesh;
+            obj.transform = armadilloTransform;
+        }
+        if(value === 'dragon'){
+            obj.mesh = dragonMesh;
+            obj.transform = dragonTransform;
+        }
+    })
+
+    gui.add(parameters, 'wireframe').onChange((value) => {
+        obj.changeWireframe(value);
+    });
+
     function frame() {
 
-        const currentTime = performance.now();
-        const deltaTime = currentTime - lastFrameTime;
-        lastFrameTime = currentTime;
-        fps = 1 / (deltaTime / 1000);
-
-        //console.log(`FPS: ${fps}`);
+        // const currentTime = performance.now();
+        // const deltaTime = currentTime - lastFrameTime;
+        // lastFrameTime = currentTime;
+        // fps = 1 / (deltaTime / 1000);
 
         //quat.rotateY(obj.transform.rotation, obj.transform.rotation, PW.Time.deltaTime );
 
