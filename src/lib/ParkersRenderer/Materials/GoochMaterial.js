@@ -1,9 +1,9 @@
 import { vec4 } from 'gl-matrix';
 import { Material } from './Material.js';
 import { Renderer } from '../Renderer.js';
-import basicMaterialShader from './shaders/basicMaterialShader.wgsl?raw';
+import goochShader from './shaders/goochShader.wgsl?raw';
 
-export class BasicMaterial extends Material {
+export class GoochMaterial extends Material {
     static pipelines = {};
     static bindGroupLayout = null;
     static colorBuffer = null;
@@ -27,7 +27,6 @@ export class BasicMaterial extends Material {
         this.createBindGroup();
     }
 
-
     updateMaterialBuffers(){
         this.createMaterialBuffers();
         this.createBindGroup();
@@ -35,7 +34,7 @@ export class BasicMaterial extends Material {
 
     createMaterialBuffers(){
         this.colorBuffer = Renderer.instance.getDevice().createBuffer({
-            label: 'basic-material-color-buffer' + this.id,
+            label: this.constructor.name + '-color-buffer' + this.id,
             size: 16,
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
             mappedAtCreation: true
@@ -44,11 +43,9 @@ export class BasicMaterial extends Material {
         this.colorBuffer.unmap();
     }
 
-
-
     createBindGroup(){
         this.bindGroup = Renderer.instance.getDevice().createBindGroup({
-            label: 'basic-material-bind-group' + this.id,
+            label: this.constructor.name + '-bind-group' + this.id,
             layout: this.constructor.bindGroupLayout,
             entries: [
                 {
@@ -105,7 +102,7 @@ export class BasicMaterial extends Material {
             bindGroupLayouts: [this.constructor.bindGroupLayout]
         })
 
-        const shaderModule = Renderer.instance.getDevice().createShaderModule({ code: basicMaterialShader });
+        const shaderModule = Renderer.instance.getDevice().createShaderModule({ code: goochShader });
         const pipeline = Renderer.instance.getDevice().createRenderPipeline({
             label: 'basic-material-pipeline',
             layout: pipelineLayout,
