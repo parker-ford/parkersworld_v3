@@ -66,13 +66,14 @@ export const createScene = async (el, onLoaded) => {
     const light = new PW.DirectionalLight({color: [1,1,1,1]});
     light.transform.position = [1,2,0];
     scene.add(light);
-    // light.transform.setUpVector([1,0,0])
+
+    // light.transform.setUpVector([1,1,0]);
 
     const sphere = new PW.Renderable({
         mesh: new PW.SphereMesh({radius: 0.1, wireframe: false}),
         material: new PW.BasicMaterial({color: [1,0,0,1]})
     });
-    // scene.add(sphere);
+    scene.add(sphere);
 
 
     // gui.addColor(parameters, 'color').onChange((value) => {

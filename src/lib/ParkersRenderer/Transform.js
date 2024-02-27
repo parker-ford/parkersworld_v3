@@ -44,8 +44,11 @@ export class Transform {
     }
 
     setUpVector(newUp){
+        this.up = vec3.fromValues(0,1,0);
         vec3.normalize(newUp, newUp);
         quat.rotationTo(this.rotation, this.up, newUp);
+        vec3.copy(this.up, newUp);
+        // this.up = newUp;
     }
 
     updateDirectionVectors(){
@@ -55,7 +58,7 @@ export class Transform {
     }
 
     update(){
-        this.updateTRS();
         this.updateDirectionVectors();
+        this.updateTRS();
     }
 }

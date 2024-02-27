@@ -9,7 +9,7 @@ export class DirectionalLight extends Light {
         super();
         this.transform = new Transform({});
         // this.ligthDir = vec3.create();
-        this.mesh = new CylinderMesh({radius: 0.1, height: 0.5, wireframe: true});
+        this.mesh = new CylinderMesh({width: 12, wireframe: true});
         this.color = options.color || [1, 1, 1, 1];
         this.material = new BasicMaterial({color: this.color});
         this.material.init({
@@ -25,12 +25,13 @@ export class DirectionalLight extends Light {
             this.ligthDir[1] = 1;
         }
         this.ligthDir = vec3.normalize(this.ligthDir, this.ligthDir);
+        this.transform.setUpVector(this.ligthDir);
     }
 
 
     update(){
-        this.transform.update();
         this.updateLightDir();
+        this.transform.update();
     }
 
 }
