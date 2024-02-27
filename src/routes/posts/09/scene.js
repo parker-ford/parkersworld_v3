@@ -64,7 +64,7 @@ export const createScene = async (el, onLoaded) => {
     // obj.transform = bunnyTransform;
     scene.add(obj);
 
-    const light = new PW.DirectionalLight({color: [1,1,1,0]});
+    const light = new PW.DirectionalLight({color: [0,0,1,1]});
     light.transform.position = [1,2,0];
     scene.add(light);
 
