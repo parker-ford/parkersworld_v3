@@ -103,6 +103,11 @@ export const createScene = async (el, onLoaded) => {
     scene.add(pointLight2);
 
 
+    const spotLight = new PW.SpotLight({color: [1,1,1,1]});
+    spotLight.transform.position = [0,2,0];
+    scene.add(spotLight);
+
+
     // gui.addColor(parameters, 'color').onChange((value) => {
     //     let r = (value & 0xff0000) >> 16;
     //     let g = (value & 0x00ff00) >> 8;
