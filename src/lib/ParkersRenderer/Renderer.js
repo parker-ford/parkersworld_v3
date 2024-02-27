@@ -155,6 +155,7 @@ export class Renderer {
         this.device.queue.writeBuffer(this.uniformBuffer, 64, camera.projectionMatrix);
 
         //Light Data
+        console.log(scene.directional_light_data);
         this.device.queue.writeBuffer(this.directionalLightBuffer, 0, scene.directional_light_data, 0, scene.directional_light_data.length);
 
         const commandEncoder = this.device.createCommandEncoder();

@@ -44,10 +44,15 @@ fn vertex_main(@builtin(instance_index) id: u32,
 
 @fragment
 fn fragment_main(fragData: VertexOutput) -> @location(0) vec4<f32>{
-    var ligtCol = vec4<f32>(1.0, 1.0, 1.0, 1.0);
+
+    // return vec4<f32>(abs(directionalLights.lights[0].direction), 1.0);
+    return vec4<f32>(directionalLights.lights[0].color.xyz, 1.0);
+
+
+    var ligtCol: vec4<f32> = directionalLights.lights[0].color;
     // var lightDir: vec3<f32> = normalize(vec3<f32>(-1.0, 2.0, 0.0));
     var lightDir: vec3<f32> = normalize(directionalLights.lights[0].direction);
-    var attenuation: f32 = dot(lightDir, fragData.normal);
+    var attenuation: f32 = dot(-lightDir, fragData.normal);
     var res: vec3<f32> = color.xyz * ligtCol.xyz * attenuation;
     return vec4<f32>(res, 1.0);
 }

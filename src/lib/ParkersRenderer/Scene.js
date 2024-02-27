@@ -64,11 +64,16 @@ export class Scene {
         this.directional_lights.forEach(light => {
             for(var i = 0; i < 3; i++){
                 this.directional_light_data[7 * directionalLightOffset + i] = light.lightDir[i];
+                //console.log(light);
+                // console.log(light.lightDir)
+                // this.directional_light_data[7 * directionalLightOffset + i] = 1.0;
             }
             for(var i = 0; i < 4; i++){
                 this.directional_light_data[7 * directionalLightOffset + 3 + i] = light.color[i];
+                // this.directional_light_data[7 * directionalLightOffset + 3 + i] = 1.0;
             }
             directionalLightOffset++;
+            // console.log(directionalLightOffset)
         });
 
         this.print = false;

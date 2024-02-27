@@ -57,24 +57,16 @@ export const createScene = async (el, onLoaded) => {
     onLoaded();
     
     const obj = new PW.Renderable({
-        mesh: bunnyMesh,
-        material: new PW.BasicLitMaterial({})
+        // mesh: bunnyMesh,
+        mesh: new PW.SphereMesh({resolution: 32}),
+        material: new PW.BasicLitMaterial({color: [1,1,1,1]})
     });
-    obj.transform = bunnyTransform;
+    // obj.transform = bunnyTransform;
     scene.add(obj);
 
-    const light = new PW.DirectionalLight({color: [1,1,1,1]});
+    const light = new PW.DirectionalLight({color: [1,1,1,0]});
     light.transform.position = [1,2,0];
     scene.add(light);
-
-    // light.transform.setUpVector([1,1,0]);
-
-    const sphere = new PW.Renderable({
-        mesh: new PW.SphereMesh({radius: 0.1, wireframe: false}),
-        material: new PW.BasicMaterial({color: [1,0,0,1]})
-    });
-    scene.add(sphere);
-
 
     // gui.addColor(parameters, 'color').onChange((value) => {
     //     let r = (value & 0xff0000) >> 16;
