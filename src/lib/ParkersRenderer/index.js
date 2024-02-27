@@ -15,6 +15,7 @@ export * from './Materials/BasicMaterial.js'
 export * from './Materials/UVMaterial.js'
 export * from './Materials/NormalMaterial.js'
 export * from './Materials/GoochMaterial.js'
+export * from './Materials/BasicLitMaterial.js'
 
 //Meshes
 export * from './Meshes/PlaneMesh.js'
@@ -24,3 +25,6 @@ export * from './Meshes/CylinderMesh.js'
 export * from './Meshes/TorusMesh.js'
 export * from './Meshes/ConeMesh.js'
 export * from './Meshes/OBJMesh.js'
+
+//Lights
+export * from './Lights/DirectionalLight.js'

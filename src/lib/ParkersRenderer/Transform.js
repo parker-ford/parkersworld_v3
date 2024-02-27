@@ -43,6 +43,11 @@ export class Transform {
         mat4.invert(this.TRS_I_T, this.TRS_I_T);
     }
 
+    setUpVector(newUp){
+        vec3.normalize(newUp, newUp);
+        quat.rotationTo(this.rotation, this.up, newUp);
+    }
+
     updateDirectionVectors(){
         vec3.transformQuat(this.up, vec3.fromValues(0,1,0), this.rotation);
         vec3.transformQuat(this.forward, vec3.fromValues(0,0,1), this.rotation);

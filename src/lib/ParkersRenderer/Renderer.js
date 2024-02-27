@@ -1,5 +1,6 @@
 import { Scene } from "./Scene";
 import { Renderable } from "./Renderable.js";
+import { Light } from "./Lights/Light.js";
 
 export class Renderer {
 
@@ -19,6 +20,7 @@ export class Renderer {
         this.context = null;
         this.commandBuffers = [];
         this.renderFuncrions = [];
+        this.viewLightHelpers = true;
         
         //DEBUGGING
         this.printOD = true;
@@ -169,13 +171,15 @@ export class Renderer {
         this.device.queue.submit([commandEncoder.finish()]);
     }
 
-    renderObject(renderPass, element, count) {
-        switch (element.constructor) {
-            case Renderable:
-                this.renderRenderable(renderPass, element, count);
-                break;
-            default:
-                //console.log("non renderable object in scene");
+    renderObject(renderPass, element) {
+        if(element instanceof Renderable){
+            this.renderRenderable(renderPass, element);
+        }
+        else if(element instanceof Light){
+            this.renderLightHelpers(renderPass, element);
+        }
+        else{
+            // console.log("non renderable object in scene: " + element.constructor.name);
         }
     }
 
@@ -184,6 +188,16 @@ export class Renderer {
         renderPass.setVertexBuffer(0, element.mesh.vertexBuffer);
         renderPass.setBindGroup(0, element.material.bindGroup);
         renderPass.draw(element.mesh.getVertexCount(), 1, 0, Renderer.drawnObjects)
+        Renderer.drawnObjects++;
+    }
+
+    renderLightHelpers(renderPass, element) {
+        if(this.viewLightHelpers){
+            renderPass.setPipeline(element.material.getPipeline(element.material.topology));
+            renderPass.setVertexBuffer(0, element.mesh.vertexBuffer);
+            renderPass.setBindGroup(0, element.material.bindGroup);
+            renderPass.draw(element.mesh.getVertexCount(), 1, 0, Renderer.drawnObjects)
+        }
         Renderer.drawnObjects++;
     }
 }
