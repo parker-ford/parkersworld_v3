@@ -27,7 +27,7 @@ struct PointLightData {
     intensity: f32,
     color: vec4<f32>,
     falloff: f32,
-    _padding: vec3<f32>
+    // _padding: vec3<f32>
 };
 
 struct PointLightArray {
@@ -105,7 +105,7 @@ fn calculate_point_light(normal: vec3<f32>, world_position: vec3<f32>) -> vec4<f
 @fragment
 fn fragment_main(fragData: VertexOutput) -> @location(0) vec4<f32>{
 
-    // return vec4<f32>(abs(pointLights.lights[0].falloff), 0, 0, 1.0);
+    // return vec4<f32>(abs(pointLights.lights[1].position[2]), 0, 0, 1.0);
 
     var directional_light = calculate_directional_light(fragData.normal);
     var point_light = calculate_point_light(fragData.normal, fragData.world_position);
