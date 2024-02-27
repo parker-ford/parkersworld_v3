@@ -65,6 +65,12 @@ export class BasicLitMaterial extends Material {
                     resource: {
                         buffer: this.colorBuffer
                     }
+                },
+                {
+                    binding: 3,
+                    resource: {
+                        buffer: Renderer.instance.directionalLightBuffer
+                    }
                 }
             ]
         });
@@ -90,6 +96,14 @@ export class BasicLitMaterial extends Material {
                     binding: 2,
                     visibility: GPUShaderStage.FRAGMENT,
                     buffer: {type: 'uniform'}
+                },
+                {
+                    binding: 3,
+                    visibility: GPUShaderStage.FRAGMENT,
+                    buffer: {
+                        type: 'read-only-storage',
+                        hasDynamicOffset: false
+                    }
                 }
             ]
         });

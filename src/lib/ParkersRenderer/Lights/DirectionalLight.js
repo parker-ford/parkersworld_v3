@@ -8,10 +8,10 @@ export class DirectionalLight extends Light {
     constructor(options) {
         super();
         this.transform = new Transform({});
-        // this.ligthDir = vec3.create();
         this.mesh = new CylinderMesh({width: 12, wireframe: true});
         this.color = options.color || [1, 1, 1, 1];
         this.material = new BasicMaterial({color: this.color});
+        this.lightDir = vec3.fromValues(0,0,0);
         this.material.init({
             vertexBufferDescriptors: this.mesh.vertexBufferDescriptors,
             wireframe: this.mesh.wireframe

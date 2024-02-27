@@ -115,6 +115,11 @@ export class Renderer {
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
 
+        this.directionalLightBuffer = this.device.createBuffer({
+            size: (12 + 16) * 8, //12 for direction, 16 for color, total of 8,
+            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+        });
+
     }
 
     async init() {
@@ -148,6 +153,9 @@ export class Renderer {
         this.device.queue.writeBuffer(this.objectsBuffer, 0, scene.object_data, 0, scene.object_data.length);
         this.device.queue.writeBuffer(this.uniformBuffer, 0, camera.viewMatrix);
         this.device.queue.writeBuffer(this.uniformBuffer, 64, camera.projectionMatrix);
+
+        //Light Data
+        this.device.queue.writeBuffer(this.directionalLightBuffer, 0, scene.directional_light_data, 0, scene.directional_light_data.length);
 
         const commandEncoder = this.device.createCommandEncoder();
         const renderPassDescriptor = {

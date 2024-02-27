@@ -1,10 +1,15 @@
 import {PerspectiveCamera} from './PerspectiveCamera.js';
+import {Light} from './Lights/Light.js';
+import { DirectionalLight } from './Lights/DirectionalLight.js';
 
 export class Scene {
     constructor() {
         this.objects = [];
+        this.directional_lights = [];
         this.object_count = 0;
         this.object_data = new Float32Array();
+        this.directional_light_data = new Float32Array();
+        this.directional_light_count = 0;
 
         //Debug
         this.print = false;
@@ -16,6 +21,11 @@ export class Scene {
         if(object.transform && !(object instanceof PerspectiveCamera)){
             this.object_count++;
             this.object_data = new Float32Array(this.object_data.length + 32);
+        }
+        if(object instanceof DirectionalLight){
+            this.directional_lights.push(object);
+            this.directional_light_count++;
+            this.directional_light_data = new Float32Array(this.directional_light_data.length + 7);
         }
     }
 
@@ -49,6 +59,18 @@ export class Scene {
                 transformOffset++;
             }
         });
+
+        var directionalLightOffset = 0;
+        this.directional_lights.forEach(light => {
+            for(var i = 0; i < 3; i++){
+                this.directional_light_data[7 * directionalLightOffset + i] = light.lightDir[i];
+            }
+            for(var i = 0; i < 4; i++){
+                this.directional_light_data[7 * directionalLightOffset + 3 + i] = light.color[i];
+            }
+            directionalLightOffset++;
+        });
+
         this.print = false;
     }
 }
