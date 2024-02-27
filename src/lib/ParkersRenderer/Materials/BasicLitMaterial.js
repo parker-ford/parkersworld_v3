@@ -71,6 +71,12 @@ export class BasicLitMaterial extends Material {
                     resource: {
                         buffer: Renderer.instance.directionalLightBuffer
                     }
+                },
+                {
+                    binding: 4,
+                    resource: {
+                        buffer: Renderer.instance.pointLightBuffer
+                    }
                 }
             ]
         });
@@ -99,6 +105,14 @@ export class BasicLitMaterial extends Material {
                 },
                 {
                     binding: 3,
+                    visibility: GPUShaderStage.FRAGMENT,
+                    buffer: {
+                        type: 'read-only-storage',
+                        hasDynamicOffset: false
+                    }
+                },
+                {
+                    binding: 4,
                     visibility: GPUShaderStage.FRAGMENT,
                     buffer: {
                         type: 'read-only-storage',

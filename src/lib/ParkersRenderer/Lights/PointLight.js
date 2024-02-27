@@ -19,6 +19,7 @@ export class PointLight extends Light {
         });
         this.transform = new Transform({});
         this.transform.scale = vec3.fromValues(0.3, 0.3, 0.3);
+        this.fallOff = options.fallOff || 1;
     }
 
     update(){

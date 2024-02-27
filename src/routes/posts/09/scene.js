@@ -88,8 +88,9 @@ export const createScene = async (el, onLoaded) => {
     light3.transform.position = [0,3,0];
     scene.add(light3);
 
-    const pointLight = new PW.PointLight({color: [1,1,1,1]});
+    const pointLight = new PW.PointLight({color: [1,0,0,1]});
     pointLight.transform.position = [1,1,0];
+    pointLight.fallOff = 3;
     scene.add(pointLight);
 
     // gui.addColor(parameters, 'color').onChange((value) => {

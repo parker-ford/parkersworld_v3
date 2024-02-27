@@ -1,15 +1,19 @@
 import {PerspectiveCamera} from './PerspectiveCamera.js';
 import {Light} from './Lights/Light.js';
 import { DirectionalLight } from './Lights/DirectionalLight.js';
+import { PointLight } from './Lights/PointLight.js';
 
 export class Scene {
     constructor() {
         this.objects = [];
         this.directional_lights = [];
+        this.point_lights = [];
         this.object_count = 0;
         this.object_data = new Float32Array();
         this.directional_light_data = new Float32Array();
+        this.point_light_data = new Float32Array();
         this.directional_light_count = 0;
+        this.point_light_count = 0;
 
         //Debug
         this.print = false;
@@ -26,6 +30,11 @@ export class Scene {
             this.directional_lights.push(object);
             this.directional_light_count++;
             this.directional_light_data = new Float32Array(this.directional_light_data.length + 8);
+        }
+        if(object instanceof PointLight){
+            this.point_lights.push(object);
+            this.point_light_count++;
+            this.point_light_data = new Float32Array(this.point_light_data.length + 12);
         }
     }
 
@@ -64,18 +73,26 @@ export class Scene {
         this.directional_lights.forEach(light => {
             for(var i = 0; i < 3; i++){
                 this.directional_light_data[8 * directionalLightOffset + i] = light.lightDir[i];
-                //console.log(light);
-                // console.log(light.lightDir)
-                // this.directional_light_data[7 * directionalLightOffset + i] = 1.0;
             }
             this.directional_light_data[8 * directionalLightOffset + 3] = light.intensity;
             for(var i = 0; i < 4; i++){
                 this.directional_light_data[8 * directionalLightOffset + 4 + i] = light.color[i];
-                // this.directional_light_data[7 * directionalLightOffset + 3 + i] = 1.0;
             }
             directionalLightOffset++;
-            // console.log(directionalLightOffset)
         });
+
+        var pointLightOffset = 0;
+        this.point_lights.forEach(light => {
+            for(var i = 0; i < 3; i++){
+                this.point_light_data[12 * pointLightOffset + i] = light.transform.position[i];
+            }
+            this.point_light_data[12 * pointLightOffset + 3] = light.intensity;
+            for(var i = 0; i < 4; i++){
+                this.point_light_data[12 * pointLightOffset + 4 + i] = light.color[i];
+            }
+            this.point_light_data[12 * pointLightOffset + 8] = light.fallOff;
+            pointLightOffset++;
+        })
 
         this.print = false;
     }
