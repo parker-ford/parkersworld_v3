@@ -64,9 +64,29 @@ export const createScene = async (el, onLoaded) => {
     // obj.transform = bunnyTransform;
     scene.add(obj);
 
+    const plane = new PW.Renderable({
+        mesh: new PW.PlaneMesh({width: 10, height: 10}),
+        material: new PW.BasicLitMaterial({color: [1,1,1,1]})
+    });
+    plane.transform.position = [0,-0.5,0];
+    plane.transform.scale = [10,10,10];
+    scene.add(plane);
+    quat.rotateX(plane.transform.rotation, plane.transform.rotation, -Math.PI / 2);
+
     const light = new PW.DirectionalLight({color: [0,0,1,1]});
-    light.transform.position = [1,2,0];
+    light.intensity = 1.0;
+    light.transform.position = [3,0,0];
     scene.add(light);
+    
+    const light2 = new PW.DirectionalLight({color: [1,0,0,1]});
+    light2.intensity = 1.0;
+    light2.transform.position = [-3,0,0];
+    scene.add(light2);
+
+    const light3 = new PW.DirectionalLight({color: [0,1,0,1]});
+    light3.intensity = 1.0;
+    light3.transform.position = [0,3,0];
+    scene.add(light3);
 
     // gui.addColor(parameters, 'color').onChange((value) => {
     //     let r = (value & 0xff0000) >> 16;

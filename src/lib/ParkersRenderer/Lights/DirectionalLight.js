@@ -8,7 +8,8 @@ export class DirectionalLight extends Light {
     constructor(options) {
         super();
         this.transform = new Transform({});
-        this.mesh = new CylinderMesh({width: 12, wireframe: true});
+        this.transform.scale = vec3.fromValues(0.01, 0.75, 0.01);
+        this.mesh = new CylinderMesh({width: 6, height: 1, wireframe: true});
         this.color = options.color || [1, 1, 1, 1];
         this.material = new BasicMaterial({color: this.color});
         this.lightDir = vec3.fromValues(0,0,0);

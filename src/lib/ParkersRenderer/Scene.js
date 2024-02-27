@@ -68,7 +68,7 @@ export class Scene {
                 // console.log(light.lightDir)
                 // this.directional_light_data[7 * directionalLightOffset + i] = 1.0;
             }
-            
+            this.directional_light_data[8 * directionalLightOffset + 3] = light.intensity;
             for(var i = 0; i < 4; i++){
                 this.directional_light_data[8 * directionalLightOffset + 4 + i] = light.color[i];
                 // this.directional_light_data[7 * directionalLightOffset + 3 + i] = 1.0;
