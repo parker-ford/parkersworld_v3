@@ -18,8 +18,15 @@ export class PointLight extends Light {
             wireframe: this.mesh.wireframe
         });
         this.transform = new Transform({});
-        this.transform.scale = vec3.fromValues(0.3, 0.3, 0.3);
         this.fallOff = options.fallOff || 1;
+        this.setMaxDistance(options.maxDistance || 5);
+
+    }
+
+    setMaxDistance(distance){
+        this.maxDistance = distance;
+        this.mesh.distance = distance;
+        this.mesh.updateGizmo();
     }
 
     update(){

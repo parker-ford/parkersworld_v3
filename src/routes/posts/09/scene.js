@@ -90,12 +90,16 @@ export const createScene = async (el, onLoaded) => {
 
     const pointLight = new PW.PointLight({color: [1,0,0,1]});
     pointLight.transform.position = [1,1,0];
-    pointLight.fallOff = 3;
+    pointLight.fallOff = 0.01;
+    // pointLight.maxDistance = 5;
+    pointLight.setMaxDistance(2);
     scene.add(pointLight);
 
     const pointLight2 = new PW.PointLight({color: [0,1,0,1]});
     pointLight2.transform.position = [-2,2,0];
-    pointLight2.fallOff = 3;
+    pointLight2.fallOff = 0.5;
+    pointLight2.setMaxDistance(1);
+    // pointLight2.maxDistance = 2;
     scene.add(pointLight2);
 
 

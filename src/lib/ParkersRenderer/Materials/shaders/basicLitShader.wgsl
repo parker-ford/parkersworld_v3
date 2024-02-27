@@ -27,6 +27,7 @@ struct PointLightData {
     intensity: f32,
     color: vec4<f32>,
     falloff: f32,
+    maxDistance: f32
     // _padding: vec3<f32>
 };
 
@@ -84,10 +85,10 @@ fn calculate_point_light(normal: vec3<f32>, world_position: vec3<f32>) -> vec4<f
 
         //This needs to change i think
         var r0: f32 = 1.0;
-        var e: f32 = 1.0;
+        var e: f32 = pointLights.lights[i].falloff;
         var c: vec3<f32> = pointLights.lights[i].color.rgb * ((r0 * r0) / (r * r + e));
 
-        var rMax: f32 = 3.0;
+        var rMax: f32 =  pointLights.lights[i].maxDistance;
         var win: f32 = 1 - pow((r / rMax), 4);
         win = max(win, 0.0);
         win = win * win;

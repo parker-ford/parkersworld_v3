@@ -91,6 +91,7 @@ export class Scene {
                 this.point_light_data[12 * pointLightOffset + 4 + i] = light.color[i];
             }
             this.point_light_data[12 * pointLightOffset + 8] = light.fallOff;
+            this.point_light_data[12 * pointLightOffset + 9] = light.maxDistance;
             pointLightOffset++;
         })
 
