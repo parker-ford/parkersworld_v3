@@ -104,7 +104,8 @@ export const createScene = async (el, onLoaded) => {
 
 
     const spotLight = new PW.SpotLight({color: [1,1,1,1]});
-    spotLight.transform.position = [0,2,0];
+    spotLight.transform.position = [0,2,-3];
+    quat.rotateX(spotLight.transform.rotation, spotLight.transform.rotation, Math.PI / 4);
     scene.add(spotLight);
 
 

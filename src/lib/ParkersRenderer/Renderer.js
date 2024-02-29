@@ -124,7 +124,12 @@ export class Renderer {
         this.pointLightBuffer = this.device.createBuffer({
             size: (16 * 3) * 8, //3 groups of 4 floats , 8 total
             usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-        })
+        });
+
+        this.spotLightBuffer = this.device.createBuffer({
+            size: (16 * 4) * 8, //4 groups of 4 floats , 8 total
+            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+        });
 
     }
 
@@ -162,11 +167,12 @@ export class Renderer {
 
         //Light Data
         if(this.printLightBuffer){
-            console.log(scene.point_light_data);
+            console.log(scene.spot_light_data);
             this.printLightBuffer = false;
         }
         this.device.queue.writeBuffer(this.directionalLightBuffer, 0, scene.directional_light_data, 0, scene.directional_light_data.length);
         this.device.queue.writeBuffer(this.pointLightBuffer, 0, scene.point_light_data, 0, scene.point_light_data.length);
+        this.device.queue.writeBuffer(this.spotLightBuffer, 0, scene.spot_light_data, 0, scene.spot_light_data.length);
 
         const commandEncoder = this.device.createCommandEncoder();
         const renderPassDescriptor = {

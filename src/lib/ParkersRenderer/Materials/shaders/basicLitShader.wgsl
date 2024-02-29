@@ -35,11 +35,25 @@ struct PointLightArray {
     lights: array<PointLightData>
 };
 
+struct SpotLightData {
+    color: vec4<f32>,
+    position: vec4<f32>,
+    direction: vec4<f32>,
+    intensity: f32,
+    falloff: f32,
+    maxDistance: f32
+};
+
+struct SpotLightArray {
+    lights: array<SpotLightData>
+};
+
 @binding(0) @group(0) var<uniform> transformUBO: TransformData;
 @binding(1) @group(0) var<storage, read> objects: ObjectData;
 @binding(2) @group(0) var<uniform> color: vec4<f32>;
 @binding(3) @group(0) var<storage, read> directionalLights: DirectionalLightArray;
 @binding(4) @group(0) var<storage, read> pointLights: PointLightArray;
+@binding(5) @group(0) var<storage, read> spotLights: SpotLightArray;
 
 const NUM_DIR_LIGHTS: u32 = 8;
 const NUM_POINT_LIGHTS: u32 = 8;
@@ -106,13 +120,13 @@ fn calculate_point_light(normal: vec3<f32>, world_position: vec3<f32>) -> vec4<f
 @fragment
 fn fragment_main(fragData: VertexOutput) -> @location(0) vec4<f32>{
 
-    // return vec4<f32>(abs(pointLights.lights[1].position[2]), 0, 0, 1.0);
+    return vec4<f32>(abs(spotLights.lights[0].falloff), 0, 0, 1.0);
 
-    var directional_light = calculate_directional_light(fragData.normal);
-    var point_light = calculate_point_light(fragData.normal, fragData.world_position);
-    var res: vec3<f32> = color.xyz * 0.1;
-    res += directional_light.xyz;
-    res += point_light.xyz;
-    return vec4<f32>(res, 1.0);
+    // var directional_light = calculate_directional_light(fragData.normal);
+    // var point_light = calculate_point_light(fragData.normal, fragData.world_position);
+    // var res: vec3<f32> = color.xyz * 0.1;
+    // res += directional_light.xyz;
+    // res += point_light.xyz;
+    // return vec4<f32>(res, 1.0);
     
 }

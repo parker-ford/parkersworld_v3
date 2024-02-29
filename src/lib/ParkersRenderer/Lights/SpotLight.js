@@ -2,6 +2,7 @@ import { Light } from "./Light";
 import { Transform } from "../Transform";
 import { ConeGizmoMesh } from "../Meshes/ConeGizmoMesh";
 import { BasicMaterial } from "../Materials/BasicMaterial";
+import { vec3 } from "gl-matrix";
 
 export class SpotLight extends Light {
     constructor(options) {
@@ -28,5 +29,6 @@ export class SpotLight extends Light {
 
     update(){
         this.transform.update();
+        // console.log(this.transform.forward);
     }
 }

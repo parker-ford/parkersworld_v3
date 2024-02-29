@@ -77,6 +77,12 @@ export class BasicLitMaterial extends Material {
                     resource: {
                         buffer: Renderer.instance.pointLightBuffer
                     }
+                },
+                {
+                    binding: 5,
+                    resource: {
+                        buffer: Renderer.instance.spotLightBuffer
+                    }
                 }
             ]
         });
@@ -113,6 +119,14 @@ export class BasicLitMaterial extends Material {
                 },
                 {
                     binding: 4,
+                    visibility: GPUShaderStage.FRAGMENT,
+                    buffer: {
+                        type: 'read-only-storage',
+                        hasDynamicOffset: false
+                    }
+                },
+                {
+                    binding: 5,
                     visibility: GPUShaderStage.FRAGMENT,
                     buffer: {
                         type: 'read-only-storage',
