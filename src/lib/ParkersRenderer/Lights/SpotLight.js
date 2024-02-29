@@ -9,7 +9,6 @@ export class SpotLight extends Light {
         this.color = options.color || [1, 1, 1, 1];
         this.intensity = options.intensity || 1;
         this.mesh = new ConeGizmoMesh({wireframe: true});
-        // this.mesh = new CylinderMesh({width: 6, height: 1, wireframe: true});
         this.material = new BasicMaterial({color: this.color});
         this.material.init({
             vertexBufferDescriptors: this.mesh.vertexBufferDescriptors,

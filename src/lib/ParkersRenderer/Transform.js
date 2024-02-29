@@ -51,6 +51,13 @@ export class Transform {
         // this.up = newUp;
     }
 
+    setForwardVector(newForward){
+        this.forward = vec3.fromValues(0,0,1);
+        vec3.normalize(newForward, newForward);
+        quat.rotationTo(this.rotation, this.forward, newForward);
+        vec3.copy(this.forward, newForward);
+    }
+
     updateDirectionVectors(){
         vec3.transformQuat(this.up, vec3.fromValues(0,1,0), this.rotation);
         vec3.transformQuat(this.forward, vec3.fromValues(0,0,1), this.rotation);
