@@ -8,6 +8,7 @@ import { CylinderMesh } from "../Meshes/CylinderMesh";
 export class PointLight extends Light {
     constructor(options) {
         super();
+        this.mode = 1;
         this.color = options.color || [1, 1, 1, 1];
         this.intensity = options.intensity || 1;
         this.mesh = new SphereGizmoMesh({wireframe: true});

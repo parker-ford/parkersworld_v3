@@ -107,34 +107,30 @@ fn calculate_directional_light(normal: vec3<f32>, light: LightData) -> vec3<f32>
     return res;
 }
 
-// fn calculate_point_light(normal: vec3<f32>, world_position: vec3<f32>) -> vec4<f32>{
-//     var res: vec3<f32> = vec3<f32>(0.0, 0.0, 0.0);
-//     for(var i: u32 = 0; i < NUM_POINT_LIGHTS; i = i + 1){
-//         if(pointLights.lights[i].intensity == 0.0) {continue;}
-//         var d = pointLights.lights[i].position - world_position;
-//         var r = length(d);
-//         var l = d / r;
+fn calculate_point_light(normal: vec3<f32>, world_position: vec3<f32>, light: LightData) -> vec3<f32>{
+    var res: vec3<f32> = vec3<f32>(0.0, 0.0, 0.0);
 
-//         //This needs to change i think
-//         // var r0: f32 = 1.0;
-//         // var e: f32 = pointLights.lights[i].falloff;
-//         // var c: vec3<f32> = pointLights.lights[i].color.rgb * ((r0 * r0) / (r * r + e));
+    var d = light.position - world_position;
+    var r = length(d);
+    var l = d / r;
 
-//         // var rMax: f32 =  pointLights.lights[i].maxDistance;
-//         // var win: f32 = 1 - pow((r / rMax), 4);
-//         // win = max(win, 0.0);
-//         // win = win * win;
+    //This needs to change i think
+    var r0: f32 = 1.0;
+    var e: f32 = light.falloff;
+    var c: vec3<f32> = light.color.rgb * ((r0 * r0) / (r * r + e));
 
-//         // c *= win;
+    var rMax: f32 =  light.maxDistance;
+    var win: f32 = 1 - pow((r / rMax), 4);
+    win = max(win, 0.0);
+    win = win * win;
 
-//         var attenuation: f32 = dot(l, normal);
-//         //res += c * attenuation * pointLights.lights[i].intensity;
-//         res += pointLights.lights[i].color.rgb * attenuation;
+    c *= win;
 
-//     }
+    var attenuation: f32 = dot(l, normal);
+    res += c * attenuation * light.intensity;
 
-//     return vec4<f32>(res, 1.0);
-// }
+    return res;
+}
 
 // fn calculate_spot_light(normal: vec3<f32>, world_position: vec3<f32>) -> vec4<f32>{
 //     var res: vec3<f32> = vec3<f32>(0.0, 0.0, 0.0);
@@ -173,9 +169,9 @@ fn calculate_light(normal: vec3<f32>, world_position: vec3<f32>) -> vec3<f32>{
         if(lights.lights[i].mode == 0){
             res += calculate_directional_light(normal, lights.lights[i]);
         }
-        // else if(lights.lights[i].mode == 0){
-
-        // }
+        else if(lights.lights[i].mode == 1){
+            res += calculate_point_light(normal, world_position, lights.lights[i]);
+        }
     }
     return res;
 }
