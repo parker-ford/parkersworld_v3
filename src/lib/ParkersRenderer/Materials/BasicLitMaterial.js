@@ -69,19 +69,7 @@ export class BasicLitMaterial extends Material {
                 {
                     binding: 3,
                     resource: {
-                        buffer: Renderer.instance.directionalLightBuffer
-                    }
-                },
-                {
-                    binding: 4,
-                    resource: {
-                        buffer: Renderer.instance.pointLightBuffer
-                    }
-                },
-                {
-                    binding: 5,
-                    resource: {
-                        buffer: Renderer.instance.spotLightBuffer
+                        buffer: Renderer.instance.lightBuffer
                     }
                 }
             ]
@@ -111,22 +99,6 @@ export class BasicLitMaterial extends Material {
                 },
                 {
                     binding: 3,
-                    visibility: GPUShaderStage.FRAGMENT,
-                    buffer: {
-                        type: 'read-only-storage',
-                        hasDynamicOffset: false
-                    }
-                },
-                {
-                    binding: 4,
-                    visibility: GPUShaderStage.FRAGMENT,
-                    buffer: {
-                        type: 'read-only-storage',
-                        hasDynamicOffset: false
-                    }
-                },
-                {
-                    binding: 5,
                     visibility: GPUShaderStage.FRAGMENT,
                     buffer: {
                         type: 'read-only-storage',

@@ -18,6 +18,8 @@ export class SpotLight extends Light {
         this.transform = new Transform({});
         this.fallOff = options.fallOff || 1;
         this.setMaxDistance(options.maxDistance || 5);
+        this.umbra = options.umbra || 0.5;
+        this.penumbra = options.penumbra || 0.5;
 
     }
 

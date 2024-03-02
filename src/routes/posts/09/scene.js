@@ -81,32 +81,44 @@ export const createScene = async (el, onLoaded) => {
     const light2 = new PW.DirectionalLight({color: [1,0,0,1]});
     light2.intensity = 1.0;
     light2.transform.position = [-3,0,0];
-    scene.add(light2);
+    // scene.add(light2);
 
     const light3 = new PW.DirectionalLight({color: [0,1,0,1]});
     light3.intensity = 1.0;
     light3.transform.position = [0,3,0];
-    scene.add(light3);
+    // scene.add(light3);
 
-    const pointLight = new PW.PointLight({color: [1,0,0,1]});
+    const pointLight = new PW.PointLight({color: [1,1,1,1]});
     pointLight.transform.position = [1,1,0];
-    pointLight.fallOff = 0.01;
-    // pointLight.maxDistance = 5;
-    pointLight.setMaxDistance(2);
-    scene.add(pointLight);
+    pointLight.fallOff = 1;
+    // pointLight.maxDistance = 8;
+    pointLight.setMaxDistance(5);
+    pointLight.intensity = 5;
+
+    //scene.add(pointLight);
 
     const pointLight2 = new PW.PointLight({color: [0,1,0,1]});
     pointLight2.transform.position = [-2,2,0];
     pointLight2.fallOff = 0.5;
     pointLight2.setMaxDistance(1);
-    // pointLight2.maxDistance = 2;
-    scene.add(pointLight2);
+    // // pointLight2.maxDistance = 2;
+    //scene.add(pointLight2);
+
+    // const pointLight3 = new PW.PointLight({color: [1,1,1,1]});
+    // pointLight3.transform.position = [0,2,0];
+    // // pointLight3.fallOff = 5;
+    // pointLight3.setMaxDistance(100);
+    // pointLight3.intensity = 4;
+    // scene.add(pointLight3);
 
 
     const spotLight = new PW.SpotLight({color: [1,1,1,1]});
     spotLight.transform.position = [0,2,-3];
     quat.rotateX(spotLight.transform.rotation, spotLight.transform.rotation, Math.PI / 4);
-    scene.add(spotLight);
+    spotLight.fallOff = 5;
+    spotLight.setMaxDistance(20);
+    // spotLight.intensity = 1000;
+    //scene.add(spotLight);
 
 
     // gui.addColor(parameters, 'color').onChange((value) => {
@@ -119,8 +131,13 @@ export const createScene = async (el, onLoaded) => {
 
     // })
 
+    var t = 0;
     function frame() {
 
+        pointLight.transform.position[0] = 2 * Math.sin(t);
+        pointLight.transform.position[2] = 2 * Math.cos(t);
+
+        t += PW.Time.deltaTime;
         renderer.render(scene, camera);
         requestAnimationFrame(frame);
     }

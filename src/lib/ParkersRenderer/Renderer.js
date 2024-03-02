@@ -116,21 +116,10 @@ export class Renderer {
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
 
-        this.directionalLightBuffer = this.device.createBuffer({
-            size: (12 + 4 + 16) * 8, //12 for direction, 4 for intensity, 16 for color, total of 8,
+        this.lightBuffer = this.device.createBuffer({
+            size: 80 * 16,
             usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
         });
-
-        this.pointLightBuffer = this.device.createBuffer({
-            size: (16 * 3) * 8, //3 groups of 4 floats , 8 total
-            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-        });
-
-        this.spotLightBuffer = this.device.createBuffer({
-            size: (16 * 4) * 8, //4 groups of 4 floats , 8 total
-            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-        });
-
     }
 
     async init() {
@@ -167,12 +156,10 @@ export class Renderer {
 
         //Light Data
         if(this.printLightBuffer){
-            console.log(scene.spot_light_data);
+            console.log(scene.light_data);
             this.printLightBuffer = false;
         }
-        this.device.queue.writeBuffer(this.directionalLightBuffer, 0, scene.directional_light_data, 0, scene.directional_light_data.length);
-        this.device.queue.writeBuffer(this.pointLightBuffer, 0, scene.point_light_data, 0, scene.point_light_data.length);
-        this.device.queue.writeBuffer(this.spotLightBuffer, 0, scene.spot_light_data, 0, scene.spot_light_data.length);
+        this.device.queue.writeBuffer(this.lightBuffer, 0, scene.light_data, 0, scene.light_data.length);
 
         const commandEncoder = this.device.createCommandEncoder();
         const renderPassDescriptor = {

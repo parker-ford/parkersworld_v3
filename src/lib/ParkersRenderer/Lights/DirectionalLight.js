@@ -7,6 +7,7 @@ import { Transform } from "../Transform";
 export class DirectionalLight extends Light {
     constructor(options) {
         super();
+        this.mode = 0;
         this.transform = new Transform({});
         this.transform.scale = vec3.fromValues(0.01, 0.75, 0.01);
         this.mesh = new CylinderMesh({width: 6, height: 1, wireframe: true});

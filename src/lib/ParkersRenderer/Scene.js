@@ -1,23 +1,17 @@
 import {PerspectiveCamera} from './PerspectiveCamera.js';
-import { DirectionalLight } from './Lights/DirectionalLight.js';
-import { PointLight } from './Lights/PointLight.js';
-import { SpotLight } from './Lights/SpotLight.js';
+import { Light } from './Lights/Light.js';
 
 export class Scene {
     constructor() {
+        //Objects
         this.objects = [];
-        this.directional_lights = [];
-        this.point_lights = [];
-        this.spot_lights = [];
         this.object_count = 0;
         this.object_data = new Float32Array();
-        this.directional_light_data = new Float32Array();
-        this.point_light_data = new Float32Array();
-        this.spot_light_data = new Float32Array();
-        this.directional_light_count = 0;
-        this.point_light_count = 0;
-        this.spot_light_count = 0;
 
+        //Lights
+        this.lights = [];
+        this.lights_count = 0;
+        this.light_data = new ArrayBuffer(0);
 
         //Debug
         this.print = false;
@@ -30,23 +24,14 @@ export class Scene {
             this.object_count++;
             this.object_data = new Float32Array(this.object_data.length + 32);
         }
-        if(object instanceof DirectionalLight){
-            this.directional_lights.push(object);
-            this.directional_light_count++;
-            this.directional_light_data = new Float32Array(this.directional_light_data.length + 8);
-        }
-        if(object instanceof PointLight){
-            this.point_lights.push(object);
-            this.point_light_count++;
-            this.point_light_data = new Float32Array(this.point_light_data.length + 12);
-        }
-        if(object instanceof SpotLight){
-            this.spot_lights.push(object);
-            this.spot_light_count++;
-            this.spot_light_data = new Float32Array(this.spot_light_data.length + 16);
+        if(object instanceof Light){
+            this.lights.push(object);
+            this.lights_count++;
+            this.light_data = new ArrayBuffer(this.light_data.byteLength + 80);
         }
     }
 
+    //TODO: I bet this doesn't work but I don't think I'll care until later
     clear() {
         this.objects = [];
         this.object_count = 0;
@@ -72,67 +57,43 @@ export class Scene {
                     this.object_data[32 * transformOffset + i] = element.transform.TRS.at(i);
                 }
                 for(var i = 0; i < 16; i++){
-                    this.object_data[32 * transformOffset + 16 + i] = element.transform.TRS_I_T.at(i);
+                    this.object_data[32 * transformOffset + 20 + i] = element.transform.TRS_I_T.at(i);
                 }
                 transformOffset++;
             }
         });
 
-        var directionalLightOffset = 0;
-        this.directional_lights.forEach(light => {
-            for(var i = 0; i < 3; i++){
-                this.directional_light_data[8 * directionalLightOffset + i] = light.lightDir[i];
-            }
-            this.directional_light_data[8 * directionalLightOffset + 3] = light.intensity;
-            for(var i = 0; i < 4; i++){
-                this.directional_light_data[8 * directionalLightOffset + 4 + i] = light.color[i];
-            }
-            directionalLightOffset++;
-        });
+        var lightOffset = 0;
+        this.lights.forEach(light => {
+            const LightDataValues = new ArrayBuffer(80);
+            const LightDataViews = {
+                color: new Float32Array(LightDataValues, 0, 4),
+                position: new Float32Array(LightDataValues, 16, 3),
+                direction: new Float32Array(LightDataValues, 32, 3),
+                intensity: new Float32Array(LightDataValues, 44, 1),
+                falloff: new Float32Array(LightDataValues, 48, 1),
+                maxDistance: new Float32Array(LightDataValues, 52, 1),
+                umbra: new Float32Array(LightDataValues, 56, 1),
+                penumbra: new Float32Array(LightDataValues, 60, 1),
+                mode: new Uint32Array(LightDataValues, 64, 1),
+            };
+            LightDataViews.color.set(light.color);
+            LightDataViews.position.set(light.transform.position);
+            LightDataViews.direction.set(light.transform.forward);
+            LightDataViews.intensity[0] = light.intensity;
+            LightDataViews.falloff[0] = light.fallOff;
+            LightDataViews.maxDistance[0] = light.maxDistance;
+            LightDataViews.umbra[0] = light.umbra;
+            LightDataViews.penumbra[0] = light.penumbra;
+            LightDataViews.mode[0] = light.mode;
 
-        var pointLightOffset = 0;
-        this.point_lights.forEach(light => {
-            for(var i = 0; i < 3; i++){
-                this.point_light_data[12 * pointLightOffset + i] = light.transform.position[i];
-            }
-            this.point_light_data[12 * pointLightOffset + 3] = light.intensity;
-            for(var i = 0; i < 4; i++){
-                this.point_light_data[12 * pointLightOffset + 4 + i] = light.color[i];
-            }
-            this.point_light_data[12 * pointLightOffset + 8] = light.fallOff;
-            this.point_light_data[12 * pointLightOffset + 9] = light.maxDistance;
-            pointLightOffset++;
-        });
+            const lightDataView = new Uint8Array(LightDataValues);
+            const allLightsView = new Uint8Array(this.light_data, lightOffset * 80, 80);
+            allLightsView.set(lightDataView);
 
-        var spotLightOffset = 0;
-        this.spot_lights.forEach(light => {
-            // for(var i = 0; i < 3; i++){
-            //     this.spot_light_data[12 * spotLightOffset + i] = light.transform.position[i];
-            // }
-            // this.spot_light_data[12 * spotLightOffset + 3] = light.intensity;
-            // for(var i = 0; i < 4; i++){
-            //     this.spot_light_data[12 * spotLightOffset + 4 + i] = light.color[i];
-            // }
-            // this.spot_light_data[12 * spotLightOffset + 8] = light.fallOff;
-            // this.spot_light_data[12 * spotLightOffset + 9] = light.maxDistance;
-            // for(var i = 0; i < 3; i++){
-            //     this.spot_light_data[12 * spotLightOffset + 12 + i] = light.transform.forward[i];
-            // }
-            for(var i = 0; i < 4; i++){
-                this.spot_light_data[16 * spotLightOffset + i] = light.color[i];
-            }
-            for(var i = 0; i < 3; i++){
-                this.spot_light_data[16 * spotLightOffset + i + 4] = light.transform.position[i];
-            }
-            for(var i = 0; i < 3; i++){
-                this.spot_light_data[16 * spotLightOffset + i + 8] = light.transform.forward[i];
-            }
-            this.spot_light_data[16 * spotLightOffset + 12] = light.intensity;
-            this.spot_light_data[16 * spotLightOffset + 13] = light.fallOff;
-            this.spot_light_data[16 * spotLightOffset + 14] = light.maxDistance;
-            spotLightOffset++;
-        });
 
+            lightOffset++;
+        })
         this.print = false;
     }
 }
