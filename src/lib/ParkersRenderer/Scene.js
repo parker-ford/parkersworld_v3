@@ -57,7 +57,7 @@ export class Scene {
                     this.object_data[32 * transformOffset + i] = element.transform.TRS.at(i);
                 }
                 for(var i = 0; i < 16; i++){
-                    this.object_data[32 * transformOffset + 20 + i] = element.transform.TRS_I_T.at(i);
+                    this.object_data[32 * transformOffset + 16 + i] = element.transform.TRS_I_T.at(i);
                 }
                 transformOffset++;
             }
