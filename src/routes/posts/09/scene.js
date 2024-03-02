@@ -76,7 +76,7 @@ export const createScene = async (el, onLoaded) => {
     const light = new PW.DirectionalLight({color: [0,0,1,1]});
     light.intensity = 0.5;
     light.transform.position = [5,5,0];
-    scene.add(light);
+    //scene.add(light);
     
     const light2 = new PW.DirectionalLight({color: [1,0,0,1]});
     light2.intensity = 1.0;
@@ -95,7 +95,7 @@ export const createScene = async (el, onLoaded) => {
     pointLight.setMaxDistance(5);
     pointLight.intensity = 1;
 
-    scene.add(pointLight);
+    //scene.add(pointLight);
 
     const pointLight2 = new PW.PointLight({color: [0,1,0,1]});
     pointLight2.transform.position = [-2,2,0];
@@ -112,13 +112,13 @@ export const createScene = async (el, onLoaded) => {
     // scene.add(pointLight3);
 
 
-    const spotLight = new PW.SpotLight({color: [1,1,1,1]});
+    const spotLight = new PW.SpotLight({color: [1,0,0,1]});
     spotLight.transform.position = [0,2,-3];
     quat.rotateX(spotLight.transform.rotation, spotLight.transform.rotation, Math.PI / 4);
-    spotLight.fallOff = 5;
+    spotLight.fallOff = 1;
     spotLight.setMaxDistance(20);
-    // spotLight.intensity = 1000;
-    //scene.add(spotLight);
+    spotLight.intensity = 2;
+    scene.add(spotLight);
 
 
     // gui.addColor(parameters, 'color').onChange((value) => {
@@ -136,6 +136,8 @@ export const createScene = async (el, onLoaded) => {
 
         pointLight.transform.position[0] = 2 * Math.sin(t);
         pointLight.transform.position[2] = 2 * Math.cos(t);
+
+        quat.rotateX(spotLight.transform.rotation, spotLight.transform.rotation,  PW.Time.deltaTime);
 
         t += PW.Time.deltaTime;
         renderer.render(scene, camera);

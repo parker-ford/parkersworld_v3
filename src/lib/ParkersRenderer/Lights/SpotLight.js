@@ -7,6 +7,7 @@ import { vec3 } from "gl-matrix";
 export class SpotLight extends Light {
     constructor(options) {
         super();
+        this.mode = 2;
         this.color = options.color || [1, 1, 1, 1];
         this.intensity = options.intensity || 1;
         this.mesh = new ConeGizmoMesh({wireframe: true});
@@ -18,8 +19,8 @@ export class SpotLight extends Light {
         this.transform = new Transform({});
         this.fallOff = options.fallOff || 1;
         this.setMaxDistance(options.maxDistance || 5);
-        this.umbra = options.umbra || 0.5;
-        this.penumbra = options.penumbra || 0.5;
+        this.umbra = options.umbra || 1;
+        this.penumbra = options.penumbra || 2;
 
     }
 

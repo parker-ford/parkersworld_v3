@@ -132,35 +132,32 @@ fn calculate_point_light(normal: vec3<f32>, world_position: vec3<f32>, light: Li
     return res;
 }
 
-// fn calculate_spot_light(normal: vec3<f32>, world_position: vec3<f32>) -> vec4<f32>{
-//     var res: vec3<f32> = vec3<f32>(0.0, 0.0, 0.0);
-//     for(var i: u32 = 0; i < NUM_SPOT_LIGHTS; i = i + 1){
-//         if(spotLights.lights[i].intensity == 0.0) {continue;}
-//         var d = spotLights.lights[i].position.xyz - world_position;
-//         var r = length(d);
-//         var l = d / r;
+fn calculate_spot_light(normal: vec3<f32>, world_position: vec3<f32>, light: LightData) -> vec3<f32>{
+    var res: vec3<f32> = vec3<f32>(0.0, 0.0, 0.0);
 
-//         //This needs to change i think
-//         var r0: f32 = 1.0;
-//         var e: f32 = spotLights.lights[i].falloff;
-//         var c: vec3<f32> = spotLights.lights[i].color.rgb * ((r0 * r0) / (r * r + e));
+    var d = light.position.xyz - world_position;
+    var r = length(d);
+    var l = d / r;
 
-//         var rMax: f32 =  spotLights.lights[i].maxDistance;
-//         var win: f32 = 1 - pow((r / rMax), 4);
-//         win = max(win, 0.0);
-//         win = win * win;
-//         c *= win;
+    //This needs to change i think
+    var r0: f32 = 1.0;
+    var e: f32 = light.falloff;
+    var c: vec3<f32> = light.color.rgb * ((r0 * r0) / (r * r + e));
 
-//         var t: f32 = (dot(l, spotLights.lights[i].direction.xyz) - cos(spotLights.lights[i].umbra)) / (cos(spotLights.lights[i].penumbra) - cos(spotLights.lights[i].umbra));
-//         t*=t;
+    var rMax: f32 =  light.maxDistance;
+    var win: f32 = 1 - pow((r / rMax), 4);
+    win = max(win, 0.0);
+    win = win * win;
+    c *= win;
 
-//         var attenuation: f32 = max(dot(l, normal), 0.0);
-//         res += c * attenuation * spotLights.lights[i].intensity;
+    var t: f32 = (dot(l, light.direction.xyz) - cos(light.umbra)) / (cos(light.penumbra) - cos(light.umbra));
+    t*=t;
 
-//     }
+    var attenuation: f32 = max(dot(l, normal), 0.0);
+    res += c * t * attenuation * light.intensity;
 
-//     return vec4<f32>(res, 1.0);
-// }
+    return res;
+}
 
 fn calculate_light(normal: vec3<f32>, world_position: vec3<f32>) -> vec3<f32>{
     var res: vec3<f32> = vec3<f32>(0.0, 0.0, 0.0);
@@ -171,6 +168,9 @@ fn calculate_light(normal: vec3<f32>, world_position: vec3<f32>) -> vec3<f32>{
         }
         else if(lights.lights[i].mode == 1){
             res += calculate_point_light(normal, world_position, lights.lights[i]);
+        }
+        else if(lights.lights[i].mode == 2){
+            res += calculate_spot_light(normal, world_position, lights.lights[i]);
         }
     }
     return res;
