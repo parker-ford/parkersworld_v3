@@ -74,8 +74,8 @@ export const createScene = async (el, onLoaded) => {
     quat.rotateX(plane.transform.rotation, plane.transform.rotation, -Math.PI / 2);
 
     const light = new PW.DirectionalLight({color: [0,0,1,1]});
-    light.intensity = 1.0;
-    light.transform.position = [3,0,0];
+    light.intensity = 0.5;
+    light.transform.position = [5,5,0];
     scene.add(light);
     
     const light2 = new PW.DirectionalLight({color: [1,0,0,1]});

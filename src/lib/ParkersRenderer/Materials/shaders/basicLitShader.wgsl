@@ -101,10 +101,10 @@ fn vertex_main(@builtin(instance_index) id: u32,
 fn calculate_directional_light(normal: vec3<f32>, light: LightData) -> vec3<f32>{
     var res: vec3<f32> = vec3<f32>(0.0, 0.0, 0.0);
     var ligtCol: vec4<f32> = light.color;
-    var lightDir: vec3<f32> = normalize(light.direction);
+    var lightDir: vec3<f32> = normalize(-light.position);
     var attenuation: f32 = max(dot(-lightDir, normal), 0.0);
-    res += ligtCol.xyz * attenuation;
-    return normal;
+    res += ligtCol.xyz * attenuation * light.intensity;
+    return res;
 }
 
 // fn calculate_point_light(normal: vec3<f32>, world_position: vec3<f32>) -> vec4<f32>{
