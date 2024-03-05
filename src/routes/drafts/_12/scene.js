@@ -119,7 +119,9 @@ scene.add(sphere, cube, torus, plane)
 */
 let renderer;
 let controls;
-export const createScene = (el) => {
+export const createScene = (el, onLoaded) => {
+
+    onLoaded();
 
     renderer = new THREE.WebGLRenderer({
         canvas: el

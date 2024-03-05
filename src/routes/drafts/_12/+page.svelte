@@ -7,13 +7,14 @@
     import hljs from 'highlight.js/lib/core'
     import javascript from 'highlight.js/lib/languages/javascript';
     import 'highlight.js/styles/default.css';
+    import { sceneLoaded } from '../../stores.js';
     hljs.registerLanguage('javascript', javascript);
 
 
     let el;
     onMount(async () =>{
         const {createScene} = await import('./scene')
-        createScene(el)
+        createScene(el, () => sceneLoaded.set(true))
         hljs.highlightAll()
     })
 

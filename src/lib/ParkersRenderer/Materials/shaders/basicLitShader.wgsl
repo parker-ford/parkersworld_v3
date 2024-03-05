@@ -150,7 +150,8 @@ fn calculate_spot_light(normal: vec3<f32>, world_position: vec3<f32>, light: Lig
     win = win * win;
     c *= win;
 
-    var t: f32 = (dot(l, light.direction.xyz) - cos(light.umbra)) / (cos(light.penumbra) - cos(light.umbra));
+    var t: f32 = (dot(-l, light.direction.xyz) - cos(light.umbra)) / (cos(light.penumbra) - cos(light.umbra));
+    t = max(t, 0.0);
     t*=t;
 
     var attenuation: f32 = max(dot(l, normal), 0.0);

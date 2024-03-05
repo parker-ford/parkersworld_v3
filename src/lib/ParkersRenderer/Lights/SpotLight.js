@@ -19,14 +19,21 @@ export class SpotLight extends Light {
         this.transform = new Transform({});
         this.fallOff = options.fallOff || 1;
         this.setMaxDistance(options.maxDistance || 5);
-        this.umbra = options.umbra || 1;
-        this.penumbra = options.penumbra || 2;
+        this.umbra = options.umbra || 2 * Math.PI / 3;
+        this.penumbra = options.penumbra || 0;
+        this.setAngle(this.umbra);
 
     }
 
     setMaxDistance(distance){
         this.maxDistance = distance;
         this.mesh.distance = distance;
+        this.mesh.updateGizmo();
+    }
+
+    setAngle(angle){
+        this.umbra = angle;
+        this.mesh.radius = Math.tan(angle) * this.mesh.distance;
         this.mesh.updateGizmo();
     }
 

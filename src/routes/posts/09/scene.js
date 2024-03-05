@@ -69,7 +69,7 @@ export const createScene = async (el, onLoaded) => {
         material: new PW.BasicLitMaterial({color: [1,1,1,1]})
     });
     plane.transform.position = [0,-0.5,0];
-    plane.transform.scale = [10,10,10];
+    plane.transform.scale = [50,50,50];
     scene.add(plane);
     quat.rotateX(plane.transform.rotation, plane.transform.rotation, -Math.PI / 2);
 
@@ -113,11 +113,12 @@ export const createScene = async (el, onLoaded) => {
 
 
     const spotLight = new PW.SpotLight({color: [1,0,0,1]});
-    spotLight.transform.position = [0,2,-3];
+    spotLight.transform.position = [0,5,-3];
     quat.rotateX(spotLight.transform.rotation, spotLight.transform.rotation, Math.PI / 4);
-    spotLight.fallOff = 1;
+    
+    spotLight.fallOff = 0;
     spotLight.setMaxDistance(20);
-    spotLight.intensity = 2;
+    spotLight.intensity = 10;
     scene.add(spotLight);
 
 
@@ -137,7 +138,7 @@ export const createScene = async (el, onLoaded) => {
         pointLight.transform.position[0] = 2 * Math.sin(t);
         pointLight.transform.position[2] = 2 * Math.cos(t);
 
-        quat.rotateX(spotLight.transform.rotation, spotLight.transform.rotation,  PW.Time.deltaTime);
+        // quat.rotateX(spotLight.transform.rotation, spotLight.transform.rotation,   PW.Time.deltaTime);
 
         t += PW.Time.deltaTime;
         renderer.render(scene, camera);
