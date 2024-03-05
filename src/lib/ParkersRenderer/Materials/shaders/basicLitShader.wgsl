@@ -133,29 +133,36 @@ fn calculate_point_light(normal: vec3<f32>, world_position: vec3<f32>, light: Li
 }
 
 fn calculate_spot_light(normal: vec3<f32>, world_position: vec3<f32>, light: LightData) -> vec3<f32>{
+
     var res: vec3<f32> = vec3<f32>(0.0, 0.0, 0.0);
+    var color: vec3<f32> = light.color.rgb;
 
-    var d = light.position.xyz - world_position;
-    var r = length(d);
-    var l = d / r;
+    //Normalizing light ray
+    var lightToPos: vec3<f32> = world_position - light.position;
+    var distToPos: f32 = length(lightToPos);
+    lightToPos = lightToPos / distToPos;
 
-    //This needs to change i think
-    var r0: f32 = 1.0;
-    var e: f32 = light.falloff;
-    var c: vec3<f32> = light.color.rgb * ((r0 * r0) / (r * r + e));
+    //Distance attenuation
+    color *=  light.color.rgb * (1 / (distToPos * distToPos + light.falloff));
 
-    var rMax: f32 =  light.maxDistance;
-    var win: f32 = 1 - pow((r / rMax), 4);
+    //Windowing function
+    var win: f32 = 1 - pow((distToPos / light.maxDistance), 4);
     win = max(win, 0.0);
     win = win * win;
-    c *= win;
+    color *= win;
 
-    var t: f32 = (dot(-l, light.direction.xyz) - cos(light.umbra)) / (cos(light.penumbra) - cos(light.umbra));
-    t = max(t, 0.0);
-    t*=t;
+    //Spotlight effect
+    var spotAngle: f32 = dot(normalize(lightToPos), normalize(light.direction.xyz));
+    var umbraAngle: f32 = cos(light.umbra);
+    var penumbraAngle: f32 = cos(mix(0, light.umbra, light.penumbra));
+    var spot: f32 =  max(((spotAngle - umbraAngle) / (penumbraAngle - umbraAngle)), 0);
+    spot = spot * spot;
 
-    var attenuation: f32 = max(dot(l, normal), 0.0);
-    res += c * t * attenuation * light.intensity;
+    //Diffuse
+    var diffuse: f32 = max(dot(-lightToPos, normal), 0.0);
+
+    //Final result
+    res += color * spot * diffuse * light.intensity;
 
     return res;
 }

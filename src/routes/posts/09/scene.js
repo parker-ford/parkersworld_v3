@@ -1,5 +1,5 @@
 import * as PW from '$lib/ParkersRenderer'
-import { quat } from 'gl-matrix';
+import { quat, vec3 } from 'gl-matrix';
 import GUI from 'lil-gui'; 
 
 
@@ -9,23 +9,25 @@ export const createScene = async (el, onLoaded) => {
     el.width = Math.min(document.body.clientWidth, 1400);
     el.height = Math.min(document.body.clientWidth, 1400) * .5;
 
-    // const gui = new GUI()
-    // gui.domElement.id = 'gui';
+    const gui = new GUI()
+    gui.domElement.id = 'gui';
 
-    // const parameters= {
-    //     color: 0xff0000,
-    // }
+    const parameters= {
+        color: 0xff0000,
+        penumbra: 0.5,
+        spotAngle: 0.5
+    }
 
-    // const alignGUIWithCanvas = () => {
-    //     const canvasRect = el.getBoundingClientRect();
-    //     const guiRect = gui.domElement.getBoundingClientRect();
-    //     gui.domElement.style.position = 'absolute';
-    //     gui.domElement.style.top = `222px`;
-    //     gui.domElement.style.left = `${canvasRect.right - guiRect.width - 2}px`;
-    //     console.log("testing gui align");
-    //     console.log(guiRect)
-    // };
-    // alignGUIWithCanvas();
+    const alignGUIWithCanvas = () => {
+        const canvasRect = el.getBoundingClientRect();
+        const guiRect = gui.domElement.getBoundingClientRect();
+        gui.domElement.style.position = 'absolute';
+        gui.domElement.style.top = `222px`;
+        gui.domElement.style.left = `${canvasRect.right - guiRect.width - 2}px`;
+        console.log("testing gui align");
+        console.log(guiRect)
+    };
+    alignGUIWithCanvas();
 
     const renderer = new PW.Renderer(el);
     if (! await renderer.init()) {
@@ -43,16 +45,18 @@ export const createScene = async (el, onLoaded) => {
 
     scene.add(camera);
     camera.transform.position[2] = -9;
+    camera.transform.position[1] = 4;
+    camera.transform.setForwardVector(vec3.subtract(vec3.create(), [0,0,0], camera.transform.position));
 
-    const bunnyMesh = new PW.OBJMesh({
-        filePath: "../models/StanfordBunny/StanfordBunnyShadeSmooth.obj",
-        wireframe: false
-    });
-    const bunnyTransform = new PW.Transform();
-    bunnyTransform.position = [0,-1,0];
-    bunnyTransform.scale = [8,8,8];
-    quat.rotateY(bunnyTransform.rotation, bunnyTransform.rotation, Math.PI );
-    await bunnyMesh.loaded();
+    // const bunnyMesh = new PW.OBJMesh({
+    //     filePath: "../models/StanfordBunny/StanfordBunnyShadeSmooth.obj",
+    //     wireframe: false
+    // });
+    // const bunnyTransform = new PW.Transform();
+    // bunnyTransform.position = [0,-1,0];
+    // bunnyTransform.scale = [8,8,8];
+    // quat.rotateY(bunnyTransform.rotation, bunnyTransform.rotation, Math.PI );
+    // await bunnyMesh.loaded();
 
     onLoaded();
     
@@ -62,13 +66,13 @@ export const createScene = async (el, onLoaded) => {
         material: new PW.BasicLitMaterial({color: [1,1,1,1]})
     });
     // obj.transform = bunnyTransform;
-    scene.add(obj);
+    //scene.add(obj);
 
     const plane = new PW.Renderable({
         mesh: new PW.PlaneMesh({width: 10, height: 10}),
         material: new PW.BasicLitMaterial({color: [1,1,1,1]})
     });
-    plane.transform.position = [0,-0.5,0];
+    plane.transform.position = [0,0,0];
     plane.transform.scale = [50,50,50];
     scene.add(plane);
     quat.rotateX(plane.transform.rotation, plane.transform.rotation, -Math.PI / 2);
@@ -113,11 +117,13 @@ export const createScene = async (el, onLoaded) => {
 
 
     const spotLight = new PW.SpotLight({color: [1,0,0,1]});
-    spotLight.transform.position = [0,5,-3];
+    spotLight.transform.position = [0,5,0];
     quat.rotateX(spotLight.transform.rotation, spotLight.transform.rotation, Math.PI / 4);
-    
+
     spotLight.fallOff = 0;
     spotLight.setMaxDistance(20);
+    spotLight.setAngle(0.5);
+    spotLight.penumbra = 0.5;
     spotLight.intensity = 10;
     scene.add(spotLight);
 
@@ -145,4 +151,14 @@ export const createScene = async (el, onLoaded) => {
         requestAnimationFrame(frame);
     }
     frame();
+
+
+    gui.add(parameters, 'penumbra', 0, 1).onChange((value) => {
+        spotLight.penumbra = value;
+        spotLight.mesh.updateGizmo();
+    });
+
+    gui.add(parameters, 'spotAngle', 0, 1).onChange((value) => {
+        spotLight.setAngle(value * Math.PI / 2);
+    });
 }
