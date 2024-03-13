@@ -187,14 +187,8 @@ fn calculate_light(normal: vec3<f32>, world_position: vec3<f32>) -> vec3<f32>{
 @fragment
 fn fragment_main(fragData: VertexOutput) -> @location(0) vec4<f32>{
 
-
-    // var directional_light = calculate_directional_light(fragData.normal);
-    // var point_light = calculate_point_light(fragData.normal, fragData.world_position);
-    // var spot_light = calculate_spot_light(fragData.normal, fragData.world_position);
     var res: vec3<f32> = color.xyz * 0.1;
-    res += calculate_light(fragData.normal, fragData.world_position);
-    //res += point_light.xyz;
-    // res += spot_light.xyz;
+    res += calculate_light(fragData.normal, fragData.world_position) * color.xyz;
     return vec4<f32>(res, 1.0);
     
 }

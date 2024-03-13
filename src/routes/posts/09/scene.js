@@ -44,9 +44,9 @@ export const createScene = async (el, onLoaded) => {
     });
 
     scene.add(camera);
-    camera.transform.position[2] = -9;
-    camera.transform.position[1] = 4;
-    camera.transform.setForwardVector(vec3.subtract(vec3.create(), [0,0,0], camera.transform.position));
+    camera.transform.position[2] = -4;
+    camera.transform.position[1] = 0.5;
+   //camera.transform.setForwardVector(vec3.subtract(vec3.create(), [0,0,0], camera.transform.position));
 
     // const bunnyMesh = new PW.OBJMesh({
     //     filePath: "../models/StanfordBunny/StanfordBunnyShadeSmooth.obj",
@@ -58,15 +58,83 @@ export const createScene = async (el, onLoaded) => {
     // quat.rotateY(bunnyTransform.rotation, bunnyTransform.rotation, Math.PI );
     // await bunnyMesh.loaded();
 
+    const ratBodyMesh = new PW.OBJMesh({
+        filePath: "../models/Rat/rat_body.obj",
+        wireframe: false
+    });
+    await ratBodyMesh.loaded();
+
+    const ratEyelidMesh = new PW.OBJMesh({
+        filePath: "../models/Rat/rat_eyelids.obj",
+        wireframe: false
+    });
+    await ratEyelidMesh.loaded();
+
+    const ratEyeMesh = new PW.OBJMesh({
+        filePath: "../models/Rat/rat_eyes.obj",
+        wireframe: false
+    });
+    await ratEyeMesh.loaded();
+
+    const ratNoseMesh = new PW.OBJMesh({
+        filePath: "../models/Rat/rat_nose.obj",
+        wireframe: false
+    });
+    await ratNoseMesh.loaded();
+
+    const ratPupilMesh = new PW.OBJMesh({
+        filePath: "../models/Rat/rat_pupils.obj",
+        wireframe: false
+    });
+    await ratPupilMesh.loaded();
+
     onLoaded();
+
+    const ratTransform = new PW.Transform({});
+    quat.rotateY(ratTransform.rotation, ratTransform.rotation, Math.PI);
+    ratTransform.position[0] = 100
     
-    const obj = new PW.Renderable({
-        // mesh: bunnyMesh,
-        mesh: new PW.SphereMesh({resolution: 32}),
+    const ratBody = new PW.Renderable({
+        mesh: ratBodyMesh,
+        material: new PW.BasicLitMaterial({color: [1, 0, 0, 1.0]})
+    });
+    ratBody.transform = ratTransform;
+    scene.add(ratBody);
+
+    const ratEyelids = new PW.Renderable({
+        mesh: ratEyelidMesh,
         material: new PW.BasicLitMaterial({color: [1,1,1,1]})
     });
-    // obj.transform = bunnyTransform;
-    //scene.add(obj);
+    ratEyelids.transform = ratTransform;
+    scene.add(ratEyelids);
+
+    const ratEyes = new PW.Renderable({
+        mesh: ratEyeMesh,
+        material: new PW.BasicLitMaterial({color: [1,1,1,1]})
+    });
+    ratEyes.transform = ratTransform;
+    scene.add(ratEyes);
+
+    const ratPupils = new PW.Renderable({
+        mesh: ratPupilMesh,
+        material: new PW.BasicLitMaterial({color: [1,1,1,1]})
+    });
+    ratPupils.transform = ratTransform;
+    scene.add(ratPupils);
+
+    const ratNose = new PW.Renderable({
+        mesh: ratNoseMesh,
+        material: new PW.BasicLitMaterial({color: [0,0,0,1]})
+    });
+    ratNose.transform = ratTransform;
+    scene.add(ratNose);
+
+    const sphere = new PW.Renderable({
+        mesh: new PW.SphereMesh({resolution: 32}),
+        material: new PW.BasicLitMaterial({color: [1,0,0,1]})
+    });
+    sphere.transform.position[1] = 0.5;
+    scene.add(sphere);
 
     const plane = new PW.Renderable({
         mesh: new PW.PlaneMesh({width: 10, height: 10}),
@@ -77,10 +145,15 @@ export const createScene = async (el, onLoaded) => {
     scene.add(plane);
     quat.rotateX(plane.transform.rotation, plane.transform.rotation, -Math.PI / 2);
 
-    const light = new PW.DirectionalLight({color: [0,0,1,1]});
-    light.intensity = 0.5;
-    light.transform.position = [5,5,0];
-    //scene.add(light);
+    const daylight = new PW.DirectionalLight({color: [1, 1, 1, 1]});
+    daylight.intensity = 1.0;
+    daylight.transform.position = [5,5,0];
+    scene.add(daylight);
+
+    const moonlight = new PW.DirectionalLight({color: [0.5,0.5,0.5,1]});
+    moonlight.intensity = 0.5;
+    moonlight.transform.position = [-5,5,0];
+    //scene.add(moonlight);
     
     const light2 = new PW.DirectionalLight({color: [1,0,0,1]});
     light2.intensity = 1.0;
@@ -103,7 +176,7 @@ export const createScene = async (el, onLoaded) => {
 
     const pointLight2 = new PW.PointLight({color: [0,1,0,1]});
     pointLight2.transform.position = [-2,2,0];
-    pointLight2.fallOff = 0.5;
+    pointLight2.fallOff = 0.8;
     pointLight2.setMaxDistance(1);
     // // pointLight2.maxDistance = 2;
     //scene.add(pointLight2);
@@ -125,7 +198,7 @@ export const createScene = async (el, onLoaded) => {
     spotLight.setAngle(0.5);
     spotLight.penumbra = 0.5;
     spotLight.intensity = 10;
-    scene.add(spotLight);
+    // scene.add(spotLight);
 
 
     // gui.addColor(parameters, 'color').onChange((value) => {
@@ -145,6 +218,7 @@ export const createScene = async (el, onLoaded) => {
         pointLight.transform.position[2] = 2 * Math.cos(t);
 
         // quat.rotateX(spotLight.transform.rotation, spotLight.transform.rotation,   PW.Time.deltaTime);
+        
 
         t += PW.Time.deltaTime;
         renderer.render(scene, camera);
