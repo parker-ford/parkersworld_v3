@@ -9,26 +9,6 @@ export const createScene = async (el, onLoaded) => {
     el.width = Math.min(document.body.clientWidth, 1400);
     el.height = Math.min(document.body.clientWidth, 1400) * .5;
 
-    const gui = new GUI()
-    gui.domElement.id = 'gui';
-
-    const parameters= {
-        color: 0xff0000,
-        penumbra: 0.5,
-        spotAngle: 0.5
-    }
-
-    const alignGUIWithCanvas = () => {
-        const canvasRect = el.getBoundingClientRect();
-        const guiRect = gui.domElement.getBoundingClientRect();
-        gui.domElement.style.position = 'absolute';
-        gui.domElement.style.top = `222px`;
-        gui.domElement.style.left = `${canvasRect.right - guiRect.width - 2}px`;
-        console.log("testing gui align");
-        console.log(guiRect)
-    };
-    alignGUIWithCanvas();
-
     const renderer = new PW.Renderer(el);
     if (! await renderer.init()) {
         console.log("renderer initialization failed");
@@ -64,6 +44,11 @@ export const createScene = async (el, onLoaded) => {
     });
     await ratBodyMesh.loaded();
 
+    const ratTailMesh = new PW.OBJMesh({
+        filePath: "../models/Rat/rat_tail.obj",
+        wireframe: false
+    });
+
     const ratEyelidMesh = new PW.OBJMesh({
         filePath: "../models/Rat/rat_eyelids.obj",
         wireframe: false
@@ -92,39 +77,46 @@ export const createScene = async (el, onLoaded) => {
 
     const ratTransform = new PW.Transform({});
     quat.rotateY(ratTransform.rotation, ratTransform.rotation, Math.PI);
-    ratTransform.position[0] = 100
+    ratTransform.position[0] = 0;
     
     const ratBody = new PW.Renderable({
         mesh: ratBodyMesh,
-        material: new PW.BasicLitMaterial({color: [1, 0, 0, 1.0]})
+        material: new PW.BasicLitMaterial({color: [0.549, 0.549, 0.549, 1.0]})
     });
     ratBody.transform = ratTransform;
     scene.add(ratBody);
 
+    const ratTail = new PW.Renderable({
+        mesh: ratTailMesh,
+        material: new PW.BasicLitMaterial({color: [0.8, 0.702, 0.769, 1.0]})
+    });
+    ratTail.transform = ratTransform;
+    scene.add(ratTail);
+
     const ratEyelids = new PW.Renderable({
         mesh: ratEyelidMesh,
-        material: new PW.BasicLitMaterial({color: [1,1,1,1]})
+        material: new PW.BasicLitMaterial({color: [0.78, 0.69, 0.859,1]})
     });
     ratEyelids.transform = ratTransform;
     scene.add(ratEyelids);
 
     const ratEyes = new PW.Renderable({
         mesh: ratEyeMesh,
-        material: new PW.BasicLitMaterial({color: [1,1,1,1]})
+        material: new PW.BasicLitMaterial({color: [0.929, 0.91, 0.827,1]})
     });
     ratEyes.transform = ratTransform;
     scene.add(ratEyes);
 
     const ratPupils = new PW.Renderable({
         mesh: ratPupilMesh,
-        material: new PW.BasicLitMaterial({color: [1,1,1,1]})
+        material: new PW.BasicMaterial({color: [0,0,0,1]})
     });
     ratPupils.transform = ratTransform;
     scene.add(ratPupils);
 
     const ratNose = new PW.Renderable({
         mesh: ratNoseMesh,
-        material: new PW.BasicLitMaterial({color: [0,0,0,1]})
+        material: new PW.BasicLitMaterial({color: [0.1,0.1,0.1,1]})
     });
     ratNose.transform = ratTransform;
     scene.add(ratNose);
@@ -134,7 +126,7 @@ export const createScene = async (el, onLoaded) => {
         material: new PW.BasicLitMaterial({color: [1,0,0,1]})
     });
     sphere.transform.position[1] = 0.5;
-    scene.add(sphere);
+    //scene.add(sphere);
 
     const plane = new PW.Renderable({
         mesh: new PW.PlaneMesh({width: 10, height: 10}),
@@ -145,10 +137,10 @@ export const createScene = async (el, onLoaded) => {
     scene.add(plane);
     quat.rotateX(plane.transform.rotation, plane.transform.rotation, -Math.PI / 2);
 
-    const daylight = new PW.DirectionalLight({color: [1, 1, 1, 1]});
-    daylight.intensity = 1.0;
-    daylight.transform.position = [5,5,0];
-    scene.add(daylight);
+    const directionalLight = new PW.DirectionalLight({color: [1, 1, 1, 1]});
+    directionalLight.intensity = 1.0;
+    directionalLight.transform.position = [-5,5,0];
+    scene.add(directionalLight);
 
     const moonlight = new PW.DirectionalLight({color: [0.5,0.5,0.5,1]});
     moonlight.intensity = 0.5;
@@ -227,12 +219,58 @@ export const createScene = async (el, onLoaded) => {
     frame();
 
 
-    gui.add(parameters, 'penumbra', 0, 1).onChange((value) => {
-        spotLight.penumbra = value;
-        spotLight.mesh.updateGizmo();
-    });
+    const gui = new GUI()
+    gui.domElement.id = 'gui';
 
-    gui.add(parameters, 'spotAngle', 0, 1).onChange((value) => {
-        spotLight.setAngle(value * Math.PI / 2);
-    });
+    const parameters= {
+        color: 0xff0000,
+        penumbra: 0.5,
+        spotAngle: 0.5,
+        directionalLightColor: [1,1,1,1],
+        directionalLightIntensity: 1,
+        directionalLightX: 0,
+        directionalLightY: 0,
+        directionalLightZ: 0,
+    }
+    parameters.directionalLightX = directionalLight.transform.position[0];
+    parameters.directionalLightY = directionalLight.transform.position[1];
+    parameters.directionalLightZ = directionalLight.transform.position[2];
+
+    const alignGUIWithCanvas = () => {
+        const canvasRect = el.getBoundingClientRect();
+        const guiRect = gui.domElement.getBoundingClientRect();
+        gui.domElement.style.position = 'absolute';
+        gui.domElement.style.top = `222px`;
+        gui.domElement.style.left = `${canvasRect.right - guiRect.width - 2}px`;
+        console.log("testing gui align");
+        console.log(guiRect)
+    };
+    alignGUIWithCanvas();
+
+    // gui.add(parameters, 'penumbra', 0, 1).onChange((value) => {
+    //     spotLight.penumbra = value;
+    //     spotLight.mesh.updateGizmo();
+    // });
+
+    // gui.add(parameters, 'spotAngle', 0, 1).onChange((value) => {
+    //     spotLight.setAngle(value * Math.PI / 2);
+    // });
+
+    const directionalLightFolder = gui.addFolder('Directional Light');
+    directionalLightFolder.addColor(parameters, 'directionalLightColor').onChange((value) => {
+        directionalLight.color = value;
+        directionalLight.updateGizmo();
+    }).name('Color');
+    directionalLightFolder.add(parameters, 'directionalLightIntensity', 0, 10).onChange((value) => {
+        directionalLight.intensity = value;
+    }).name('Intensity');
+    directionalLightFolder.add(parameters, 'directionalLightX', -10, 10).onChange((value) => {
+        directionalLight.transform.position[0] = value;
+    }).name('X');
+    directionalLightFolder.add(parameters, 'directionalLightY', -10, 10).onChange((value) => {
+        directionalLight.transform.position[1] = value;
+    }).name('Y');
+    directionalLightFolder.add(parameters, 'directionalLightZ', -10, 10).onChange((value) => {
+        directionalLight.transform.position[2] = value;
+    }).name('Z');
 }

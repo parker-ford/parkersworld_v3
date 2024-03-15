@@ -30,6 +30,11 @@ export class DirectionalLight extends Light {
         this.transform.setUpVector(this.lightDir);
     }
 
+    updateGizmo(){
+        this.material.color = this.color;
+        this.material.updateMaterialBuffers();
+    }
+
 
     update(){
         this.updateLightDir();
