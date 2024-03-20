@@ -27,7 +27,13 @@ export class PointLight extends Light {
     setMaxDistance(distance){
         this.maxDistance = distance;
         this.mesh.distance = distance;
+        this.updateGizmo();
+    }
+
+    updateGizmo(){
         this.mesh.updateGizmo();
+        this.material.color = this.color;
+        this.material.updateMaterialBuffers();
     }
 
     update(){

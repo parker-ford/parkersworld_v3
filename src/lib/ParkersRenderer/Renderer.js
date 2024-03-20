@@ -20,7 +20,7 @@ export class Renderer {
         this.context = null;
         this.commandBuffers = [];
         this.renderFuncrions = [];
-        this.viewLightHelpers = true;
+        this.viewLightHelpers = false;
         
         //DEBUGGING
         this.printOD = true;

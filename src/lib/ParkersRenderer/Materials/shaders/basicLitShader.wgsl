@@ -12,44 +12,6 @@ struct ObjectData {
     models: array<ModelData>,
 };
 
-// struct DirectionalLightData {
-//     direction: vec3<f32>,
-//     intensity: f32,
-//     color: vec4<f32>
-// }
-
-// struct DirectionalLightArray {
-//     lights: array<DirectionalLightData>
-// };
-
-// struct PointLightData {
-//     position: vec3<f32>,
-//     intensity: f32,
-//     color: vec4<f32>,
-//     falloff: f32,
-//     maxDistance: f32
-//     // _padding: vec3<f32>
-// };
-
-// struct PointLightArray {
-//     lights: array<PointLightData>
-// };
-
-// struct SpotLightData {
-//     color: vec4<f32>,
-//     position: vec4<f32>,
-//     direction: vec4<f32>,
-//     intensity: f32,
-//     falloff: f32,
-//     maxDistance: f32,
-//     umbra: f32,
-//     penumbra: f32
-// };
-
-// struct SpotLightArray {
-//     lights: array<SpotLightData>
-// };
-
 struct LightData {
     color: vec4<f32>,
     position: vec3<f32>,
@@ -71,13 +33,9 @@ struct LightArray {
 @binding(1) @group(0) var<storage, read> objects: ObjectData;
 @binding(2) @group(0) var<uniform> color: vec4<f32>;
 @binding(3) @group(0) var<storage, read> lights: LightArray; 
-// @binding(3) @group(0) var<storage, read> directionalLights: DirectionalLightArray;
-// @binding(4) @group(0) var<storage, read> pointLights: PointLightArray;
-// @binding(5) @group(0) var<storage, read> spotLights: SpotLightArray;
+
 
 const NUM_LIGHTS: u32 = 16;
-// const NUM_POINT_LIGHTS: u32 = 8;
-// const NUM_SPOT_LIGHTS: u32 = 8;
 
 struct VertexOutput {
     @builtin(position) position : vec4<f32>,
@@ -108,26 +66,28 @@ fn calculate_directional_light(normal: vec3<f32>, light: LightData) -> vec3<f32>
 }
 
 fn calculate_point_light(normal: vec3<f32>, world_position: vec3<f32>, light: LightData) -> vec3<f32>{
+
     var res: vec3<f32> = vec3<f32>(0.0, 0.0, 0.0);
+    var color: vec3<f32> = light.color.rgb;
 
-    var d = light.position - world_position;
-    var r = length(d);
-    var l = d / r;
+    //Normalizing light ray
+    var lightToPos: vec3<f32> = world_position - light.position;
+    var distToPos: f32 = length(lightToPos);
+    lightToPos = lightToPos / distToPos;
 
-    //This needs to change i think
-    var r0: f32 = 1.0;
-    var e: f32 = light.falloff;
-    var c: vec3<f32> = light.color.rgb * ((r0 * r0) / (r * r + e));
+   //Distance attenuation
+    color *=  mix(light.color.rgb * (1 / (distToPos * distToPos + light.falloff)), vec3<f32>(1.0, 1.0, 1.0), 1.0 - light.falloff);
 
-    var rMax: f32 =  light.maxDistance;
-    var win: f32 = 1 - pow((r / rMax), 4);
+    //Windowing function
+    var win: f32 = 1 - pow((distToPos / light.maxDistance), 4);
     win = max(win, 0.0);
     win = win * win;
+    color *= mix(win, 1.0, 1.0 - light.falloff);
 
-    c *= win;
+    //Diffuse
+    var diffuse: f32 = max(dot(-lightToPos, normal), 0.0);
 
-    var attenuation: f32 = dot(l, normal);
-    res += c * attenuation * light.intensity;
+    res += color * diffuse * light.intensity;
 
     return res;
 }
@@ -143,13 +103,13 @@ fn calculate_spot_light(normal: vec3<f32>, world_position: vec3<f32>, light: Lig
     lightToPos = lightToPos / distToPos;
 
     //Distance attenuation
-    color *=  light.color.rgb * (1 / (distToPos * distToPos + light.falloff));
+    color *=  mix(light.color.rgb * (1 / (distToPos * distToPos + light.falloff)), vec3<f32>(1.0, 1.0, 1.0), 1.0 - light.falloff);
 
     //Windowing function
     var win: f32 = 1 - pow((distToPos / light.maxDistance), 4);
     win = max(win, 0.0);
     win = win * win;
-    color *= win;
+    color *= mix(win, 1.0, 1.0 - light.falloff);
 
     //Spotlight effect
     var spotAngle: f32 = dot(normalize(lightToPos), normalize(light.direction.xyz));
@@ -157,12 +117,13 @@ fn calculate_spot_light(normal: vec3<f32>, world_position: vec3<f32>, light: Lig
     var penumbraAngle: f32 = cos(mix(0, light.umbra, light.penumbra));
     var spot: f32 =  max(((spotAngle - umbraAngle) / (penumbraAngle - umbraAngle)), 0);
     spot = spot * spot;
+    spot = min(spot, 1.0);
 
     //Diffuse
     var diffuse: f32 = max(dot(-lightToPos, normal), 0.0);
 
     //Final result
-    res += color * spot * diffuse * light.intensity;
+    res = color * spot * diffuse * light.intensity;
 
     return res;
 }

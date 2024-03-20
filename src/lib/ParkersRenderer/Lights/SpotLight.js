@@ -28,13 +28,19 @@ export class SpotLight extends Light {
     setMaxDistance(distance){
         this.maxDistance = distance;
         this.mesh.distance = distance;
-        this.mesh.updateGizmo();
+        this.updateGizmo();
     }
 
     setAngle(angle){
         this.umbra = angle;
         this.mesh.radius = Math.tan(angle) * this.mesh.distance;
+        this.updateGizmo();
+    }
+
+    updateGizmo(){
         this.mesh.updateGizmo();
+        this.material.color = this.color;
+        this.material.updateMaterialBuffers();
     }
 
     update(){
