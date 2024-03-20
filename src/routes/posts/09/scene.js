@@ -214,22 +214,6 @@ export const createScene = async (el, onLoaded) => {
 
     // })
 
-    var t = 0;
-    function frame() {
-
-        pointLight.transform.position[0] = 2 * Math.sin(t);
-        pointLight.transform.position[2] = 2 * Math.cos(t);
-
-        // quat.rotateX(spotLight.transform.rotation, spotLight.transform.rotation,   PW.Time.deltaTime);
-        
-
-        t += PW.Time.deltaTime;
-        renderer.render(scene, camera);
-        requestAnimationFrame(frame);
-    }
-    frame();
-
-
     const gui = new GUI()
     gui.domElement.id = 'gui';
 
@@ -254,10 +238,28 @@ export const createScene = async (el, onLoaded) => {
         gui.domElement.style.position = 'absolute';
         gui.domElement.style.top = `222px`;
         gui.domElement.style.left = `${canvasRect.right - guiRect.width - 2}px`;
-        console.log("testing gui align");
-        console.log(guiRect)
+        camera.setGui(gui);
     };
     alignGUIWithCanvas();
+
+    var t = 0;
+    function frame() {
+
+        pointLight.transform.position[0] = 2 * Math.sin(t);
+        pointLight.transform.position[2] = 2 * Math.cos(t);
+
+        // quat.rotateX(spotLight.transform.rotation, spotLight.transform.rotation,   PW.Time.deltaTime);
+        
+
+        t += PW.Time.deltaTime;
+        renderer.render(scene, camera);
+        requestAnimationFrame(frame);
+        alignGUIWithCanvas();
+    }
+    frame();
+
+
+
 
     // gui.add(parameters, 'penumbra', 0, 1).onChange((value) => {
     //     spotLight.penumbra = value;

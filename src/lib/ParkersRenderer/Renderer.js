@@ -160,7 +160,6 @@ export class Renderer {
             //this.printLightBuffer = false;
             //console.log(scene.object_data.length);
         }
-        console.log("byteLength: " + scene.light_data.byteLength);
         let clearBuffer = new ArrayBuffer(this.lightBuffer.size);
         this.device.queue.writeBuffer(this.lightBuffer, 0, clearBuffer);
         this.device.queue.writeBuffer(this.lightBuffer, 0, scene.light_data, 0, scene.light_data.byteLength);

@@ -16,6 +16,9 @@ export class PerspectiveCamera {
         this.speed = 5;
         this.rotateSpeed = 0.6;
 
+        this.gui = null;
+        this.rect = null;
+
         this.projectionMatrix = mat4.create();
         mat4.perspective(this.projectionMatrix, this.fov, this.aspect, this.near, this.far);
 
@@ -32,6 +35,18 @@ export class PerspectiveCamera {
         let flipZ = mat4.fromScaling(mat4.create(), vec3.fromValues(1, 1, -1));
         mat4.invert(this.viewMatrix, this.transform.TRS);
         mat4.multiply(this.viewMatrix, flipZ, this.viewMatrix);
+    }
+
+    setGui(gui){
+        this.gui = gui;
+        this.rect = gui.domElement.getBoundingClientRect();
+    }
+
+    isMouseOverGui(){
+        if(this.rect){
+            return (Input.mousePosition.x > this.rect.left && Input.mousePosition.x < this.rect.right && Input.mousePosition.y > this.rect.top && Input.mousePosition.y < this.rect.bottom);
+        }
+        return false;
     }
 
 
@@ -56,7 +71,7 @@ export class PerspectiveCamera {
             vec3.add(this.transform.position, this.transform.position, vec3.scale(vec3.create(), this.transform.up, this.speed * Time.deltaTime));
         }
 
-        if(Input.isMouseDown(0)){
+        if(Input.isMouseDown(0) && !this.isMouseOverGui()){
             const deltaMouse = vec2.fromValues(Input.deltaMouse.x, Input.deltaMouse.y);
             const qX = quat.setAxisAngle(quat.create(), vec3.fromValues(0,1,0), -deltaMouse[0] * Time.deltaTime * this.rotateSpeed);
             const qY = quat.setAxisAngle(quat.create(), this.transform.right , -deltaMouse[1] * Time.deltaTime * this.rotateSpeed);
