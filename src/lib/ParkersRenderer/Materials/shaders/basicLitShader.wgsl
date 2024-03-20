@@ -148,7 +148,7 @@ fn calculate_light(normal: vec3<f32>, world_position: vec3<f32>) -> vec3<f32>{
 @fragment
 fn fragment_main(fragData: VertexOutput) -> @location(0) vec4<f32>{
 
-    var res: vec3<f32> = color.xyz * 0.1;
+    var res: vec3<f32> = color.xyz * 0.03;
     res += calculate_light(fragData.normal, fragData.world_position) * color.xyz;
     return vec4<f32>(res, 1.0);
     

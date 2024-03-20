@@ -1,10 +1,10 @@
 <script context="module">
     export const metadata = {
-        title : "Light",
+        title : "Lights",
         date : "03/11/2024",
-        image_static: 'images/thumbnails/placeholder/placeholder.jpg',
-		image: 'images/thumbnails/placeholder/placeholder.jpg',
-        logo: 'images/logos/threeJSLogo.png',
+        image_static: 'images/thumbnails/lights/lights.jpg',
+		image: 'images/thumbnails/lights/lights.gif',
+        logo: 'images/logos/webGPULogo.png',
     }
 </script>
 

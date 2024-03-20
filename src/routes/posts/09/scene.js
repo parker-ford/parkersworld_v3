@@ -92,7 +92,7 @@ export const createScene = async (el, onLoaded) => {
 
     const ratEyes = new PW.Renderable({
         mesh: ratEyeMesh,
-        material: new PW.BasicMaterial({color: [0.929, 0.91, 0.827,1]})
+        material: new PW.BasicMaterial({color: [0.941, 0.933, 0.431,1]})
     });
     ratEyes.transform = ratTransform;
     scene.add(ratEyes);
@@ -352,7 +352,7 @@ export const createScene = async (el, onLoaded) => {
     }).name('Falloff');
 
     const spotLightFolder = gui.addFolder('Spot Light');
-    spotLightFolder.add(parameters, 'spotLightActive').onChange((value) => {
+    gui.add(parameters, 'spotLightActive').onChange((value) => {
         if(value){
             scene.add(spotLight);
         } else {
