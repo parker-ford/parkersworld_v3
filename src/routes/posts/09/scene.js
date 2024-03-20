@@ -288,7 +288,7 @@ export const createScene = async (el, onLoaded) => {
 
     gui.add(parameters, 'viewGizmos').onChange((value) => {
         renderer.viewLightHelpers = value;
-    });
+    }).name("View Gizmos");
 
     const directionalLightFolder = gui.addFolder('Directional Light');
     directionalLightFolder.add(parameters, 'directionalLightActive').onChange((value) => {
@@ -297,7 +297,7 @@ export const createScene = async (el, onLoaded) => {
         } else {
             scene.remove(directionalLight);
         }
-    });
+    }).name("Active");
     directionalLightFolder.addColor(parameters, 'directionalLightColor').onChange((value) => {
         directionalLight.color = value;
         directionalLight.updateGizmo();
@@ -326,7 +326,7 @@ export const createScene = async (el, onLoaded) => {
             scene.remove(pointLight2);
             scene.remove(pointLight3);
         }
-    });
+    }).name("Active");
     pointLightFolder.addColor(parameters, 'pointLightColor').onChange((value) => {
         pointLight.color = value;
         pointLight.updateGizmo();
@@ -352,13 +352,13 @@ export const createScene = async (el, onLoaded) => {
     }).name('Falloff');
 
     const spotLightFolder = gui.addFolder('Spot Light');
-    gui.add(parameters, 'spotLightActive').onChange((value) => {
+    spotLightFolder.add(parameters, 'spotLightActive').onChange((value) => {
         if(value){
             scene.add(spotLight);
         } else {
             scene.remove(spotLight);
         }
-    });
+    }).name("Active");
     spotLightFolder.addColor(parameters, 'spotLightColor').onChange((value) => {
         spotLight.color = value;
         spotLight.updateGizmo();
