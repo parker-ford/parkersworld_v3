@@ -102,7 +102,7 @@ export const createScene = async (el, onLoaded) => {
 
     const ratEyes = new PW.Renderable({
         mesh: ratEyeMesh,
-        material: new PW.BasicLitMaterial({color: [0.929, 0.91, 0.827,1]})
+        material: new PW.BasicMaterial({color: [0.929, 0.91, 0.827,1]})
     });
     ratEyes.transform = ratTransform;
     scene.add(ratEyes);
@@ -137,10 +137,21 @@ export const createScene = async (el, onLoaded) => {
     scene.add(plane);
     quat.rotateX(plane.transform.rotation, plane.transform.rotation, -Math.PI / 2);
 
-    const directionalLight = new PW.DirectionalLight({color: [1, 1, 1, 1]});
+    const directionalLight = new PW.DirectionalLight({color: [1, 0, 0, 1]});
     directionalLight.intensity = 1.0;
     directionalLight.transform.position = [-5,5,0];
     scene.add(directionalLight);
+    
+    const directionalLight2 = new PW.DirectionalLight({color: [0, 1, 0, 1]});
+    directionalLight2.intensity = 1.0;
+    directionalLight2.transform.position = [5,5,0];
+    // scene.add(directionalLight2);
+
+    const directionalLight3 = new PW.DirectionalLight({color: [0, 0, 1, 1]});
+    directionalLight3.intensity = 1.0;
+    directionalLight3.transform.position = [0,5,5];
+    //scene.add(directionalLight3);
+
 
     const moonlight = new PW.DirectionalLight({color: [0.5,0.5,0.5,1]});
     moonlight.intensity = 0.5;
@@ -226,6 +237,7 @@ export const createScene = async (el, onLoaded) => {
         color: 0xff0000,
         penumbra: 0.5,
         spotAngle: 0.5,
+        directionalLightActive: true,
         directionalLightColor: [1,1,1,1],
         directionalLightIntensity: 1,
         directionalLightX: 0,
@@ -257,6 +269,13 @@ export const createScene = async (el, onLoaded) => {
     // });
 
     const directionalLightFolder = gui.addFolder('Directional Light');
+    directionalLightFolder.add(parameters, 'directionalLightActive').onChange((value) => {
+        if(value){
+            scene.add(directionalLight);
+        } else {
+            scene.remove(directionalLight);
+        }
+    });
     directionalLightFolder.addColor(parameters, 'directionalLightColor').onChange((value) => {
         directionalLight.color = value;
         directionalLight.updateGizmo();

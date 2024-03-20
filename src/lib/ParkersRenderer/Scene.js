@@ -18,8 +18,8 @@ export class Scene {
     }
 
     add(object) {
+        // this.object_count++;
         this.objects.push(object);
-        this.object_count++;
         if(object.transform && !(object instanceof PerspectiveCamera)){
             this.object_count++;
             this.object_data = new Float32Array(this.object_data.length + 32);
@@ -29,6 +29,23 @@ export class Scene {
             this.lights_count++;
             this.light_data = new ArrayBuffer(this.light_data.byteLength + 80);
         }
+    }
+
+    remove(object) {
+        let objIndex = this.objects.indexOf(object);
+        if(objIndex !== -1){
+            this.objects.splice(objIndex, 1);
+            this.object_count--;
+            this.object_data = new Float32Array(this.object_data.length - 32);
+        }
+        let lightIndex = this.lights.indexOf(object);
+        if(lightIndex !== -1){
+            console.log("removing light");
+            this.lights.splice(lightIndex, 1);
+            this.lights_count--;
+            this.light_data = new ArrayBuffer(this.light_data.byteLength - 80);
+        }
+
     }
 
     //TODO: I bet this doesn't work but I don't think I'll care until later
@@ -63,8 +80,10 @@ export class Scene {
             }
         });
 
+
         var lightOffset = 0;
         this.lights.forEach(light => {
+            //console.log("Test");
             const LightDataValues = new ArrayBuffer(80);
             const LightDataViews = {
                 color: new Float32Array(LightDataValues, 0, 4),
