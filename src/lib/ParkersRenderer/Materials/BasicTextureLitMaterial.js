@@ -12,7 +12,7 @@ export class BasicTextureLitMaterial extends Material {
     constructor(options) {
         super();
         this.id = this.constructor.count++;
-        this.color = options.color ? options.color : vec4.fromValues(1, 0, 0, 1);
+        this.color = options.color ? options.color : vec4.fromValues(1, 1, 1, 1);
     }
 
     init(options){
@@ -57,11 +57,13 @@ export class BasicTextureLitMaterial extends Material {
             { texture: this.texture },
             textureData,
             {bytesPerRow: kTextureWidth * 4},
-            {width: kTextureWidth, height: kTextureHeight, depth: 1}
+            {width: kTextureWidth, height: kTextureHeight, depthOrArrayLayers: 1}
           );
 
           //Sampler
-          this.sampler = Renderer.instance.getDevice().createSampler();
+          this.sampler = Renderer.instance.getDevice().createSampler({
+            magFilter: 'linear',
+          });
     }
 
     updateMaterialBuffers(){

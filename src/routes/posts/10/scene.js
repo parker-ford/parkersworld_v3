@@ -45,8 +45,8 @@ export const createScene = async (el, onLoaded) => {
 
 
     const cube = new PW.Renderable({
-        mesh: new PW.CubeMesh({}),
-        material: new PW.BasicTextureLitMaterial({color: [1,0, 0,1]})
+        mesh: new PW.SphereMesh({resolution: 32}),
+        material: new PW.BasicTextureLitMaterial({})
     });
     scene.add(cube);
 
