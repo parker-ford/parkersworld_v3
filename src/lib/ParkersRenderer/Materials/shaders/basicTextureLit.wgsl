@@ -160,17 +160,15 @@ fn vertex_main(@builtin(instance_index) id: u32,
 @fragment
 fn fragment_main(fragData: VertexOutput) -> @location(0) vec4<f32>{
 
-    // var res: vec3<f32> = color.xyz * 0.15;
-    // res += calculate_light(fragData.normal, fragData.world_position) * color.xyz;
+    var res: vec3<f32> = uniforms.color.xyz * uniforms.ambient;
+    res += calculate_light(fragData.normal, fragData.world_position) * uniforms.color.xyz;
     // return vec4<f32>(res, 1.0);
 
-    // var texCol: vec4<f32> = textureSample(ourTexture, ourSampler, fragData.uv);
+    var texCol: vec4<f32> = textureSample(ourTexture, ourSampler, fragData.uv * uniforms.tiling + vec2<f32>(uniforms.offset, uniforms.offset) );
     // return vec4<f32>(texCol.rgb + 0.5, 1.0);
 
-    // return vec4<f32>(res * texCol.rgb, 1.0);
+    return vec4<f32>(res * texCol.rgb, 1.0);
 
     // return vec4<f32>(fragData.uv, 0.0, 1.0);
-
-    return vec4<f32>(uniforms.color.rgb, 1.0);
     
 }
