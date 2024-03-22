@@ -17,7 +17,7 @@ export class BasicTextureLitMaterial extends Material {
         this.ambient = options.ambient ? options.ambient : 0.5;
         this.tiling = options.tiling ? options.tiling : 1;
         this.offset = options.offset ? options.offset : 0;
-        this.textureData = options.textureData;
+        this.texture = options.texture;
     }
 
     init(options){
@@ -25,7 +25,7 @@ export class BasicTextureLitMaterial extends Material {
         if(!this.constructor.bindGroupLayout){
             this.constructor.bindGroupLayout = this.createBindGroupLayout();
         }
-        this.createTexture();
+        //this.createTexture();
         this.createMaterialBuffers();
         this.createBindGroup();
         if(!this.constructor.pipelines[this.topology]){
@@ -33,59 +33,51 @@ export class BasicTextureLitMaterial extends Material {
         }
     }
 
-    createTexture(){
-        //Texture
-        console.log(this.textureData)
-        const textureDescriptor = {
-            label: this.textureData.path,
-            size: {
-                width: this.textureData.width,
-                height: this.textureData.height,
-            },
-            format: 'rgba8unorm',
-            usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.RENDER_ATTACHMENT,
-        }
+    // createTexture(){
+    //     //Texture
+    //     console.log(this.textureData)
+    //     const textureDescriptor = {
+    //         label: this.textureData.path,
+    //         size: {
+    //             width: this.textureData.width,
+    //             height: this.textureData.height,
+    //         },
+    //         format: 'rgba8unorm',
+    //         usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.RENDER_ATTACHMENT,
+    //     }
         
-        this.texture = Renderer.instance.getDevice().createTexture(textureDescriptor);
+    //     this.texture = Renderer.instance.getDevice().createTexture(textureDescriptor);
 
-        // Renderer.instance.getDevice().queue.writeTexture(
-        //     { texture: this.texture },
-        //     this.textureData.source,
-        //     { bytesPerRow: this.textureData.width * 4 },
-        //     { width: this.textureData.width, height: this.textureData.height },
-        // );
+    //     Renderer.instance.getDevice().queue.copyExternalImageToTexture(
+    //         { source: this.textureData.source, flipY: true},
+    //         { texture: this.texture },
+    //         textureDescriptor.size
+    //     );
 
-        Renderer.instance.getDevice().queue.copyExternalImageToTexture(
-            { source: this.textureData.source},
-            { texture: this.texture },
-            textureDescriptor.size
-        );
+    //     //Texture view
+    //     const viewDescriptor = {
+    //         format: 'rgba8unorm',
+    //         dimension: '2d',
+    //         aspect: 'all',
+    //         baseMipLevel: 0,
+    //         mipLevelCount: 1,
+    //         baseArrayLayer: 0,
+    //         arrayLayerCount: 1,
+    //     }
+    //     this.textureView = this.texture.createView(viewDescriptor);
 
-        //Texture view
-        const viewDescriptor = {
-            format: 'rgba8unorm',
-            dimension: '2d',
-            aspect: 'all',
-            baseMipLevel: 0,
-            mipLevelCount: 1,
-            baseArrayLayer: 0,
-            arrayLayerCount: 1,
-        }
+    //     //Sampler
+    //     const samplerDescriptor = {
+    //         addressModeU: 'repeat',
+    //         addressModeV: 'repeat',
+    //         magFilter: 'linear',
+    //         minFilter: 'nearest',
+    //         mipmapFilter: 'nearest',
+    //         maxAnisotropy: 1,
+    //     }
 
-        this.textureView = this.texture.createView(viewDescriptor);
-
-        //Sampler
-        const samplerDescriptor = {
-            addressModeU: 'repeat',
-            addressModeV: 'repeat',
-            magFilter: 'linear',
-            minFilter: 'nearest',
-            mipmapFilter: 'nearest',
-            maxAnisotropy: 1,
-        }
-
-        this.sampler = Renderer.instance.getDevice().createSampler(samplerDescriptor);
-    }
+    //     this.sampler = Renderer.instance.getDevice().createSampler(samplerDescriptor);
+    // }
 
     updateMaterialBuffers(){
         this.createMaterialBuffers();
@@ -94,11 +86,6 @@ export class BasicTextureLitMaterial extends Material {
 
     createMaterialBuffers(){
 
-        // const uniforms = {
-        //     color: this.color
-        // }
-
-        // const bufferSize = Object.values(uniforms).reduce((total, uniform) => total + uniform.byteLength, 0);
         const UniformsValues = new ArrayBuffer(32);
         const UniformsViews = {
             color: new Float32Array(UniformsValues, 0, 4),
@@ -115,18 +102,8 @@ export class BasicTextureLitMaterial extends Material {
             label: this.constructor.name + '-uniform-buffer' + this.id,
             size: UniformsValues.byteLength,
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-            // mappedAtCreation: true
         });
         Renderer.instance.getDevice().queue.writeBuffer(this.uniformBuffer, 0, UniformsValues);
-
-        // this.colorBuffer = Renderer.instance.getDevice().createBuffer({
-        //     label: this.constructor.name + '-color-buffer' + this.id,
-        //     size: 16,
-        //     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-        //     mappedAtCreation: true
-        // });
-        // new Float32Array(this.colorBuffer.getMappedRange()).set(this.color);
-        // this.colorBuffer.unmap();
     }
 
     createBindGroup(){
@@ -160,11 +137,11 @@ export class BasicTextureLitMaterial extends Material {
                 },
                 {
                     binding: 4,
-                    resource: this.sampler
+                    resource: this.texture.sampler
                 },
                 {
                     binding: 5,
-                    resource: this.textureView
+                    resource: this.texture.textureView
                 }
             ]
         });
