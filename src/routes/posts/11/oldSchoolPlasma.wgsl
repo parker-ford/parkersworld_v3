@@ -35,6 +35,7 @@ struct Uniforms {
 }
 
 const NUM_LIGHTS: u32 = 16;
+const PI: f32 = 3.14159265359;
 
 @binding(0) @group(0) var<uniform> transformUBO: TransformData;
 @binding(1) @group(0) var<storage, read> objects: ObjectData;
@@ -153,16 +154,22 @@ fn vertex_main(@builtin(instance_index) id: u32,
     return output;
 }
 
-fn calculate_water_color(uv_in: vec2<f32>) -> vec3<f32> {
+fn procedural_function(uv_in: vec2<f32>) -> vec3<f32> {
     var uv: vec2<f32> = uv_in;
-    uv *= 6.0;
+    uv *= 256.0;
 
-    for(var n: i32 = 1; n < 8; n = n + 1){
-        var i: f32 = f32(n);
-        uv += vec2<f32>(0.7 / i * sin(i * uv.y + uniforms.time + 0.3 * i) + 0.8, 0.4 / i * sin(uv.x + uniforms.time + 0.3 * i) + 1.6);
-    }
-    var color: vec3<f32> = vec3<f32>(0.5 * sin(uv.x) + 0.5, 0.5 * sin(uv.y) + 0.5, sin(uv.x + uv.y));
-    return color;
+    var time: f32 = uniforms.time * 0.2;
+
+    var color1: f32 = (sin(dot(uv, vec2<f32>(sin(time * 3.0), cos(time * 3.0)))*0.02 + time * 3.0) + 1.0) / 2.0;
+    var center: vec2<f32> = vec2<f32>(640.0 / 2.0, 360.0 / 2.0) + vec2<f32>(640.0 / 2.0 * sin(-time * 3.0), 360.0 / 2.0 * cos(-time * 3.0));
+    var color2: f32 = (cos(length(uv - center) * 0.03) + 1.0) / 2.0;
+    var color: f32 = (color1 + color2) / 2.0;
+
+    var red: f32 = (cos(PI * color / 0.5 + time * 3.0) + 1.0) / 2.0;
+    var green: f32 = (sin(PI * color / 0.5 + time * 3.0) + 1.0) / 2.0;
+    var blue: f32 = (sin(time * 3.0) + 1.0) / 2.0;
+
+    return vec3<f32>(red, green, blue);
 }
 
 @fragment
@@ -170,7 +177,7 @@ fn fragment_main(fragData: VertexOutput) -> @location(0) vec4<f32>{
 
     var res: vec3<f32> = uniforms.color.xyz * uniforms.ambient;
     res += calculate_light(fragData.normal, fragData.world_position) * uniforms.color.xyz;
-    res *= calculate_water_color(fragData.uv);
+    res *= procedural_function(fragData.uv);
     return vec4<f32>(res, 1.0);
 
 }

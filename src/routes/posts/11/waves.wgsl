@@ -35,6 +35,7 @@ struct Uniforms {
 }
 
 const NUM_LIGHTS: u32 = 16;
+const PI: f32 = 3.14159265359;
 
 @binding(0) @group(0) var<uniform> transformUBO: TransformData;
 @binding(1) @group(0) var<storage, read> objects: ObjectData;
@@ -153,16 +154,49 @@ fn vertex_main(@builtin(instance_index) id: u32,
     return output;
 }
 
-fn calculate_water_color(uv_in: vec2<f32>) -> vec3<f32> {
-    var uv: vec2<f32> = uv_in;
-    uv *= 6.0;
 
-    for(var n: i32 = 1; n < 8; n = n + 1){
-        var i: f32 = f32(n);
-        uv += vec2<f32>(0.7 / i * sin(i * uv.y + uniforms.time + 0.3 * i) + 0.8, 0.4 / i * sin(uv.x + uniforms.time + 0.3 * i) + 1.6);
-    }
-    var color: vec3<f32> = vec3<f32>(0.5 * sin(uv.x) + 0.5, 0.5 * sin(uv.y) + 0.5, sin(uv.x + uv.y));
-    return color;
+// vec2 center = vec2(0.5,0.5);
+// float speed = 0.035;
+
+// void mainImage( out vec4 fragColor, in vec2 fragCoord )
+// {
+//     float invAr = iResolution.y / iResolution.x;
+
+//     vec2 uv = fragCoord.xy / iResolution.xy;
+		
+// 	vec3 col = vec4(uv,0.5+0.5*sin(iTime),1.0).xyz;
+   
+//     vec3 texcol;
+			
+// 	float x = (center.x-uv.x);
+// 	float y = (center.y-uv.y) *invAr;
+		
+// 	//float r = -sqrt(x*x + y*y); //uncoment this line to symmetric ripples
+// 	float r = -(x*x + y*y);
+// 	float z = 1.0 + 0.5*sin((r+iTime*speed)/0.013);
+	
+// 	texcol.x = z;
+// 	texcol.y = z;
+// 	texcol.z = z;
+	
+// 	fragColor = vec4(col*texcol,1.0);
+// }
+
+
+fn procedural_function(uv_in: vec2<f32>) -> vec3<f32> {
+    var uv: vec2<f32> = uv_in;
+    // uv *= 256.0;
+    var center: vec2<f32> = vec2<f32>(0.5, 0.5);
+    var speed: f32 = 0.035;
+    var col: vec3<f32> = vec3<f32>(uv, 0.5 + 0.5 * sin(uniforms.time));
+    var invAr: f32 = 1.0;   
+    var x: f32 = (center.x - uv.x);
+    var y: f32 = (center.y - uv.y) * invAr;
+    var r: f32 = -(x * x + y * y);
+    var z: f32 = 1.0 + 0.5 * sin((r + uniforms.time * speed) / 0.013);
+
+    var texcol: vec3<f32> = vec3<f32>(z, z, z);
+    return col * texcol;
 }
 
 @fragment
@@ -170,7 +204,7 @@ fn fragment_main(fragData: VertexOutput) -> @location(0) vec4<f32>{
 
     var res: vec3<f32> = uniforms.color.xyz * uniforms.ambient;
     res += calculate_light(fragData.normal, fragData.world_position) * uniforms.color.xyz;
-    res *= calculate_water_color(fragData.uv);
+    res *= procedural_function(fragData.uv);
     return vec4<f32>(res, 1.0);
 
 }

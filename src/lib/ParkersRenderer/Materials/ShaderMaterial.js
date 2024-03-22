@@ -34,38 +34,20 @@ export class ShaderMaterial extends Material {
         this.createBindGroup();
     }
 
+    updateUniformBuffer(){
+        this.uniformValues.set(this.uniforms);
+        Renderer.instance.getDevice().queue.writeBuffer(this.uniformBuffer, 0, this.uniformValues.arrayBuffer);
+    }
+
     createMaterialBuffers(){
-
         const defs = makeShaderDataDefinitions(this.shader);
-        console.log(defs)
-        const uniformsView = makeStructuredView(defs.uniforms.uniforms);
-        console.log(uniformsView);
-
+        this.uniformValues = makeStructuredView(defs.uniforms.uniforms);
         this.uniformBuffer = Renderer.instance.getDevice().createBuffer({
-            size: uniformsView.arrayBuffer.byteLength,
+            size: this.uniformValues.arrayBuffer.byteLength,
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         });
-
-        uniformsView.set(this.uniforms);
-
-        // const UniformsValues = new ArrayBuffer(32);
-        // const UniformsViews = {
-        //     color: new Float32Array(UniformsValues, 0, 4),
-        //     // ambient: new Float32Array(UniformsValues, 16, 1),
-        //     // tiling: new Float32Array(UniformsValues, 20, 1),
-        //     // offset: new Float32Array(UniformsValues, 24, 1),
-        // };
-        // UniformsViews.color.set([1,0,0,1]);
-        // // UniformsViews.ambient[0] = this.ambient;
-        // // UniformsViews.tiling[0] = this.tiling;
-        // // UniformsViews.offset[0] = this.offset;
-        
-        // this.uniformBuffer = Renderer.instance.getDevice().createBuffer({
-        //     label: this.constructor.name + '-uniform-buffer' + this.id,
-        //     size: UniformsValues.byteLength,
-        //     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-        // });
-        Renderer.instance.getDevice().queue.writeBuffer(this.uniformBuffer, 0, uniformsView.arrayBuffer);
+        this.uniformValues.set(this.uniforms);
+        Renderer.instance.getDevice().queue.writeBuffer(this.uniformBuffer, 0, this.uniformValues.arrayBuffer);
     }
 
     createBindGroup(){
