@@ -1,9 +1,9 @@
 import * as PW from '$lib/ParkersRenderer'
+import { quat } from 'gl-matrix';
 import GUI from 'lil-gui'; 
 
 
 export const createScene = async (el, onLoaded) => {
-    onLoaded();
 
     //Initial setup
     el.width = Math.min(document.body.clientWidth, 1400);
@@ -44,11 +44,28 @@ export const createScene = async (el, onLoaded) => {
     alignGUIWithCanvas();
 
 
+    const texture = new PW.Texture({path: "../images/matcaps/1.png"});
+    await texture.loaded();
+
+    const checkerTexture = new PW.Texture({path: "../images/misc/checker.png"});
+    await checkerTexture.loaded();
+
+    onLoaded();
+
+
     const cube = new PW.Renderable({
-        mesh: new PW.SphereMesh({resolution: 32}),
-        material: new PW.BasicTextureLitMaterial({})
+        mesh: new PW.CubeMesh({resolution: 32}),
+        material: new PW.BasicTextureLitMaterial({textureData: texture}),
     });
     scene.add(cube);
+
+    const plane = new PW.Renderable({
+        mesh: new PW.PlaneMesh({resolution: 32}),
+        material: new PW.BasicTextureLitMaterial({textureData: checkerTexture}),
+    });
+    quat.rotateX(plane.transform.rotation, plane.transform.rotation, Math.PI / 2);
+    plane.transform.scale = [100,100,100]
+    scene.add(plane);
 
     const directionalLight = new PW.DirectionalLight({color: [1, 1, 1, 1]});
     directionalLight.intensity = 1.0;

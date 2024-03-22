@@ -9,6 +9,7 @@ export * from './BasicTransformRenderer.js'
 export * from './BasicTriangleTransform.js'
 export * from './Renderer.js'
 export * from './Renderable.js'
+export * from './Texture.js'
 
 //Materials
 export * from './Materials/BasicMaterial.js'

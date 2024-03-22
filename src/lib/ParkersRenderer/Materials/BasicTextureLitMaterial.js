@@ -13,6 +13,7 @@ export class BasicTextureLitMaterial extends Material {
         super();
         this.id = this.constructor.count++;
         this.color = options.color ? options.color : vec4.fromValues(1, 1, 1, 1);
+        this.textureData = options.textureData;
     }
 
     init(options){
@@ -20,50 +21,66 @@ export class BasicTextureLitMaterial extends Material {
         if(!this.constructor.bindGroupLayout){
             this.constructor.bindGroupLayout = this.createBindGroupLayout();
         }
+        this.createTexture();
+        this.createMaterialBuffers();
+        this.createBindGroup();
         if(!this.constructor.pipelines[this.topology]){
             this.constructor.pipelines[this.topology] = this.createPipeline(options);
         }
-        this.createTestTexture();
-        this.createMaterialBuffers();
-        this.createBindGroup();
     }
 
-    createTestTexture(){
-
-        //Texture data
-        const kTextureWidth = 5;
-        const kTextureHeight = 7;
-        const _ = [255,   0,   0, 255];  // red
-        const y = [255, 255,   0, 255];  // yellow
-        const b = [  0,   0, 255, 255];  // blue
-        const textureData = new Uint8Array([
-            b, _, _, _, _,
-            _, y, y, y, _,
-            _, y, _, _, _,
-            _, y, y, _, _,
-            _, y, _, _, _,
-            _, y, _, _, _,
-            _, _, _, _, _,
-        ].flat());
-
+    createTexture(){
         //Texture
-        this.texture = Renderer.instance.getDevice().createTexture({
-            size: [kTextureWidth, kTextureHeight],
+        console.log(this.textureData)
+        const textureDescriptor = {
+            label: this.textureData.path,
+            size: {
+                width: this.textureData.width,
+                height: this.textureData.height,
+            },
             format: 'rgba8unorm',
-            usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
-          });
+            usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.RENDER_ATTACHMENT,
+        }
+        
+        this.texture = Renderer.instance.getDevice().createTexture(textureDescriptor);
 
-          Renderer.instance.getDevice().queue.writeTexture(
+        // Renderer.instance.getDevice().queue.writeTexture(
+        //     { texture: this.texture },
+        //     this.textureData.source,
+        //     { bytesPerRow: this.textureData.width * 4 },
+        //     { width: this.textureData.width, height: this.textureData.height },
+        // );
+
+        Renderer.instance.getDevice().queue.copyExternalImageToTexture(
+            { source: this.textureData.source},
             { texture: this.texture },
-            textureData,
-            {bytesPerRow: kTextureWidth * 4},
-            {width: kTextureWidth, height: kTextureHeight, depthOrArrayLayers: 1}
-          );
+            textureDescriptor.size
+        );
 
-          //Sampler
-          this.sampler = Renderer.instance.getDevice().createSampler({
+        //Texture view
+        const viewDescriptor = {
+            format: 'rgba8unorm',
+            dimension: '2d',
+            aspect: 'all',
+            baseMipLevel: 0,
+            mipLevelCount: 1,
+            baseArrayLayer: 0,
+            arrayLayerCount: 1,
+        }
+
+        this.textureView = this.texture.createView(viewDescriptor);
+
+        //Sampler
+        const samplerDescriptor = {
+            addressModeU: 'repeat',
+            addressModeV: 'repeat',
             magFilter: 'linear',
-          });
+            minFilter: 'nearest',
+            mipmapFilter: 'nearest',
+            maxAnisotropy: 1,
+        }
+
+        this.sampler = Renderer.instance.getDevice().createSampler(samplerDescriptor);
     }
 
     updateMaterialBuffers(){
@@ -72,6 +89,7 @@ export class BasicTextureLitMaterial extends Material {
     }
 
     createMaterialBuffers(){
+
         this.colorBuffer = Renderer.instance.getDevice().createBuffer({
             label: this.constructor.name + '-color-buffer' + this.id,
             size: 16,
@@ -117,7 +135,7 @@ export class BasicTextureLitMaterial extends Material {
                 },
                 {
                     binding: 5,
-                    resource: this.texture.createView()
+                    resource: this.textureView
                 }
             ]
         });
@@ -160,7 +178,7 @@ export class BasicTextureLitMaterial extends Material {
                 {
                     binding: 5,
                     visibility: GPUShaderStage.FRAGMENT,
-                    texture: {sampleType: 'float'}
+                    texture: {}
                 }
             ]
         });

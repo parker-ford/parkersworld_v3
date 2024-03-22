@@ -45,6 +45,8 @@ export class Renderer {
             return false;
         }
 
+        console.log(this.adapter);
+
         //This is the logical connection of the gpu. It allows you to create thins like buffers and textures.
         this.device = await this.adapter.requestDevice();
         if (!this.device) {
