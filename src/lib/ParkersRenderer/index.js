@@ -18,6 +18,7 @@ export * from './Materials/NormalMaterial.js'
 export * from './Materials/GoochMaterial.js'
 export * from './Materials/BasicLitMaterial.js'
 export * from './Materials/BasicTextureLitMaterial.js'
+export * from './Materials/ShaderMaterial.js'
 
 //Meshes
 export * from './Meshes/PlaneMesh.js'
