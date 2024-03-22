@@ -5,7 +5,14 @@ export class Texture {
     static classMipModule = null;
     static classMipSampler = null;
     static pipelinesByFormat = {};
+    static defaultTexture = null;
 
+    static getDefaultTexture() {
+        if(!this.defaultTexture){
+            this.defaultTexture = new Texture({});
+        }
+        return this.defaultTexture;
+    }
 
     constructor(options) {
         this.path = options.path;
@@ -14,7 +21,7 @@ export class Texture {
         this.filter = options.filter || 'linear';
         this.mipmap = options.mipmap || 'nearest';
         this.anisotropy = options.anisotropy | 1;
-        this.genMips = options.genMips || false;
+        this.useMips = options.useMips || false;
         this.source = null;
         this.width = 0;
         this.height = 0;
@@ -39,11 +46,21 @@ export class Texture {
     }
 
     async loadImageBitmap() {
+        if(this.path){
             const response = await fetch(this.path);
             const blob = await response.blob();
             this.source = await createImageBitmap(blob);
             this.width = this.source.width;
             this.height = this.source.height;
+        }
+        else{
+            const size = 64;
+            const data = new Uint8Array(size * size * 4);
+            data.fill(255); 
+            this.source = new ImageData(data, size, size);
+            this.width = this.source.width;
+            this.height = this.source.height;
+        }
     }
 
     createTextureInstance() {
@@ -56,7 +73,7 @@ export class Texture {
                 height: this.height,
             },
             format: this.format,
-            mipLevelCount: this.genMips ? numMipLevels(this.width, this.height) : 1,
+            mipLevelCount: this.useMips ? this.numMipLevels(this.width, this.height) : 1,
             usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.RENDER_ATTACHMENT,
         };
 
@@ -68,7 +85,7 @@ export class Texture {
             dimension: '2d',
             aspect: 'all',
             baseMipLevel: 0,
-            mipLevelCount: 1,
+            mipLevelCount: this.useMips ? this.numMipLevels(this.width, this.height) : 1,
             baseArrayLayer: 0,
             arrayLayerCount: 1,
         }
@@ -95,8 +112,7 @@ export class Texture {
             { texture: this.textureInstance },
             {width: this.width, height: this.height}
         );
-
-        if(this.genMips){
+        if(this.useMips){
             this.generateMips();
         }
     }
@@ -170,13 +186,13 @@ export class Texture {
                 },
             });
         }
+        return this.constructor.pipelinesByFormat[format];
     }
 
 
 
     generateMips() {
-
-        const encoder = device.createCommandEncoder({
+        const encoder = Renderer.instance.getDevice().createCommandEncoder({
             label: 'mip gen encoder',
         });
 
@@ -186,12 +202,11 @@ export class Texture {
         while(width > 1 || height > 1){
             width = Math.max(1, width / 2 | 0);
             height = Math.max(1, height / 2 | 0);
-
             const bindGroup = Renderer.instance.getDevice().createBindGroup({
-                layout: pipeline.getBindGroupLayout(0),
+                layout: this.pipeline.getBindGroupLayout(0),
                 entries: [
                     { binding: 0, resource: this.mipSampler },
-                    { binding: 1, resource: this.createView({baseMipLevel, mipLevelCount: 1}) },
+                    { binding: 1, resource: this.textureInstance.createView({baseMipLevel, mipLevelCount: 1}) },
                 ],
             });
 
@@ -223,116 +238,4 @@ export class Texture {
         const maxSize = Math.max(...sizes);
         return 1 + Math.log2(maxSize) | 0;
     };
-
-    // generateMips = (() => {
-    //     let sampler;
-    //     let module;
-    //     const pipelineByFormat = {};
-     
-    //     return function generateMips(device, texture) {
-    //       if (!module) {
-    //         module = device.createShaderModule({
-    //           label: 'textured quad shaders for mip level generation',
-    //           code: `
-    //             struct VSOutput {
-    //               @builtin(position) position: vec4f,
-    //               @location(0) texcoord: vec2f,
-    //             };
-     
-    //             @vertex fn vs(
-    //               @builtin(vertex_index) vertexIndex : u32
-    //             ) -> VSOutput {
-    //               let pos = array(
-     
-    //                 vec2f( 0.0,  0.0),  // center
-    //                 vec2f( 1.0,  0.0),  // right, center
-    //                 vec2f( 0.0,  1.0),  // center, top
-     
-    //                 // 2st triangle
-    //                 vec2f( 0.0,  1.0),  // center, top
-    //                 vec2f( 1.0,  0.0),  // right, center
-    //                 vec2f( 1.0,  1.0),  // right, top
-    //               );
-     
-    //               var vsOutput: VSOutput;
-    //               let xy = pos[vertexIndex];
-    //               vsOutput.position = vec4f(xy * 2.0 - 1.0, 0.0, 1.0);
-    //               vsOutput.texcoord = vec2f(xy.x, 1.0 - xy.y);
-    //               return vsOutput;
-    //             }
-     
-    //             @group(0) @binding(0) var ourSampler: sampler;
-    //             @group(0) @binding(1) var ourTexture: texture_2d<f32>;
-     
-    //             @fragment fn fs(fsInput: VSOutput) -> @location(0) vec4f {
-    //               return textureSample(ourTexture, ourSampler, fsInput.texcoord);
-    //             }
-    //           `,
-    //         });
-     
-    //         sampler = device.createSampler({
-    //           minFilter: 'linear',
-    //         });
-    //       }
-     
-    //       if (!pipelineByFormat[texture.format]) {
-    //         pipelineByFormat[texture.format] = device.createRenderPipeline({
-    //           label: 'mip level generator pipeline',
-    //           layout: 'auto',
-    //           vertex: {
-    //             module,
-    //             entryPoint: 'vs',
-    //           },
-    //           fragment: {
-    //             module,
-    //             entryPoint: 'fs',
-    //             targets: [{ format: texture.format }],
-    //           },
-    //         });
-    //       }
-    //       const pipeline = pipelineByFormat[texture.format];
-     
-    //       const encoder = device.createCommandEncoder({
-    //         label: 'mip gen encoder',
-    //       });
-     
-    //       let width = texture.width;
-    //       let height = texture.height;
-    //       let baseMipLevel = 0;
-    //       while (width > 1 || height > 1) {
-    //         width = Math.max(1, width / 2 | 0);
-    //         height = Math.max(1, height / 2 | 0);
-     
-    //         const bindGroup = device.createBindGroup({
-    //           layout: pipeline.getBindGroupLayout(0),
-    //           entries: [
-    //             { binding: 0, resource: sampler },
-    //             { binding: 1, resource: texture.createView({baseMipLevel, mipLevelCount: 1}) },
-    //           ],
-    //         });
-     
-    //         ++baseMipLevel;
-     
-    //         const renderPassDescriptor = {
-    //           label: 'our basic canvas renderPass',
-    //           colorAttachments: [
-    //             {
-    //               view: texture.createView({baseMipLevel, mipLevelCount: 1}),
-    //               loadOp: 'clear',
-    //               storeOp: 'store',
-    //             },
-    //           ],
-    //         };
-     
-    //         const pass = encoder.beginRenderPass(renderPassDescriptor);
-    //         pass.setPipeline(pipeline);
-    //         pass.setBindGroup(0, bindGroup);
-    //         pass.draw(6);  // call our vertex shader 6 times
-    //         pass.end();
-    //       }
-     
-    //       const commandBuffer = encoder.finish();
-    //       device.queue.submit([commandBuffer]);
-    //     };
-    //   })();
 }

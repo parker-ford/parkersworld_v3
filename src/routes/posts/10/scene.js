@@ -49,7 +49,7 @@ export const createScene = async (el, onLoaded) => {
     const texture = new PW.Texture({path: "../images/matcaps/1.png"});
     await texture.loaded();
 
-    const checkerTexture = new PW.Texture({path: "../images/misc/checker.png"});
+    const checkerTexture = new PW.Texture({path: "../images/misc/checker.png", useMips: true});
     await checkerTexture.loaded();
 
     onLoaded();
@@ -57,14 +57,15 @@ export const createScene = async (el, onLoaded) => {
 
     const cube = new PW.Renderable({
         mesh: new PW.CubeMesh({resolution: 32}),
-        material: new PW.BasicTextureLitMaterial({texture: texture, tiling: 2.0, offset: 0.1}),
+        // material: new PW.BasicTextureLitMaterial({texture: texture, tiling: 2.0, offset: 0.1}),
+        material: new PW.BasicTextureLitMaterial({}),
     });
     cube.transform.position = [0, 0.5, 0];
     scene.add(cube);
 
     const plane = new PW.Renderable({
         mesh: new PW.PlaneMesh({resolution: 32}),
-        material: new PW.BasicTextureLitMaterial({texture: checkerTexture, tiling: 10, genMips: true}),
+        material: new PW.BasicTextureLitMaterial({texture: checkerTexture, tiling: 10}),
     });
     quat.rotateX(plane.transform.rotation, plane.transform.rotation, - Math.PI / 2);
     plane.transform.scale = [100,100,100]
