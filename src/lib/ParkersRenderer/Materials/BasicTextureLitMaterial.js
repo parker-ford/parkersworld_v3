@@ -13,10 +13,10 @@ export class BasicTextureLitMaterial extends Material {
     constructor(options) {
         super();
         this.id = this.constructor.count++;
-        this.color = options.color ? options.color : vec4.fromValues(1, 1, 1, 1);
-        this.ambient = options.ambient ? options.ambient : 0.5;
-        this.tiling = options.tiling ? options.tiling : 1;
-        this.offset = options.offset ? options.offset : 0;
+        this.color = options.color || vec4.fromValues(1, 1, 1, 1);
+        this.ambient = options.ambient || 0.5;
+        this.tiling = options.tiling || 1;
+        this.offset = options.offset || 0;
         this.texture = options.texture || Texture.getDefaultTexture();
     }
 
