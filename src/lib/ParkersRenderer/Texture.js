@@ -42,7 +42,12 @@ export class Texture {
     async init() {
         await this.loadImageBitmap();
         this.createTextureInstance();
-        this.copySourceToTexture();
+        if(this.path){
+            this.copySourceToTexture();
+        }
+        else{
+            this.writeTextureData();
+        }
     }
 
     async loadImageBitmap() {
@@ -55,11 +60,10 @@ export class Texture {
         }
         else{
             const size = 64;
-            const data = new Uint8Array(size * size * 4);
-            data.fill(255); 
-            this.source = new ImageData(data, size, size);
-            this.width = this.source.width;
-            this.height = this.source.height;
+            this.source = new Uint8Array(size * size * 4);
+            this.source.fill(255); 
+            this.width = 64;
+            this.height = 64;
         }
     }
 
@@ -67,7 +71,7 @@ export class Texture {
 
         //Texture
         const textureDescriptor = {
-            label: this.path,
+            label: this.path || 'default texture',
             size: {
                 width: this.width,
                 height: this.height,
@@ -92,7 +96,6 @@ export class Texture {
 
         this.textureView = this.textureInstance.createView(viewDescriptor);
 
-
         //Sampler
         const samplerDescriptor = {
             addressModeU: this.addressMode,
@@ -115,6 +118,15 @@ export class Texture {
         if(this.useMips){
             this.generateMips();
         }
+    }
+
+    writeTextureData() {
+        Renderer.instance.getDevice().queue.writeTexture(
+            { texture: this.textureInstance },
+            this.source,
+            { bytesPerRow: this.width * 4 },
+            { width: this.width, height: this.width },
+        );
     }
 
 

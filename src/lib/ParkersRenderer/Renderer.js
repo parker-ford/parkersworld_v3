@@ -1,6 +1,7 @@
 import { Scene } from "./Scene";
 import { Renderable } from "./Renderable.js";
 import { Light } from "./Lights/Light.js";
+import { Texture } from "./Texture.js";
 
 export class Renderer {
 
@@ -44,8 +45,6 @@ export class Renderer {
             console.log("no adapter");
             return false;
         }
-
-        console.log(this.adapter);
 
         //This is the logical connection of the gpu. It allows you to create thins like buffers and textures.
         this.device = await this.adapter.requestDevice();
@@ -130,6 +129,9 @@ export class Renderer {
             console.log("device setup failed");
             return false;
         }
+
+        const initDefaultTexture = Texture.getDefaultTexture();
+        await initDefaultTexture.loaded();
 
         this.setupDepthStencil();
         this.setupBuffers();

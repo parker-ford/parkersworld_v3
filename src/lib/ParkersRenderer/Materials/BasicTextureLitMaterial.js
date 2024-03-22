@@ -2,7 +2,7 @@ import { vec4 } from 'gl-matrix';
 import { Material } from './Material.js';
 import { Renderer } from '../Renderer.js';
 import shader from './shaders/basicTextureLit.wgsl?raw';
-import { Uniform } from 'three';
+import { Texture } from '../Texture.js';
 
 export class BasicTextureLitMaterial extends Material {
     static pipelines = {};
@@ -17,7 +17,7 @@ export class BasicTextureLitMaterial extends Material {
         this.ambient = options.ambient ? options.ambient : 0.5;
         this.tiling = options.tiling ? options.tiling : 1;
         this.offset = options.offset ? options.offset : 0;
-        this.texture = options.texture;
+        this.texture = options.texture || Texture.getDefaultTexture();
     }
 
     init(options){
@@ -32,52 +32,6 @@ export class BasicTextureLitMaterial extends Material {
             this.constructor.pipelines[this.topology] = this.createPipeline(options);
         }
     }
-
-    // createTexture(){
-    //     //Texture
-    //     console.log(this.textureData)
-    //     const textureDescriptor = {
-    //         label: this.textureData.path,
-    //         size: {
-    //             width: this.textureData.width,
-    //             height: this.textureData.height,
-    //         },
-    //         format: 'rgba8unorm',
-    //         usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.RENDER_ATTACHMENT,
-    //     }
-        
-    //     this.texture = Renderer.instance.getDevice().createTexture(textureDescriptor);
-
-    //     Renderer.instance.getDevice().queue.copyExternalImageToTexture(
-    //         { source: this.textureData.source, flipY: true},
-    //         { texture: this.texture },
-    //         textureDescriptor.size
-    //     );
-
-    //     //Texture view
-    //     const viewDescriptor = {
-    //         format: 'rgba8unorm',
-    //         dimension: '2d',
-    //         aspect: 'all',
-    //         baseMipLevel: 0,
-    //         mipLevelCount: 1,
-    //         baseArrayLayer: 0,
-    //         arrayLayerCount: 1,
-    //     }
-    //     this.textureView = this.texture.createView(viewDescriptor);
-
-    //     //Sampler
-    //     const samplerDescriptor = {
-    //         addressModeU: 'repeat',
-    //         addressModeV: 'repeat',
-    //         magFilter: 'linear',
-    //         minFilter: 'nearest',
-    //         mipmapFilter: 'nearest',
-    //         maxAnisotropy: 1,
-    //     }
-
-    //     this.sampler = Renderer.instance.getDevice().createSampler(samplerDescriptor);
-    // }
 
     updateMaterialBuffers(){
         this.createMaterialBuffers();

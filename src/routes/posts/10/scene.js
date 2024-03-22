@@ -54,11 +54,14 @@ export const createScene = async (el, onLoaded) => {
 
     onLoaded();
 
+    const defaultTexture = new PW.Texture({});
+    await defaultTexture.loaded();
+
 
     const cube = new PW.Renderable({
         mesh: new PW.CubeMesh({resolution: 32}),
-        // material: new PW.BasicTextureLitMaterial({texture: texture, tiling: 2.0, offset: 0.1}),
-        material: new PW.BasicTextureLitMaterial({}),
+        material: new PW.BasicTextureLitMaterial({texture: texture, tiling: 2.0, offset: 0.1}),
+        // material: new PW.BasicTextureLitMaterial({}),
     });
     cube.transform.position = [0, 0.5, 0];
     scene.add(cube);
