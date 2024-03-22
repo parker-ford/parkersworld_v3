@@ -2,6 +2,7 @@ import { vec4 } from 'gl-matrix';
 import { Material } from './Material.js';
 import { Renderer } from '../Renderer.js';
 import shader from './shaders/basicTextureLit.wgsl?raw';
+import { Uniform } from 'three';
 
 export class BasicTextureLitMaterial extends Material {
     static pipelines = {};
@@ -13,6 +14,9 @@ export class BasicTextureLitMaterial extends Material {
         super();
         this.id = this.constructor.count++;
         this.color = options.color ? options.color : vec4.fromValues(1, 1, 1, 1);
+        this.ambient = options.ambient ? options.ambient : 0.5;
+        this.tiling = options.tiling ? options.tiling : 1;
+        this.offset = options.offset ? options.offset : 0;
         this.textureData = options.textureData;
     }
 
@@ -90,14 +94,39 @@ export class BasicTextureLitMaterial extends Material {
 
     createMaterialBuffers(){
 
-        this.colorBuffer = Renderer.instance.getDevice().createBuffer({
-            label: this.constructor.name + '-color-buffer' + this.id,
-            size: 16,
+        // const uniforms = {
+        //     color: this.color
+        // }
+
+        // const bufferSize = Object.values(uniforms).reduce((total, uniform) => total + uniform.byteLength, 0);
+        const UniformsValues = new ArrayBuffer(32);
+        const UniformsViews = {
+            color: new Float32Array(UniformsValues, 0, 4),
+            ambient: new Float32Array(UniformsValues, 16, 1),
+            tiling: new Float32Array(UniformsValues, 20, 1),
+            offset: new Float32Array(UniformsValues, 24, 1),
+        };
+        UniformsViews.color.set(this.color);
+        UniformsViews.ambient[0] = this.ambient;
+        UniformsViews.tiling[0] = this.tiling;
+        UniformsViews.offset[0] = this.offset;
+        
+        this.uniformBuffer = Renderer.instance.getDevice().createBuffer({
+            label: this.constructor.name + '-uniform-buffer' + this.id,
+            size: UniformsValues.byteLength,
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-            mappedAtCreation: true
+            // mappedAtCreation: true
         });
-        new Float32Array(this.colorBuffer.getMappedRange()).set(this.color);
-        this.colorBuffer.unmap();
+        Renderer.instance.getDevice().queue.writeBuffer(this.uniformBuffer, 0, UniformsValues);
+
+        // this.colorBuffer = Renderer.instance.getDevice().createBuffer({
+        //     label: this.constructor.name + '-color-buffer' + this.id,
+        //     size: 16,
+        //     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        //     mappedAtCreation: true
+        // });
+        // new Float32Array(this.colorBuffer.getMappedRange()).set(this.color);
+        // this.colorBuffer.unmap();
     }
 
     createBindGroup(){
@@ -120,7 +149,7 @@ export class BasicTextureLitMaterial extends Material {
                 {
                     binding: 2,
                     resource: {
-                        buffer: this.colorBuffer
+                        buffer: this.uniformBuffer
                     }
                 },
                 {

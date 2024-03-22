@@ -28,11 +28,18 @@ struct LightArray {
     lights: array<LightData>
 };
 
+struct Uniforms {
+    color: vec4f,
+    ambient: f32,
+    tiling: f32,
+    offset: f32
+}
+
 const NUM_LIGHTS: u32 = 16;
 
 @binding(0) @group(0) var<uniform> transformUBO: TransformData;
 @binding(1) @group(0) var<storage, read> objects: ObjectData;
-@binding(2) @group(0) var<uniform> color: vec4<f32>;
+@binding(2) @group(0) var<uniform> uniforms: Uniforms;
 @binding(3) @group(0) var<storage, read> lights: LightArray;
 
 @binding(4) @group(0) var ourSampler: sampler;
@@ -164,6 +171,6 @@ fn fragment_main(fragData: VertexOutput) -> @location(0) vec4<f32>{
 
     // return vec4<f32>(fragData.uv, 0.0, 1.0);
 
-    return vec4<f32>(color.rgb, 1.0);
+    return vec4<f32>(uniforms.color.rgb, 1.0);
     
 }
