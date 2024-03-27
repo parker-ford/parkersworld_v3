@@ -24,8 +24,11 @@ export class ShaderMaterial extends Material {
         }
         this.createMaterialBuffers();
         this.createBindGroup();
-        if(!this.constructor.pipelines[this.topology]){
-            this.constructor.pipelines[this.topology] = this.createPipeline(options);
+        if(!this.constructor.pipelines[this.shader]){
+            this.constructor.pipelines[this.shader] = {};
+        }
+        if(!this.constructor.pipelines[this.shader][this.topology]){
+            this.constructor.pipelines[this.shader][this.topology] = this.createPipeline(options);
         }
     }
 
@@ -151,6 +154,6 @@ export class ShaderMaterial extends Material {
     }
 
     getPipeline(topology){
-        return this.constructor.pipelines[topology];
+        return this.constructor.pipelines[this.shader][topology];
     }
 }

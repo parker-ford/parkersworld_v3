@@ -157,18 +157,10 @@ fn vertex_main(@builtin(instance_index) id: u32,
 
 fn procedural_function(uv_in: vec2<f32>) -> vec3<f32> {
     var uv: vec2<f32> = uv_in;
-    // uv *= 256.0;
-    var center: vec2<f32> = vec2<f32>(0.5, 0.5);
-    var speed: f32 = 0.035;
-    var col: vec3<f32> = vec3<f32>(uv, 0.5 + 0.5 * sin(uniforms.time));
-    var invAr: f32 = 1.0;   
-    var x: f32 = (center.x - uv.x);
-    var y: f32 = (center.y - uv.y) * invAr;
-    var r: f32 = -(x * x + y * y);
-    var z: f32 = 1.0 + 0.5 * sin((r + uniforms.time * speed) / 0.013);
-
-    var texcol: vec3<f32> = vec3<f32>(z, z, z);
-    return col * texcol;
+    var col: vec3<f32> = vec3<f32>(0.0, 0.0, 0.0);
+    var angle: f32 = atan2(-uv.y + 0.25, uv.x - 0.5) * 0.1;
+    var len: f32 = length(uv - vec2<f32>(0.5, 0.25));
+    return col;
 }
 
 @fragment
