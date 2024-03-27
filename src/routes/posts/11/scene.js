@@ -4,6 +4,7 @@ import waterColorAShader from './waterColorA.wgsl?raw';
 import oldSchoolPlasmaShader from './oldSchoolPlasma.wgsl?raw';
 import waves from './waves.wgsl?raw';
 import swirl from './swirl.wgsl?raw';
+import { quat } from 'gl-matrix';
 
 export const createScene = async (el, onLoaded) => {
 
@@ -26,7 +27,7 @@ export const createScene = async (el, onLoaded) => {
         near: 0.1,
         far: 100,
     });
-    camera.transform.position = [0, 0, -3];
+    camera.transform.position = [0, 0, -5];
     scene.add(camera);
 
     //GUI
@@ -86,27 +87,18 @@ export const createScene = async (el, onLoaded) => {
     directionalLight.transform.position = [0, 1, -1];
     scene.add(directionalLight);
 
-    gui.add(parameters, 'shader', ['waterColorA', 'oldSchoolPlasma', 'waves']).onChange((value) => {
-        if (value === 'waterColorA') {
-            cube.material.shader = waterColorAShader;
-        } else if (value === 'oldSchoolPlasma') {
-            cube.material.shader = oldSchoolPlasmaShader;
-        } else if (value === 'waves') {
-            cube.material.shader = waves;
-        }
-        // cube.material.
-    });
-
     //Frame loop
     function frame() {
         cube.material.uniforms.time += PW.Time.deltaTime;
         cube.material.updateUniformBuffer();
-        //cube2.material.uniforms.time += PW.Time.deltaTime;
         cube2.material.updateUniformBuffer();
-        //cube3.material.uniforms.time += PW.Time.deltaTime;
         cube3.material.updateUniformBuffer();
-        //cube4.material.uniforms.time += PW.Time.deltaTime;
         cube4.material.updateUniformBuffer();
+
+        quat.rotateY(cube.transform.rotation, cube.transform.rotation, PW.Time.deltaTime * 0.5);
+        quat.rotateY(cube2.transform.rotation, cube2.transform.rotation, PW.Time.deltaTime * 0.5);
+        quat.rotateY(cube3.transform.rotation, cube3.transform.rotation, PW.Time.deltaTime * 0.5);
+        quat.rotateY(cube4.transform.rotation, cube4.transform.rotation, PW.Time.deltaTime * 0.5);
 
         renderer.render(scene, camera);
         requestAnimationFrame(frame);
