@@ -2,9 +2,9 @@
     export const metadata = {
         title : "WebGPU Renderer: Textures",
         date : "03/27/2024",
-        image_static: 'images/thumbnails/placeholder/placeholder.jpg',
-		image: 'images/thumbnails/placeholder/placeholder.jpg',
-        logo: 'images/logos/threeJSLogo.png',
+        image_static: 'images/thumbnails/textures/textures.jpg',
+		image: 'images/thumbnails/textures/textures.gif',
+        logo: 'images/logos/webGPULogo.png',
     }
 </script>
 
