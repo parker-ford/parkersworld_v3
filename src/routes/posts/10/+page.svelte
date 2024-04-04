@@ -1,7 +1,7 @@
 <script context="module">
     export const metadata = {
-        title : "placeholder",
-        date : "01/01/0001",
+        title : "WebGPU Renderer: Textures",
+        date : "03/27/2024",
         image_static: 'images/thumbnails/placeholder/placeholder.jpg',
 		image: 'images/thumbnails/placeholder/placeholder.jpg',
         logo: 'images/logos/threeJSLogo.png',

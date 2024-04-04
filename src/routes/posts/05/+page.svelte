@@ -1,6 +1,6 @@
 <script context="module">
     export const metadata = {
-        title : "The Graphics Pipeline",
+        title : "WebGPU Renderer: The Graphics Pipeline",
         date : "12/21/2023",
         image_static: 'images/thumbnails/renderPipeline/renderPipeline.jpg',
 		image: 'images/thumbnails/renderPipeline/renderPipeline.gif',

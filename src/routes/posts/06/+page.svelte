@@ -1,6 +1,6 @@
 <script context="module">
     export const metadata = {
-        title : "Transforms & Object Spaces",
+        title : "WebGPU Renderer: Transforms & Object Spaces",
         date : "01/23/2024",
         image_static: 'images/thumbnails/transforms/transforms.jpg',
 		image: 'images/thumbnails/transforms/transforms.gif',

@@ -1,6 +1,6 @@
 <script context="module">
     export const metadata = {
-        title : "Lights",
+        title : "WebGPU Renderer: Lights",
         date : "03/11/2024",
         image_static: 'images/thumbnails/lights/lights.jpg',
 		image: 'images/thumbnails/lights/lights.gif',
