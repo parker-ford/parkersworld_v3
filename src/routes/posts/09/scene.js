@@ -6,12 +6,19 @@ import GUI from 'lil-gui';
 export const createScene = async (el, onLoaded) => {
     
 
+    const fallbackVideo = document.getElementById('fallback-video');
+    const infoElement = document.getElementById('info');
+
     el.width = Math.min(document.body.clientWidth, 1400);
     el.height = Math.min(document.body.clientWidth, 1400) * .5;
 
     const renderer = new PW.Renderer(el);
     if (! await renderer.init()) {
         console.log("renderer initialization failed");
+        fallbackVideo.style.display = 'block';
+        fallbackVideo.width = el.width;
+        fallbackVideo.height = el.height;
+        el.style.display = 'none';
         onLoaded();
         return;
     }
@@ -267,6 +274,10 @@ export const createScene = async (el, onLoaded) => {
     const pointLight3InitPos = [pointLight3.transform.position[0], pointLight3.transform.position[1], pointLight3.transform.position[2]];
     var t = 0;
     function frame() {
+
+        // infoElement.textContent = `\
+        // fps: ${(1 / PW.Time.deltaTime).toFixed(1)}
+        // `;
 
         pointLight.transform.position[0] = 4 * Math.sin(t) + pointLightInitPos[0];
         pointLight.transform.position[2] = 4 * Math.cos(t) + pointLightInitPos[2];

@@ -52,6 +52,9 @@ export class PerspectiveCamera {
 
     controllsUpdate(){
 
+        this.smoothDeltaMouse = this.smoothDeltaMouse || vec2.create();
+        this.smoothingFactor = 0.16;
+
         if(Input.isKeyDown('w')){
             vec3.add(this.transform.position, this.transform.position, vec3.scale(vec3.create(), this.transform.forward, this.speed * Time.deltaTime));
         }
@@ -72,7 +75,9 @@ export class PerspectiveCamera {
         }
 
         if(Input.isMouseDown(0) && !this.isMouseOverGui()){
-            const deltaMouse = vec2.fromValues(Input.deltaMouse.x, Input.deltaMouse.y);
+            const currentDeltaMouse = vec2.fromValues(Input.deltaMouse.x, Input.deltaMouse.y);
+            vec2.lerp(this.smoothDeltaMouse, this.smoothDeltaMouse, currentDeltaMouse, this.smoothingFactor);
+            const deltaMouse = this.smoothDeltaMouse;
             const qX = quat.setAxisAngle(quat.create(), vec3.fromValues(0,1,0), -deltaMouse[0] * Time.deltaTime * this.rotateSpeed);
             const qY = quat.setAxisAngle(quat.create(), this.transform.right , -deltaMouse[1] * Time.deltaTime * this.rotateSpeed);
             const q = quat.multiply(quat.create(), qX, qY);
