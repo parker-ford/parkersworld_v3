@@ -5,13 +5,29 @@ import GUI from 'lil-gui';
 
 export const createScene = async (el, onLoaded) => {
 
+    const fallbackVideo = document.getElementById('fallback-video');
+
     //Initial setup
     el.width = Math.min(document.body.clientWidth, 1400);
     el.height = Math.min(document.body.clientWidth, 1400) * .5;
 
+    //GUI
+    const gui = new GUI()
+    gui.domElement.id = 'gui';
+    const parameters= {
+    }
+
     const renderer = new PW.Renderer(el);
     if (! await renderer.init()) {
         console.log("renderer initialization failed");
+        fallbackVideo.style.display = 'block';
+        fallbackVideo.width = el.width;
+        fallbackVideo.height = el.height;
+        el.style.display = 'none';
+        gui.domElement.style.display = 'none';
+
+        onLoaded();
+        return;
     }
 
     renderer.viewLightHelpers = true;
@@ -29,11 +45,7 @@ export const createScene = async (el, onLoaded) => {
     camera.transform.position = [0, 1, -3];
     scene.add(camera);
 
-    //GUI
-    const gui = new GUI()
-    gui.domElement.id = 'gui';
-    const parameters= {
-    }
+
 
     const alignGUIWithCanvas = () => {
         const canvasRect = el.getBoundingClientRect();

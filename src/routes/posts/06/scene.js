@@ -2,7 +2,9 @@ import * as PW from '$lib/ParkersRenderer'
 import { quat, vec3, mat4 } from 'gl-matrix';
 
 export const createScene = async (el, onLoaded) => {
-    onLoaded();
+    const fallbackVideo = document.getElementById('fallback-video');
+
+
 
     el.width = Math.min(document.body.clientWidth, 1400) * .5
     el.height = Math.min(document.body.clientWidth, 1400) * .5
@@ -10,9 +12,17 @@ export const createScene = async (el, onLoaded) => {
     const renderer = new PW.BasicTransformRenderer(el);
     if (! await renderer.init()) {
         console.log("renderer initialization failed");
+        fallbackVideo.style.display = 'block';
+        fallbackVideo.width = el.width;
+        fallbackVideo.height = el.height;
+        el.style.display = 'none';
+
+        onLoaded();
+        return;
     }
 
     const scene = new PW.Scene();
+    onLoaded();
 
     const triangle_rotx = new PW.BasicTriangleTransform({});
     triangle_rotx.transform.position = vec3.fromValues(-1, 1, 0);

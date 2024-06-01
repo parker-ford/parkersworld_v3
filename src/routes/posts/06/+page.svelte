@@ -25,6 +25,11 @@
     <div class = "page__content">
         <div class="page__canvas__container">
             <canvas class="page__canvas" bind:this={el}></canvas>
+            <video id="fallback-video" width="640" height="360" controls style="display: none;">
+                <source src="../videos/transforms_noAudio.mp4" type="video/mp4">
+                <track kind="captions">
+                Your browser does not support the video tag.
+            </video>
         </div>
         <div class ="page__title__container">
             <h1 class="page__title">{metadata.title}</h1>

@@ -3,7 +3,10 @@ import GUI from 'lil-gui';
 
 
 export const createScene = async (el, onLoaded) => {
-    onLoaded();
+
+    const fallbackVideo = document.getElementById('fallback-video');
+
+   
 
     //Initial setup
     el.width = Math.min(document.body.clientWidth, 1400);
@@ -12,10 +15,16 @@ export const createScene = async (el, onLoaded) => {
     const renderer = new PW.Renderer(el);
     if (! await renderer.init()) {
         console.log("renderer initialization failed");
+        fallbackVideo.style.display = 'block';
+        fallbackVideo.width = el.width;
+        fallbackVideo.height = el.height;
+        el.style.display = 'none';
+        onLoaded();
+        return;
     }
 
     const scene = new PW.Scene();
-
+    onLoaded();
 
     //Camera
     const camera = new PW.PerspectiveCamera({

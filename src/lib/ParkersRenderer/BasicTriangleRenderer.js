@@ -24,7 +24,7 @@ export class BasicTriangleRenderer {
     async init() {
 
         //Checks to see if WebGPU is available
-        if (!"gpu" in window.navigator) {
+        if (!("gpu" in window.navigator)) {
             console.log("gpu not in navigator");
             return false;
         }

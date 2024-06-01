@@ -27,7 +27,7 @@
             <canvas class="page__canvas" bind:this={el}></canvas>
             <pre id="info"></pre>
             <video id="fallback-video" width="640" height="360" controls style="display: none;">
-                <source src="../videos/testVideo.mp4" type="video/mp4">
+                <source src="../videos/lights.mp4" type="video/mp4">
                 <track kind="captions">
                 Your browser does not support the video tag.
             </video>

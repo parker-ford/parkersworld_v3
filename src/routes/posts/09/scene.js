@@ -4,13 +4,15 @@ import GUI from 'lil-gui';
 
 
 export const createScene = async (el, onLoaded) => {
-    
 
     const fallbackVideo = document.getElementById('fallback-video');
     const infoElement = document.getElementById('info');
 
     el.width = Math.min(document.body.clientWidth, 1400);
     el.height = Math.min(document.body.clientWidth, 1400) * .5;
+
+    const gui = new GUI()
+    gui.domElement.id = 'gui';
 
     const renderer = new PW.Renderer(el);
     if (! await renderer.init()) {
@@ -19,6 +21,8 @@ export const createScene = async (el, onLoaded) => {
         fallbackVideo.width = el.width;
         fallbackVideo.height = el.height;
         el.style.display = 'none';
+        gui.domElement.style.display = 'none';
+
         onLoaded();
         return;
     }
@@ -221,9 +225,6 @@ export const createScene = async (el, onLoaded) => {
     spotLight.penumbra = 0.5;
     spotLight.intensity = 1.8;
     scene.add(spotLight);
-
-    const gui = new GUI()
-    gui.domElement.id = 'gui';
 
     const parameters= {
         viewGizmos: false,
