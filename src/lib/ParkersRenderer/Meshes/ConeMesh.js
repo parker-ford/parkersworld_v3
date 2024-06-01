@@ -37,7 +37,7 @@ export class ConeMesh extends Mesh {
                 this.uvCoordinates.push([j * heightInterval, (i * heightInterval)]);
 
                 let nx = 2 * x;
-                let ny = -2 * y * tanAlphaSquared;
+                let ny = 2 * y * tanAlphaSquared;
                 let nz = 2 * z ;
                 const normalVec = vec3.normalize(vec3.create(), vec3.fromValues(nx, ny, nz));
                 this.normalCoordinates.push([normalVec[0], normalVec[1], normalVec[2]]);
