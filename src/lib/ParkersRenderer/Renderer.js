@@ -32,12 +32,12 @@ export class Renderer {
 
     async setupDevice() {
         //Checks to see if WebGPU is available
-        if (!"gpu" in window.navigator) {
+        if (!("gpu" in window.navigator)) {
             console.log("gpu not in navigator");
             return false;
         }
         this.gpu = navigator.gpu;
-
+        console.log(window.navigator);
         //The adapter represents the physicsal gpu device.
         //This method can not fail but it may be null.
         this.adapter = await this.gpu.requestAdapter();

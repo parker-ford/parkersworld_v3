@@ -12,6 +12,8 @@ export const createScene = async (el, onLoaded) => {
     const renderer = new PW.Renderer(el);
     if (! await renderer.init()) {
         console.log("renderer initialization failed");
+        onLoaded();
+        return;
     }
 
     const scene = new PW.Scene();

@@ -523,7 +523,7 @@ html {
 
 .controls__image{
     width: 15%;
-    height: 15%;
+    /* height: 15%; */
     margin-bottom: 40px;
 }
 
