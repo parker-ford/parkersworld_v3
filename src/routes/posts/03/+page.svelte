@@ -96,8 +96,8 @@
                 In this scene, the light above the door and the three ghosts haunting this scene are all represented by point lights.
                 <br>
                 <br>
-                Heres how creating a point light looks in ThreeJS:
-                <CodeSnippet bind:code="{code01}" language="javascript"/>
+                <!-- Heres how creating a point light looks in ThreeJS: -->
+                <!-- <CodeSnippet bind:code="{code01}" language="javascript"/> -->
 
                 The first parameter in the Point light constructor represents the color that the light will emit. The second and third parameters represent the lights falloff.
                 In this example, the light will be full intensity within one unit and will gradually falloff to no intensity as it nears 7 units away. Point lights are objects,
@@ -111,8 +111,8 @@
                 In this scene, the directional light is subtle because it is representing the moonlight.
                 <br>
                 <br>
-                Heres how creating a directional light looks in ThreeJS:
-                <CodeSnippet bind:code="{code02}" language="javascript"/>
+                <!-- Heres how creating a directional light looks in ThreeJS: -->
+                <!-- <CodeSnippet bind:code="{code02}" language="javascript"/> -->
 
                 Again, the first parameter is the color of the light. Unlike a point light, a directional light does not have a falloff.
                 The intesity of a directional light is always constant. The second parameter represents this intensity. While a directional light does not
@@ -128,9 +128,9 @@
                 This can be visualized by turning on and off the Ambient Light control.
                 <br>
                 <br>
-                Heres how creating an ambient light looks in ThreeJS:
-                <CodeSnippet bind:code="{code03}" language="javascript"/>
-                Again, the first parameter is the color of the ambient light, and the second parameter is its intensity.
+                <!-- Heres how creating an ambient light looks in ThreeJS: -->
+                <!-- <CodeSnippet bind:code="{code03}" language="javascript"/> -->
+                <!-- Again, the first parameter is the color of the ambient light, and the second parameter is its intensity. -->
             </p>
 
             <h3 class="page__subtitle">Shadows</h3>
@@ -147,8 +147,8 @@
                 light's shadow maps to be smaller.
                 <br>
                 <br>
-                Heres an example of setting up shadows in ThreeJS:
-                <CodeSnippet bind:code="{code04}" language="javascript"/>
+                <!-- Heres an example of setting up shadows in ThreeJS: -->
+                <!-- <CodeSnippet bind:code="{code04}" language="javascript"/> -->
             </p>
 
             <h3 class="page__subtitle">Fog</h3>
@@ -158,8 +158,8 @@
                 blend more and more with the fog color. This can be visualized by turning on and off the Show Fog control.
                 <br>
                 <br>
-                Heres an example of enabling fog:
-                <CodeSnippet bind:code="{code05}" language="javascript"/>
+                <!-- Heres an example of enabling fog: -->
+                <!-- <CodeSnippet bind:code="{code05}" language="javascript"/> -->
             </p>
             <h3 class="page__subtitle">Resources</h3>
             <p class="page__body">

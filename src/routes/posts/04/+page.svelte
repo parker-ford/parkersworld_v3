@@ -97,8 +97,8 @@
                 blending options to alter the look of your particles. In this scene I use additive blending to make clusters of stars appear brighter.
                 <br>
                 <br>
-                Here is an example of creating particles at random positions with random colors:
-                <CodeSnippet bind:code="{code01}" language="javascript"/>
+                <!-- Here is an example of creating particles at random positions with random colors: -->
+                <!-- <CodeSnippet bind:code="{code01}" language="javascript"/> -->
             </p>
             <h3 class="page__subtitle">Resources</h3>
             <p class="page__body">

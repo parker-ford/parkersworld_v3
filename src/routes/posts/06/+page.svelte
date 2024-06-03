@@ -80,7 +80,7 @@
             <p class="page__body">
                 Rotation is the process of rotating an object around a given 3D axis by a certain amount of degrees through the origin. Imagine if you had your object and you stuck a rod through its center; that rod would represent the axis. By turning the rod, your object would rotate along with it by the same number of degrees. So, if we have a rotational matrix R and an angle theta, here are three possible matrix values for rotating along the x, y, and z axes respectively:
 
-                <img class="page__img" src="../images/posts/06/R_Matrix.png" alt="Rotation Matrix" />
+                <img class="page__img" src="../images/posts/06/R_Matrix.png" alt="Rotation Matrix" width="75%"/>
                 
                 Now, it's important to note that a rotation matrix can actually be described for any possible axis. However, the math behind this is substantially more complex and would require an understanding of something called Quaternions, which is a topic for another time. But just know that it is possible. You can visualize these rotations in real time by looking at the top row of triangles in our example. The leftmost triangle is rotating along the x-axis, the middle triangle along the y-axis, and the rightmost triangle along the z-axis.
             </p>

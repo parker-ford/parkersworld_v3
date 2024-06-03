@@ -7,8 +7,8 @@ import GUI from 'lil-gui';
     Initial Setup
 */
 const sizes = {
-    width: Math.min(document.body.clientWidth, 1400),
-    height: Math.min(document.body.clientWidth, 1400) * .5
+    width: Math.min(document.body.clientWidth  * 0.95, 1400),
+    height: Math.min(document.body.clientWidth * 0.95, 1400) * .5
 }
 const scene = new THREE.Scene();
 const rotationClock = new THREE.Clock();

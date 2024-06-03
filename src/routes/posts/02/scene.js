@@ -9,8 +9,8 @@ import Stats from 'stats-js'
     Initial Setup
 */
 const sizes = {
-    width: Math.min(document.body.clientWidth, 1400),
-    height: Math.min(document.body.clientWidth, 1400) * .5
+    width: Math.min(document.body.clientWidth * 0.95, 1400),
+    height: Math.min(document.body.clientWidth * 0.95, 1400) * .5
 }
 const scene = new THREE.Scene();
 
@@ -33,6 +33,7 @@ scene.add(camera)
 
 const gui = new GUI()
 gui.domElement.id = 'gui';
+// gui.style.display = 'none';
 
 const parameters = {
     text: 'Parkers World',

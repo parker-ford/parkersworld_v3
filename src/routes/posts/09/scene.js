@@ -8,8 +8,9 @@ export const createScene = async (el, onLoaded) => {
     const fallbackVideo = document.getElementById('fallback-video');
     const infoElement = document.getElementById('info');
 
-    el.width = Math.min(document.body.clientWidth, 1400);
-    el.height = Math.min(document.body.clientWidth, 1400) * .5;
+    el.width = Math.min(document.body.clientWidth * 0.95, 1400);
+    console.log(el.width);
+    el.height = Math.min(document.body.clientWidth * 0.95, 1400) * .5;
 
     const gui = new GUI()
     gui.domElement.id = 'gui';

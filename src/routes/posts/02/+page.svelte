@@ -96,19 +96,19 @@
 				load fonts that are in a typeface format. From there you can create a new textGeometry and
 				specify its font and several other parameters.
 			</p>
-			<CodeSnippet bind:code={code01} language="javascript" />
+			<!-- <CodeSnippet bind:code={code01} language="javascript" style="width: 1%"/> -->
 
 			<p class="page__body">
 				Then you can use this new geometry to create a mesh like you normally would.
 			</p>
-			<CodeSnippet bind:code={code02} language="javascript" />
+			<!-- <CodeSnippet bind:code={code02} language="javascript" /> -->
 
 			<p class="page__body">
 				One thing to note is that this will place the text geometry with its bottom left point at
 				the world origin. In order to center it on the screen, you must do a calculation based on
 				its bounding box.
 			</p>
-			<CodeSnippet bind:code={code03} language="javascript" />
+			<!-- <CodeSnippet bind:code={code03} language="javascript" /> -->
 
 			<h3 class="page__subtitle">Matcap Material</h3>
 			<p class="page__body">
