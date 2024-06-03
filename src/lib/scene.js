@@ -72,20 +72,34 @@ gui.add(parameters, "repeat").min(1).max(6).onChange((val) => {
 */
 var checkAllAssetsLoaded = () => {};
 const video = document.createElement('video');
-video.src = './images/portrait/vid3_compressed.mp4'
+
 video.loop = true;
 video.muted = true;
+video.setAttribute('muted', '');
+video.setAttribute('playsinline', '');
+video.setAttribute('webkit-playsinline', '');
 video.playbackRate = 0.8;
+
+let source = document.createElement('source');
+source.src = './images/portrait/vid3_compressed.mp4';
+source.type = 'video/mp4';
+
+video.appendChild(source);
+
 let videoReady = false;
 
 video.oncanplaythrough = () => {
     videoReady = true;
     video.play();
     checkAllAssetsLoaded();
-}
+};
+
 video.onerror = () => {
     console.error("Error Loading Video");
-}
+};
+
+video.load();
+
 
 
 const videoTexture = new THREE.VideoTexture(video);
@@ -338,6 +352,8 @@ export const createScene = (el, onLoaded) => {
     })
 
     checkAllAssetsLoaded = () => {
+        console.log("modelsLoaded: " + modelsLoaded);
+        console.log("video Ready: " + videoReady);
         if(modelsLoaded && videoReady){
             onLoaded();
             scene.remove(boxMesh);

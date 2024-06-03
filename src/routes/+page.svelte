@@ -22,8 +22,8 @@
 <div class="main">
 	<div class="main__container">
 		<div class="main__content">
-			<h1>Hi, I'm Parker</h1>
-			<h2>and I'm addicted to programming</h2>
+			<h1 class = "biography__title">Hey, I'm Parker</h1>
+			<h2 class = "biography_subtitle">and I'm addicted to programming</h2>
 			<p class = "biography__body">
 				Welcome to my website. This is where I document my learning process and get to show off whatever
 				I am currently working on, most of which will be graphics programming related. All my stuff is

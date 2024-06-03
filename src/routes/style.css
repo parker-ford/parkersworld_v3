@@ -331,9 +331,16 @@ html {
     }
 
     .main__content{
-        text-align: center;
-        margin-top: 100px;
+        text-align: left;
+        margin-top: 10px;
         margin-bottom: 4rem;
+    }
+
+    .biography__title{
+        text-align: center;
+    }
+    .biography_subtitle{
+        text-align: center;
     }
 
     .main__posts{
@@ -345,7 +352,8 @@ html {
     .post{
         width: 80%;
         height: 250px;
-        height: 50vw;
+        /* height: 60vw; */
+        height: 10%;
         display: flex;
         flex-direction: column-reverse;
         align-items: stretch;
@@ -628,6 +636,9 @@ html {
     font-size: .3em;
 }
 
+.biography__title{
+    line-height: 1;
+}
 .biography__body{
     font-family: 'local-opensans', sans-serif;  
     line-height: 1.7;
