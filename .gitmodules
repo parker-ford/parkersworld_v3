@@ -1,0 +1,3 @@
+[submodule "src/lib/ParkersRenderer"]
+	path = src/lib/ParkersRenderer
+	url = https://github.com/parker-ford/PWorld-Render
