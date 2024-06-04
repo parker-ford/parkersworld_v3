@@ -25,8 +25,13 @@ export const createScene = async (el, onLoaded) => {
         fallbackVideo.height = el.height;
         el.style.display = 'none';
         gui.domElement.style.display = 'none';
-
+        
         onLoaded();
+        const modal = document.getElementById('webgpu__modal');
+        if (localStorage.getItem("hideWebGPUModal") !== "true") {
+            modal.showModal();
+        }
+
         return;
     }
 

@@ -17,6 +17,10 @@ export const createScene = async (el, onLoaded) => {
         el.style.display = 'none';
 
         onLoaded();
+        const modal = document.getElementById('webgpu__modal');
+        if (localStorage.getItem("hideWebGPUModal") !== "true") {
+            modal.showModal();
+        }
         return;
     }
 

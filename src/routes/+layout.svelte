@@ -31,6 +31,21 @@
 	</div>
 </nav>
 
+<dialog id="webgpu__modal">
+	<h2 class="modal__title">WebGPU Not Enabled</h2>
+    <p class="modal__text">It looks like WebGPU is not currently enabled in your browser. As a result, you will see a video recording of the demo instead of the interactive demo.</p>
+    <p class="modal__text">As of writing this, WebGPU is only enabled on Chrome, Edge, and Opera on desktop.</p>
+    <p class="modal__text">If you are using Firefox or Safari on desktop, you can enable WebGPU through:</p>
+    <ul class="modal__list">
+        <li><a href="https://www.mozilla.org/en-US/firefox/128.0a1/releasenotes/" target="_blank">The Nightly Firefox build</a></li>
+        <li><a href="https://www.webkit.org/blog/14879/webgpu-now-available-for-testing-in-safari-technology-preview/" target="_blank">The Safari technology preview</a></li>
+    </ul>
+    <button class="modal__button" onclick="document.getElementById('webgpu__modal').close();">Okay</button>
+	<label>
+        <input type="checkbox" id="dontShowAgain" onclick="localStorage.setItem('hideWebGPUModal', this.checked ? 'true' : 'false')"> Don't show again
+    </label>
+</dialog>
+
 {#if !allLoaded}
 	<div class="loading-screen" transition:fade={{ duration: 500 }}>
 		<p>Loading...</p>
