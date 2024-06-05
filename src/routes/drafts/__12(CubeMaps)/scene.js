@@ -6,8 +6,8 @@ export const createScene = async (el, onLoaded) => {
     onLoaded();
 
     //Initial setup
-    el.width = Math.min(document.body.clientWidth, 1400);
-    el.height = Math.min(document.body.clientWidth, 1400) * .5;
+    el.width = Math.min(document.body.clientWidth * .95, 1400);
+    el.height = Math.min(document.body.clientWidth * .95, 1400) * .5;
 
     const renderer = new PW.Renderer(el);
     if (! await renderer.init()) {

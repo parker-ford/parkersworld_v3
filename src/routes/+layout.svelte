@@ -41,9 +41,10 @@
         <li><a href="https://www.webkit.org/blog/14879/webgpu-now-available-for-testing-in-safari-technology-preview/" target="_blank">The Safari technology preview</a></li>
     </ul>
     <button class="modal__button" onclick="document.getElementById('webgpu__modal').close();">Okay</button>
-	<label>
-        <input type="checkbox" id="dontShowAgain" onclick="localStorage.setItem('hideWebGPUModal', this.checked ? 'true' : 'false')"> Don't show again
-    </label>
+	<div class="modal__checkbox">
+		<input  type="checkbox" id="dontShowAgain" onclick="localStorage.setItem('hideWebGPUModal', this.checked ? 'true' : 'false')"> 
+		<span>Don't show again</span>
+	</div>
 </dialog>
 
 {#if !allLoaded}

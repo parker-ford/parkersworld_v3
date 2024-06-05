@@ -92,10 +92,6 @@ export const createScene = async (el, onLoaded) => {
 
     onLoaded();
 
-    const defaultTexture = new PW.Texture2D({});
-    await defaultTexture.loaded();
-
-
     const cube = new PW.Renderable({
         mesh: new PW.CubeMesh({resolution: 32}),
         material: new PW.BasicTextureLitMaterial({texture: abstractTexture7, tiling: 3.0, offset: 0.0, ambient: 0.5}),
