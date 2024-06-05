@@ -63,36 +63,36 @@ export const createScene = async (el, onLoaded) => {
     alignGUIWithCanvas();
 
 
-    const texture = new PW.Texture({path: "../images/matcaps/1.png"});
+    const texture = new PW.Texture2D({path: "../images/matcaps/1.png"});
     await texture.loaded();
 
-    const checkerTexture = new PW.Texture({path: "../images/misc/checker.png", useMips: true});
+    const checkerTexture = new PW.Texture2D({path: "../images/misc/checker.png", useMips: true});
     await checkerTexture.loaded();
 
-    const abstractTexture1 = new PW.Texture({path: "../images/abstract/4.png"});
+    const abstractTexture1 = new PW.Texture2D({path: "../images/abstract/4.png"});
     await abstractTexture1.loaded();
 
-    const abstractTexture2 = new PW.Texture({path: "../images/abstract/3.png"});
+    const abstractTexture2 = new PW.Texture2D({path: "../images/abstract/3.png"});
     await abstractTexture2.loaded();
 
-    const abstractTexture3 = new PW.Texture({path: "../images/abstract/2.png"});
+    const abstractTexture3 = new PW.Texture2D({path: "../images/abstract/2.png"});
     await abstractTexture3.loaded();
 
-    const abstractTexture4 = new PW.Texture({path: "../images/abstract/5.png"});
+    const abstractTexture4 = new PW.Texture2D({path: "../images/abstract/5.png"});
     await abstractTexture4.loaded();
 
-    const abstractTexture5 = new PW.Texture({path: "../images/abstract/6.png"});
+    const abstractTexture5 = new PW.Texture2D({path: "../images/abstract/6.png"});
     await abstractTexture5.loaded();
 
-    const abstractTexture6 = new PW.Texture({path: "../images/abstract/10.png"});
+    const abstractTexture6 = new PW.Texture2D({path: "../images/abstract/10.png"});
     await abstractTexture6.loaded();
 
-    const abstractTexture7 = new PW.Texture({path: "../images/abstract/15.png"});
+    const abstractTexture7 = new PW.Texture2D({path: "../images/abstract/15.png"});
     await abstractTexture7.loaded();
 
     onLoaded();
 
-    const defaultTexture = new PW.Texture({});
+    const defaultTexture = new PW.Texture2D({});
     await defaultTexture.loaded();
 
 
