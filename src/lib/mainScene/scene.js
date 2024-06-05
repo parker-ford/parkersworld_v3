@@ -1,7 +1,5 @@
 import * as THREE from 'three';
 import GUI from 'lil-gui'; 
-import Stats from 'stats-js'
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'

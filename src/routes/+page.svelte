@@ -8,7 +8,7 @@
 	sceneLoaded.set(false);
 
 	onMount(async () => {
-		const { createScene } = await import('../lib/scene');
+		const { createScene } = await import('../lib/mainScene/scene');
 		console.log('creating scene');
 		createScene(el, () => sceneLoaded.set(true));
 
