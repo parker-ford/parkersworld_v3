@@ -8,10 +8,6 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
 import fragmentShader from './fragmentShader.glsl?raw'
 import vertexShader from './vertexShader.glsl?raw'
-import particleFragment from './particleFragment.glsl?raw'
-import particleVertex from './particleVertex.glsl?raw'
-import coneFragement from './coneFragment.glsl?raw'
-import coneVertex from './coneVertex.glsl?raw'
 import vignetteShader from './vignetteShader.glsl?raw'
 
 /*
@@ -213,78 +209,7 @@ spotlight.intensity = 0.0
 const spotlightHelper = new THREE.SpotLightHelper(spotlight);
 // scene.add(spotlightHelper);
 
-/*
-    Particles
-*/
-const particleCount = 1000;
 
-const positions = new Float32Array(particleCount * 3);
-const initialX = new Float32Array(particleCount);
-const initialY = new Float32Array(particleCount);
-const initialZ = new Float32Array(particleCount);
-
-for (let i = 0; i < particleCount; i++) {
-    initialX[i] = (Math.random() - 0.5) * 10;
-    initialY[i] = (Math.random() - 0.5) * 10;
-    initialZ[i] = (Math.random() - 0.5) * 10 + 5;
-  
-    positions[i * 3] = initialX[i];
-    positions[i * 3 + 1] = initialY[i];
-    positions[i * 3 + 2] = initialZ[i];
-}
-
-const particleGeometry = new THREE.BufferGeometry();
-particleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-particleGeometry.setAttribute('initialX', new THREE.Float32BufferAttribute(initialX, 1));
-particleGeometry.setAttribute('initialY', new THREE.Float32BufferAttribute(initialY, 1));
-particleGeometry.setAttribute('initialZ', new THREE.Float32BufferAttribute(initialZ, 1));
-
-const particleMaterial = new THREE.ShaderMaterial({
-    vertexShader: particleVertex,
-    fragmentShader: particleFragment,
-    transparent: true,
-    uniforms: {
-        lightPosition: {value: spotlight.position},
-        lightDirection: {value: new THREE.Vector3().subVectors(spotlight.target.position, spotlight.position).normalize()},
-        lightAngle: {value: spotlight.angle},
-        lightIntensity: {value: spotlight.intensity},
-        lightColor: {value: spotlight.color},
-        lightPenumbra: {value: spotlight.penumbra},
-        time: {value: 0.0}
-    }
-});
-
-const particles = new THREE.Points(particleGeometry, particleMaterial);
-// scene.add(particles);
-
-const coneHeight = 20;
-const radius = Math.tan(spotlight.angle) * coneHeight;
-const segments = 32;
-const coneGeometry = new THREE.ConeGeometry(radius, coneHeight, segments);
-parameters.coneStrength = 1.55;
-const coneMaterial = new THREE.ShaderMaterial({
-    vertexShader: coneVertex,
-    fragmentShader: coneFragement,
-    transparent: true,
-    uniforms:{
-        coneHeight: {value: coneHeight},
-        coneRadius: {value: radius},
-        coneColor: {value: spotlight.color},
-        coneStrength: {value: parameters.coneStrength},
-        noiseTexture: {type: 't', value: whiteNoise},
-        intensity: {value: spotlight.intensity}
-    }
-});
-coneMaterial.depthWrite = false;
-
-const coneMesh = new THREE.Mesh(coneGeometry, coneMaterial);
-coneMesh.position.set(0,0,(coneHeight / 2));
-coneMesh.rotation.x = - Math.PI / 2;
-
-const pivot = new THREE.Object3D();
-pivot.add(coneMesh);
-spotlight.add(pivot);
-pivot.lookAt(spotlight.target.position)
 
 /*
     Vignette
@@ -437,7 +362,6 @@ const tick = () => {
         paintingParent.position.y = Math.sin(elapsedTime * 1.1) * .11 ;
     }
 
-    particleMaterial.uniforms.time.value = performance.now() / 1000;
     // renderer.render(scene,camera)
     composer.render()
     // controls.update();
@@ -493,29 +417,12 @@ directionalLightFolder.add(parameters, 'directionalLightOn').onChange((value) =>
     }
 });
 
-gui.add(parameters, "coneStrength").min(0).max(4).onChange((value) => {
-    coneMaterial.uniforms.coneStrength.value = value;
-})
-
 const spotLightFolder = gui.addFolder("Spot Light");
 parameters.spotLightIntensity = spotlight.intensity;
 parameters.spotLightOn = true;
 spotLightFolder.add(spotlight.position, "x").min(-10).max(10).onChange(() => {pivot.lookAt(spotlight.target.position)})
 spotLightFolder.add(spotlight.position, "y").min(-10).max(10).onChange(() => {pivot.lookAt(spotlight.target.position)})
 spotLightFolder.add(spotlight.position, "z").min(-10).max(10).onChange(() => {pivot.lookAt(spotlight.target.position)})
-spotLightFolder.add(spotlight, "angle").min(0).max(1).onChange((value) => {
-    particleMaterial.uniforms.lightAngle.value = value;
-
-    const coneBaseRadius = Math.tan(value) * coneHeight * .12;
-    
-    // Set the scale of the cone directly
-    coneMesh.scale.setX(coneBaseRadius);
-    coneMesh.scale.setZ(coneBaseRadius);
-
-})
-spotLightFolder.add(spotlight, "penumbra").min(0).max(1).onChange((value) => {
-    particleMaterial.uniforms.lightPenumbra.value = value;
-})
 spotLightFolder.add(spotlight, "distance").min(1).max(20).onChange((value) => {
     coneMesh.scale.set(value * .1,value * .1,value * .1);
     coneMesh.position.set(0,0,(value / 2));
@@ -523,7 +430,6 @@ spotLightFolder.add(spotlight, "distance").min(1).max(20).onChange((value) => {
 spotLightFolder.add(spotlight, "decay")
 spotLightFolder.addColor(spotlight, "color")
 spotLightFolder.add(spotlight, "intensity").min(0).max(3).onChange((value) => {
-    particleMaterial.uniforms.lightIntensity.value = value;
     parameters.spotLightIntensity = value;
     coneMaterial.uniforms.intensity.value = value;
 });
