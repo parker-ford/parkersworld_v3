@@ -68,15 +68,18 @@ export const createScene = async (el, onLoaded) => {
     { faceColor: '#00F', textColor: '#FF0', text: '+Z' },
     { faceColor: '#F0F', textColor: '#0F0', text: '-Z' },
     ].map(faceInfo => generateFace(faceSize, faceInfo));
+
+    const texture = new PW.CubeMapTexture({paths: ["../images/matcaps/1.png","../images/matcaps/1.png","../images/matcaps/1.png","../images/matcaps/1.png","../images/matcaps/1.png","../images/matcaps/1.png"]});
+    await texture.loaded();
  
     // show the results
     for (const canvas of faceCanvases) {
-    document.body.appendChild(canvas);
+        document.body.appendChild(canvas);
     }
 
     const cube = new PW.Renderable({
         mesh: new PW.CubeMesh({}),
-        material: new PW.CubeMapMaterial({color: [1,0, 0,1]})
+        material: new PW.CubeMapMaterial({texture: texture, color: [1, 1, 1,1]})
     });
     scene.add(cube);
 
