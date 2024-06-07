@@ -1,4 +1,5 @@
 import * as PW from '$lib/ParkersRenderer'
+import { quat } from 'gl-matrix';
 import GUI from 'lil-gui'; 
 
 
@@ -43,52 +44,40 @@ export const createScene = async (el, onLoaded) => {
     };
     alignGUIWithCanvas();
 
-    
-    function generateFace(size, {faceColor, textColor, text}) {
-        const canvas = document.createElement('canvas');
-        canvas.width = size;
-        canvas.height = size;
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = faceColor;
-        ctx.fillRect(0, 0, size, size);
-        ctx.font = `${size * 0.7}px sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillStyle = textColor;
-        ctx.fillText(text, size / 2, size / 2);
-        return canvas;
-      }
 
-    const faceSize = 128;
-    const faceCanvases = [
-    { faceColor: '#F00', textColor: '#0FF', text: '+X' },
-    { faceColor: '#FF0', textColor: '#00F', text: '-X' },
-    { faceColor: '#0F0', textColor: '#F0F', text: '+Y' },
-    { faceColor: '#0FF', textColor: '#F00', text: '-Y' },
-    { faceColor: '#00F', textColor: '#FF0', text: '+Z' },
-    { faceColor: '#F0F', textColor: '#0F0', text: '-Z' },
-    ].map(faceInfo => generateFace(faceSize, faceInfo));
 
-    const texture = new PW.CubeMapTexture({paths: ["../images/matcaps/1.png","../images/matcaps/1.png","../images/matcaps/1.png","../images/matcaps/1.png","../images/matcaps/1.png","../images/matcaps/1.png"]});
+    const texture = new PW.CubeMapTexture({paths: [
+        "../images/environmentMaps/rural_road/px.png",
+        "../images/environmentMaps/rural_road/nx.png",
+        "../images/environmentMaps/rural_road/ny.png",
+        "../images/environmentMaps/rural_road/py.png",
+        "../images/environmentMaps/rural_road/pz.png",
+         "../images/environmentMaps/rural_road/nz.png"
+    ]});
     await texture.loaded();
- 
-    // show the results
-    for (const canvas of faceCanvases) {
-        document.body.appendChild(canvas);
-    }
+
 
     const cube = new PW.Renderable({
         mesh: new PW.CubeMesh({}),
-        material: new PW.CubeMapMaterial({texture: texture, color: [1, 1, 1,1]})
+        // mesh: new PW.SphereMesh({radius: 1, resolution: 100}),
+        // material: new PW.CubeMapMaterial({texture: texture, color: [1, 1, 1,1]})
+        material: new PW.BasicLitMaterial({color: [1, 1, 1, 1]})
+        // material: new PW.BasicTextureLitMaterial({texture: testTexture, color: [1, 1, 1, 1]})
     });
+    
+    const skyBox = new PW.SkyBox({texture: texture});
     scene.add(cube);
+    scene.add(skyBox);
 
     const directionalLight = new PW.DirectionalLight({});
-    directionalLight.transform.position = [0, 2, -1];
+    directionalLight.transform.position = [2, 3, -4];
     scene.add(directionalLight);
 
     //Frame loop
     function frame() {
+
+        // quat.rotateY(cube.transform.rotation, cube.transform.rotation, - 1 * PW.Time.deltaTime);
+
         renderer.render(scene, camera);
         requestAnimationFrame(frame);
         alignGUIWithCanvas();
