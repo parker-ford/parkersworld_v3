@@ -926,6 +926,11 @@ body {
     color:#28C903;
 }
 
+.project__links span {
+    color:#707070;
+    font-style: italic;
+}
+
 .project__media__group {
     display: flex;
     flex-wrap: wrap;

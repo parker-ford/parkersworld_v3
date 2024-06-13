@@ -30,6 +30,7 @@
 			</video>
 		</div>
 		<hr class = "portfolio__spacer">
+		
 		<h2 class="project__subtitle"><strong>Abstract</strong></h2>
 
 		<p class="project__description">
