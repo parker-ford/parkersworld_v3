@@ -46,15 +46,15 @@ export const createScene = async (el, onLoaded) => {
 
 
 
-    const texture = new PW.CubeMapTexture({paths: [
-        "../images/environmentMaps/rural_road/px.png",
-        "../images/environmentMaps/rural_road/nx.png",
-        "../images/environmentMaps/rural_road/ny.png",
-        "../images/environmentMaps/rural_road/py.png",
-        "../images/environmentMaps/rural_road/pz.png",
-         "../images/environmentMaps/rural_road/nz.png"
-    ]});
-    await texture.loaded();
+    // const texture = new PW.CubeMapTexture({paths: [
+    //     "../images/environmentMaps/rural_road/px.png",
+    //     "../images/environmentMaps/rural_road/nx.png",
+    //     "../images/environmentMaps/rural_road/ny.png",
+    //     "../images/environmentMaps/rural_road/py.png",
+    //     "../images/environmentMaps/rural_road/pz.png",
+    //      "../images/environmentMaps/rural_road/nz.png"
+    // ]});
+    // await texture.loaded();
 
 
     const cube = new PW.Renderable({
@@ -65,9 +65,9 @@ export const createScene = async (el, onLoaded) => {
         // material: new PW.BasicTextureLitMaterial({texture: testTexture, color: [1, 1, 1, 1]})
     });
     
-    const skyBox = new PW.SkyBox({texture: texture});
-    scene.add(cube);
-    scene.add(skyBox);
+    // const skyBox = new PW.SkyBox({texture: texture});
+    // scene.add(cube);
+    // scene.add(skyBox);
 
     const directionalLight = new PW.DirectionalLight({});
     directionalLight.transform.position = [2, 3, -4];

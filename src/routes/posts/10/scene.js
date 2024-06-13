@@ -14,6 +14,7 @@ export const createScene = async (el, onLoaded) => {
     //GUI
     const gui = new GUI()
     gui.domElement.id = 'gui';
+    gui.domElement.style.display = 'none';
     const parameters= {
     }
 
@@ -90,7 +91,20 @@ export const createScene = async (el, onLoaded) => {
     const abstractTexture7 = new PW.Texture2D({path: "../images/abstract/15.png"});
     await abstractTexture7.loaded();
 
+    const skybox = new PW.CubeMapTexture({paths: [
+        "../images/environmentMaps/space1/right.png",
+        "../images/environmentMaps/space1/left.png",
+        "../images/environmentMaps/space1/bottom.png",
+        "../images/environmentMaps/space1/top.png",
+        "../images/environmentMaps/space1/front.png",
+         "../images/environmentMaps/space1/back.png"
+    ]});
+    await skybox.loaded();
+
     onLoaded();
+
+    const skyBox = new PW.SkyBox({texture: skybox});
+    scene.add(skyBox);
 
     const cube = new PW.Renderable({
         mesh: new PW.CubeMesh({resolution: 32}),

@@ -24,21 +24,12 @@
 				</div>
 			</div>
 			<hr class = "portfolio__spacer">
-			<div class="portfolio__item">
-				<img class="portfolio__item__image" src="images/misc/under_construction.webp" alt="under construction">
-				<div class="portfolio__item__content">
-					<h1 class="portfolio__item__title">Real Time Cloud Rendering</h1>
-					<p class="portfolio__item__description">This is a project that I am currently working on. It is a real time cloud rendering system that uses a combination of ray marching and ray tracing to render clouds in real time. The system is designed to be used in a game engine and is written in C++ and HLSL.</p>
-					<a class="portfolio__item__button" href=".">Learn More</a>
-				</div>
-			</div>
-			<hr class = "portfolio__spacer">
 			<h1 class="portfolio__section__title">Projects</h1>
 			<div class="portfolio__item">
-				<img class="portfolio__item__image" src="images/misc/under_construction.webp" alt="under construction">
+				<img class="portfolio__item__image" src="images/renderer/renderer.png" alt="renderer">
 				<div class="portfolio__item__content">
-					<h1 class="portfolio__item__title">Real Time Cloud Rendering</h1>
-					<p class="portfolio__item__description">This is a project that I am currently working on. It is a real time cloud rendering system that uses a combination of ray marching and ray tracing to render clouds in real time. The system is designed to be used in a game engine and is written in C++ and HLSL.</p>
+					<h1 class="portfolio__item__title">Preemo-Render</h1>
+					<p class="portfolio__item__description">An open-source WebGPU rendering engine designed for exploring modern rendering techniques and experimenting with cutting-edge graphics technology. It is currently a work in progress.</p>
 					<a class="portfolio__item__button" href=".">Learn More</a>
 				</div>
 			</div>
