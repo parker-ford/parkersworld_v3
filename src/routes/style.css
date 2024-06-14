@@ -953,3 +953,25 @@ body {
     /* margin-top: 20px; */
     margin-bottom: 20px;
 }
+
+@media(max-width: 1400px){
+    .project__container{
+        padding: 10px;
+    }
+    .project__title {
+        line-height: 1;
+    }
+
+    .portfolio__container{
+        padding: 10px;
+    }
+    .portfolio__item{
+        flex-direction: column;
+    }
+    .portfolio__item__image{
+        width: 80%;
+    }
+    .portfolio__item__content{
+        width: 100%;
+    }
+}
