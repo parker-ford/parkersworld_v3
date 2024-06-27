@@ -2,9 +2,9 @@
     export const metadata = {
         title : "WebGPU Ray Tracer: The Beginning",
         date : "06/27/2024",
-        image_static: 'images/thumbnails/placeholder/placeholder.jpg',
-		image: 'images/thumbnails/placeholder/placeholder.jpg',
-        logo: 'images/logos/threeJSLogo.png',
+        image_static: 'images/thumbnails/rayTracingBeginning/rayTracingBeginning.jpg',
+		image: 'images/thumbnails/rayTracingBeginning/rayTracingBeginning.gif',
+        logo: 'images/logos/webGPULogo.png',
     }
 </script>
 
@@ -26,7 +26,7 @@
         <div class="page__canvas__container">
             <canvas class="page__canvas" bind:this={el}></canvas>
             <video id="fallback-video" width="640" height="360" controls style="display: none;">
-                <source src="../videos/testVideo.mp4" type="video/mp4">
+                <source src="../videos/rayTracingBeginning.mp4" type="video/mp4">
                 <track kind="captions">
                 Your browser does not support the video tag.
             </video>

@@ -6,7 +6,7 @@ import GUI from 'lil-gui';
 export const createScene = async (el, onLoaded) => {
 
     const fallbackVideo = document.getElementById('fallback-video');
-    onLoaded();
+    
 
    
 
@@ -21,11 +21,19 @@ export const createScene = async (el, onLoaded) => {
         fallbackVideo.width = el.width;
         fallbackVideo.height = el.height;
         el.style.display = 'none';
+        // gui.domElement.style.display = 'none';
+        
         onLoaded();
+        const modal = document.getElementById('webgpu__modal');
+        if (localStorage.getItem("hideWebGPUModal") !== "true") {
+            modal.showModal();
+        }
+
         return;
     }
 
     const scene = new PRAY.Scene();
+    onLoaded();
 
     //Camera
     const camera = new PRAY.PerspectiveCamera({
@@ -178,14 +186,14 @@ export const createScene = async (el, onLoaded) => {
     
 
     // GUI
-    const gui = new GUI()
-    gui.domElement.id = 'gui';
-    const parameters= {
-        lens_focal_length: camera.lens_focal_length,
-        image_plane_distance: camera.image_plane_distance,
-        fstop: camera.fstop,
-        focal_length: camera.focal_length,
-    }
+    // const gui = new GUI()
+    // gui.domElement.id = 'gui';
+    // const parameters= {
+    //     lens_focal_length: camera.lens_focal_length,
+    //     image_plane_distance: camera.image_plane_distance,
+    //     fstop: camera.fstop,
+    //     focal_length: camera.focal_length,
+    // }
 
     // gui.add(parameters, 'lens_focal_length').onChange((value) => {
     //     scene.parameters_updated = true;
