@@ -1,3 +1,6 @@
 [submodule "src/lib/ParkersRenderer"]
 	path = src/lib/ParkersRenderer
 	url = https://github.com/parker-ford/PWorld-Render
+[submodule "src/lib/Preemo-Ray"]
+	path = src/lib/Preemo-Ray
+	url = https://github.com/parker-ford/Preemo-Ray.git
