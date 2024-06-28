@@ -67,7 +67,15 @@ export const createScene = async (el, onLoaded) => {
         radius: 1,
         material_id: default_material.id,
     });
-    scene.add(default_sphere);
+    // scene.add(default_sphere);
+
+    //Meshes
+    const plane = new PRAY.PlaneMesh({
+        width: 1,
+        height: 1,
+        material_id: default_material.id,
+    });
+    scene.add(plane);
 
 
     //Frame
