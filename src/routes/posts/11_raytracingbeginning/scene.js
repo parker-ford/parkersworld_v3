@@ -57,6 +57,7 @@ export const createScene = async (el, onLoaded) => {
     //Materials
     const ground_material = new PRAY.Material({
         attenuation: vec3.fromValues(0.5, 0.5, 0.5),
+        // attenuation: vec3.fromValues(0.8, 0.8, 0.8),
         material_flag: PRAY.Material.TYPES.LAMBERTIAN,
     });
     scene.add(ground_material);
@@ -68,8 +69,7 @@ export const createScene = async (el, onLoaded) => {
     scene.add(center_material);
 
     const right_material = new PRAY.Material({
-        // attenuation: vec3.fromValues(0.8, 0.8, 0.8),
-        attenuation: vec3.fromValues(1.0, 1.0, 1.0),
+        attenuation: vec3.fromValues(0.8, 0.8, 0.8),
         material_flag: PRAY.Material.TYPES.DIELECTRIC,
         refractive_index: 1.5,
     });
@@ -82,6 +82,8 @@ export const createScene = async (el, onLoaded) => {
         refractive_index: 1.0 / 1.33,
     });
     scene.add(bubble_material);
+
+
 
     const left_material = new PRAY.Material({
         attenuation: vec3.fromValues(0.8, 0.6, 0.8),
@@ -107,7 +109,7 @@ export const createScene = async (el, onLoaded) => {
             const center = vec3.fromValues(a + 0.9 * Math.random(), 0.2, b + 0.9 * Math.random());
             vec3.multiply(center, center, vec3.fromValues(3, 1, 2));
             if(vec3.length(vec3.sub(vec3.create(), center, vec3.fromValues(4, 0.2, 0))) > 0.9){
-                if(choose_mat < 0.6){
+                if(choose_mat < 1.0){
                     const mat = new PRAY.Material({
                         attenuation: vec3.fromValues(Math.random() * Math.random(), Math.random() * Math.random(), Math.random() * Math.random()),
                         material_flag: PRAY.Material.TYPES.LAMBERTIAN,

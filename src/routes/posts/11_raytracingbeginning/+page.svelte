@@ -49,7 +49,11 @@
             <h4 class="page__sub-subtitle">Ray Tracing</h4>
             <p class="page__body">
                 Ray tracing is another school of rendering separate from rasterization-based rendering methods. The goal of ray tracing is often photorealism (or extremely high fidelity stylized renders), without as much concern for runtime performance as traditional rasterization rendering has. Big-budget 3D animated movies, like those made by Pixar, use ray tracing to create each frame of their film, with each frame potentially taking many hours to render.
-                <br><br>
+                
+                <img class="page__img" src="../images/posts/rayTracingBeginning/raytraced.jpg" alt="raytraced iamge" width="50%"/>
+                <span class="page__img__sub-text">An example of the level of realsim that can be achieved through modern ray tracing techniques. Provided by NVIDIA</span>
+
+
                 Ray tracing works by sending out rays originating from the camera, tracing the path the ray takes through the scene as it bounces off objects, and using the data from each bounce the ray makes to determine a final color for a pixel. These rays can be thought of as light rays, and when they collide with an object, we can attempt to recreate the real-world physical light interactions that happen when a light ray scatters off an object. I will get into more detail on simulating realistic light interaction later on down the line. For now, we will keep it simple and focus on the basics.
             </p>
 
@@ -86,12 +90,21 @@
 
             <h4 class="page__sub-subtitle">Lambertian Material</h4>
             <p class="page__body">
+                
                 Our Lambertian material is known as a diffuse material, or in other words, when light collides, it is either absorbed or reflected in a random direction. Our material is Lambertian because it scatters light randomly in all directions. This direction is calculated by summing a random direction vector to the normal vector of the collision position.
+                <img class="page__img" src="../images/posts/rayTracingBeginning/Lambertian.png" alt="Lambertian" width="50%"/>
+                <span class="page__img__sub-text">Lambertian materials with randomized atteunation factors. Notice the subtle bleeding of color from the spheres to the ground.</span>
+            
             </p>
 
             <h4 class="page__sub-subtitle">Metal Material</h4>
             <p class="page__body">
                 Metal materials are reflective, like a mirror. Rather than scattering in a random direction when a collision happens, a metal's scattering direction will be the reflection of the incoming ray across the collision's normal vector. In practice, this will produce a perfect mirror reflection. Metals, however, are often not perfect reflections, but rather blurry reflections due to microscopic imperfections on their surface. We can modulate how blurry the reflection will be by adding a random vector multiplied by some fuzz factor to the reflected ray. When the fuzz factor is zero, the reflection will be a perfect mirror. As the fuzz factor approaches 1, the reflection will become more and more blurry.
+            
+                <img class="page__img" src="../images/posts/rayTracingBeginning/Metals.png" alt="Metals" width="75%"/>
+                <span class="page__img__sub-text">Different metal materials with fuzz factors ranging from 0.6 (left), to 0.3 (middle), to 0.0 (right).</span>
+
+            
             </p>
 
             <h4 class="page__sub-subtitle">Dielectric Material</h4>
@@ -99,6 +112,11 @@
                 A dielectric is a material that is clear, such as glass. When a light ray collides with a dielectric material, it is actually split into two new light rays: a reflected ray, and a refracted ray. Depending on the material properties, different amounts of light will be contained within each of these rays. In our case, we will not model both of these rays simultaneously, but rather randomly choose between one of them based on the properties of the material and the angle of intersection.
                 <br><br>
                 We model the refracted ray using Snell's Law, which states that a given material has a refractive index that determines the angle at which the refracted light ray will travel through the dielectric material based on the angle of intersection. This model, however, does not work for all refractive indices at all angles, as at a certain point, 100% of the light will be reflected, meaning no light is refracted by the material. In our case, we check to see if this angle has been reached. If it has, we only perform a reflection. If it has not, we can potentially refract the ray. The problem is, even if the angle of total reflection has not been reached, a portion of the light will still be reflected, and we need to know how to determine that. We approximate the amount using the Schlick Approximation. To be completely transparent, I do not yet fully understand how the approximation actually works, but the idea is pretty simple. Given an angle of intersection and a refractive index, the Schlick approximation will give an approximate probability that the light will be reflected rather than refracted. In our case, if this probability is met, we reflect the ray; if not, then we refract the ray.
+            
+                <img class="page__img" src="../images/posts/rayTracingBeginning/Dielectric.png" alt="Metals" width="50%"/>
+                <span class="page__img__sub-text">Dielectric material with a refractive index of 1.2. Notice the bending of light flipping and distorting the spheres behind.</span>
+
+            
             </p>
 
             <h4 class="page__sub-subtitle">Calculating Ray Color</h4>
@@ -120,6 +138,7 @@
             <p class="page__body">
                 <a href="https://www.realtimerendering.com/">Ray Tracing in One Weekend - Peter Shirley, Trevor David Black, Steve Hollasch.</a>
                 <br>
+                <a href="https://blogs.nvidia.com/blog/whats-difference-between-ray-tracing-rasterization/">What’s the Difference Between Ray Tracing and Rasterization? - Brian Caulfield (NVIDIA)</a>
             </p>  
         </div>
     </div>
