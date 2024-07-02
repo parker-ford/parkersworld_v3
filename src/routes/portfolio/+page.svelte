@@ -26,11 +26,20 @@
 			<hr class = "portfolio__spacer">
 			<h1 class="portfolio__section__title">Projects</h1>
 			<div class="portfolio__item">
+				<img class="portfolio__item__image" src="images/raytracer/raytracer.png" alt="renderer">
+				<div class="portfolio__item__content">
+					<h1 class="portfolio__item__title">Preemo-Ray</h1>
+					<p class="portfolio__item__description">An open-source WebGPU-based raytracer created. It is currently a work in progress.</p>
+					<a class="portfolio__item__button" href="\preemo">Learn More</a>
+				</div>
+			</div>
+			<hr class = "portfolio__spacer">
+			<div class="portfolio__item">
 				<img class="portfolio__item__image" src="images/renderer/renderer.png" alt="renderer">
 				<div class="portfolio__item__content">
 					<h1 class="portfolio__item__title">Preemo-Render</h1>
-					<p class="portfolio__item__description">An open-source WebGPU rendering engine created to explore modern rendering techniques and experiment with cutting-edge graphics technology. It is currently a work in progress.</p>
-					<a class="portfolio__item__button" href="\preemo">Learn More</a>
+					<p class="portfolio__item__description">An open-source WebGPU-based rendering engine created to explore modern rendering techniques and experiment with cutting-edge graphics technology. It is currently a work in progress.</p>
+					<a class="portfolio__item__button" href="\preemoRender">Learn More</a>
 				</div>
 			</div>
     </div>
