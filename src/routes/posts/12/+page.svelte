@@ -1,6 +1,6 @@
 <script context="module">
     export const metadata = {
-        title : "placeholder title",
+        title : "WebGL Ray Tracer: Simple Meshes And Lights",
         date : "01/01/0001",
         image_static: 'images/thumbnails/placeholder/placeholder.jpg',
 		image: 'images/thumbnails/placeholder/placeholder.jpg',
