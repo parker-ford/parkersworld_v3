@@ -25,6 +25,7 @@
     <div class = "page__content">
         <div class="page__canvas__container">
             <canvas class="page__canvas" bind:this={el}></canvas>
+            <pre id="info"></pre>
             <video id="fallback-video" width="640" height="360" controls style="display: none;">
                 <source src="../videos/rayTracingBeginning.mp4" type="video/mp4">
                 <track kind="captions">

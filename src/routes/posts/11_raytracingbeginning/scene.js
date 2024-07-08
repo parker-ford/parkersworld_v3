@@ -46,6 +46,7 @@ export const createScene = async (el, onLoaded) => {
         image_plane_distance: 0.05,
         fstop: 2.8,
         focal_length: 0.035,
+        background_color: vec3.fromValues(0.5, 0.7, 1.0),
     });
     camera.transform.position = [13, 2.0, -3];
     // camera.transform.setForwardVector(vec3.subtract(vec3.create(), [0,0,0], camera.transform.position));
@@ -214,15 +215,15 @@ export const createScene = async (el, onLoaded) => {
     //     camera.focal_length = value;
     // });
 
-    const alignGUIWithCanvas = () => {
-        const canvasRect = el.getBoundingClientRect();
-        const guiRect = gui.domElement.getBoundingClientRect();
-        gui.domElement.style.position = 'absolute';
-        gui.domElement.style.top = `222px`;
-        gui.domElement.style.left = `${canvasRect.right - guiRect.width - 2}px`;
-        camera.setGui(gui);
-    };
-    alignGUIWithCanvas();
+    // const alignGUIWithCanvas = () => {
+    //     const canvasRect = el.getBoundingClientRect();
+    //     const guiRect = gui.domElement.getBoundingClientRect();
+    //     gui.domElement.style.position = 'absolute';
+    //     gui.domElement.style.top = `222px`;
+    //     gui.domElement.style.left = `${canvasRect.right - guiRect.width - 2}px`;
+    //     camera.setGui(gui);
+    // };
+    // alignGUIWithCanvas();
 
 
 

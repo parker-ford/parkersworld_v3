@@ -455,8 +455,10 @@ body {
     left: 0;
     margin: 0;
     padding: 0.5em;
+    /* padding: 0; */
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
+    text-align: left;
   }
 
 .page__title__container{
