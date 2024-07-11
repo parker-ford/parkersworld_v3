@@ -14,6 +14,7 @@ export const createScene = async (el, onLoaded) => {
     // GUI
     const gui = new GUI()
     gui.domElement.id = 'gui';
+    // gui.domElement.style.display = 'none'
 
 
     //Renderer
@@ -56,30 +57,44 @@ export const createScene = async (el, onLoaded) => {
 
     //Materials
     const white_material = new PRAY.Material({
-        attenuation: vec3.fromValues(1.0, 1.0, 1.0),
+        attenuation: vec3.fromValues(180.0 / 255.0, 180.0 / 255.0, 180.0 / 255.0),
         material_flag: PRAY.Material.TYPES.LAMBERTIAN,
     });
     scene.add(white_material);
 
     const red_material = new PRAY.Material({
-        attenuation: vec3.fromValues(1.0, 0.0, 0.0),
+        attenuation: vec3.fromValues(180.0 / 255.0, 0.0, 0.0),
         material_flag: PRAY.Material.TYPES.LAMBERTIAN,
     });
     scene.add(red_material);
 
     const green_material = new PRAY.Material({
-        attenuation: vec3.fromValues(0.0, 1.0, 0.0),
+        attenuation: vec3.fromValues(0.0, 180.0 / 255.0, 0.0),
         material_flag: PRAY.Material.TYPES.LAMBERTIAN,
     });
     scene.add(green_material);
 
     const emissive_material = new PRAY.Material({
-        emissive_color: vec3.fromValues(1.0, 1.0, 1.0),
-        emissive_strength: 3.0,
+        emissive_color: vec3.fromValues(180.0 / 255.0, 180.0 / 255.0, 180.0 / 255.0),
+        emissive_strength: 10.0,
         material_flag: PRAY.Material.TYPES.EMISSIVE,
     });
     console.log(emissive_material)
     scene.add(emissive_material);
+
+    const dielectric_material = new PRAY.Material({
+        attenuation: vec3.fromValues(1.0, 1.0, 1.0),
+        refractive_index: 1.5168,
+        material_flag: PRAY.Material.TYPES.DIELECTRIC
+    });
+    scene.add(dielectric_material);
+
+    const metal_material = new PRAY.Material({
+        attenuation: vec3.fromValues(180.0 / 255.0, 180.0 / 255.0, 180.0 / 255.0),
+        metalic_fuzz: 0.1,
+        material_flag: PRAY.Material.TYPES.METAL
+    });
+    scene.add(metal_material);
 
     //Meshes
     const floor_plane = new PRAY.PlaneMesh({
@@ -104,7 +119,7 @@ export const createScene = async (el, onLoaded) => {
     const right_plane = new PRAY.PlaneMesh({
         width: 1,
         height: 1,
-        material_id: red_material.id,
+        material_id: green_material.id,
     });
     right_plane.transform.position = [2.5, 2.5, 0];
     right_plane.transform.scale = [5, 5, 5];
@@ -114,7 +129,7 @@ export const createScene = async (el, onLoaded) => {
     const left_plane = new PRAY.PlaneMesh({
         width: 1,
         height: 1,
-        material_id: green_material.id,
+        material_id: red_material.id,
     });
     left_plane.transform.position = [-2.5, 2.5, 0];
     left_plane.transform.scale = [5, 5, 5];
@@ -139,7 +154,7 @@ export const createScene = async (el, onLoaded) => {
     front_plane.transform.position = [0, 2.5, -2.5];
     front_plane.transform.scale = [5, 5, 5];
     quat.rotateY(front_plane.transform.rotation, front_plane.transform.rotation, Math.PI);
-    // scene.add(front_plane);
+    scene.add(front_plane);
 
     const light_plane = new PRAY.PlaneMesh({
         width: 1,
@@ -152,24 +167,25 @@ export const createScene = async (el, onLoaded) => {
     scene.add(light_plane)
 
     const sphere = new PRAY.Sphere({
-        position: [0, 1.0, 0],
-        radius: 1.0,
-        material_id: white_material.id,
+        position: [1, 1.5, -1],
+        radius: 0.75,
+        material_id: dielectric_material.id,
     });
-    // scene.add(sphere);
+    scene.add(sphere);
 
     const cube = new PRAY.CubeMesh({
         width: 1,
         height: 1,
         material_id: white_material.id,
     });
-    cube.transform.position = vec3.fromValues(-0.75, 1.5, 0.75);
+    cube.transform.position = vec3.fromValues(-1.0, 1.5, 0.75);
     cube.transform.scale = vec3.fromValues(1.5, 3.0, 1.5);
     quat.rotateY(cube.transform.rotation, cube.transform.rotation, Math.PI / 2.4);
     scene.add(cube);
 
     //FPS
     const infoElem = document.querySelector('#info');
+    // infoElem.style.display = 'none';
 
     //Frame
     function frame() {
@@ -187,11 +203,20 @@ js: ${jsTime.toFixed(1)}ms
     frame();
 
     const parameters= {
-        lens_focal_length: camera.lens_focal_length,
-        image_plane_distance: camera.image_plane_distance,
-        fstop: camera.fstop,
-        focal_length: camera.focal_length,
+        emissive_light_color: [180.0 / 255.0, 180.0 / 255.0, 180.0 / 255.0],
+        emissive_light_strength: 10.0,
     }
+
+    gui.addColor(parameters, 'emissive_light_color').name('Emissive Light Color').onChange((value) => {
+        emissive_material.emissive_color = value;
+        scene.has_setup_buffers = false;
+        scene.parameters_updated = true;
+    });
+    gui.add(parameters, 'emissive_light_strength').name('Emissive Light Strength').onChange((value) => {
+        emissive_material.emissive_strength = value;
+        scene.has_setup_buffers = false;
+        scene.parameters_updated = true;
+    });
 
     const alignGUIWithCanvas = () => {
         const canvasRect = el.getBoundingClientRect();

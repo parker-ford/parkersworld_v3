@@ -36,7 +36,7 @@ export const createScene = async (el, onLoaded) => {
     }
 
     const scene = new PRAY.Scene();
-    onLoaded();
+
 
     //Camera
     const camera = new PRAY.PerspectiveCamera({
@@ -68,13 +68,96 @@ export const createScene = async (el, onLoaded) => {
         radius: 1,
         material_id: default_material.id,
     });
-    scene.add(default_sphere);
+    // scene.add(default_sphere);
+    
+    const model = new PRAY.OBJMesh({
+        // filePath: "../models/Cube/Cube.obj",
+        filePath: "../models/StanfordBunny/bunny_super_lowpoly.obj",
+        material_id: default_material.id,
+    });
+    
+    await model.loaded();
 
+    const model2 = new PRAY.OBJMesh({
+        // filePath: "../models/Cube/Cube.obj",
+        filePath: "../models/StanfordBunny/bunny_super_lowpoly.obj",
+        material_id: default_material.id,
+    });
+
+    await model2.loaded();
+
+    onLoaded();
+
+    model.transform.position = vec3.fromValues(1,0,0);
+    scene.add(model);
+
+    model2.transform.position = vec3.fromValues(-1,0,0);
+    // scene.add(model2);
+
+
+    const floor_plane = new PRAY.PlaneMesh({
+        width: 1,
+        height: 1,
+        material_id: default_material.id,
+    });
+    floor_plane.transform.position = [0, 0, 0];
+    floor_plane.transform.scale = [5, 5, 5];
+    quat.rotateX(floor_plane.transform.rotation, floor_plane.transform.rotation, Math.PI / 2);
+    // scene.add(floor_plane);
+
+    const back_plane = new PRAY.PlaneMesh({
+        width: 1,
+        height: 1,
+        material_id: default_material.id,
+    });
+    back_plane.transform.position = [0, 2.5, 2.5];
+    back_plane.transform.scale = [5, 5, 5];
+    // scene.add(back_plane);
+
+    const right_plane = new PRAY.PlaneMesh({
+        width: 1,
+        height: 1,
+        material_id: default_material.id,
+    });
+    right_plane.transform.position = [2.5, 2.5, 0];
+    right_plane.transform.scale = [5, 5, 5];
+    quat.rotateY(right_plane.transform.rotation, right_plane.transform.rotation, Math.PI / 2);
+    // scene.add(right_plane);
+
+    const left_plane = new PRAY.PlaneMesh({
+        width: 1,
+        height: 1,
+        material_id: default_material.id,
+    });
+    left_plane.transform.position = [-2.5, 2.5, 0];
+    left_plane.transform.scale = [5, 5, 5];
+    quat.rotateY(left_plane.transform.rotation, left_plane.transform.rotation, -Math.PI / 2);
+    // scene.add(left_plane);
+
+    const top_plane = new PRAY.PlaneMesh({
+        width: 1,
+        height: 1,
+        material_id: default_material.id,
+    });
+    top_plane.transform.position = [0, 5, 0];
+    top_plane.transform.scale = [5, 5, 5];
+    quat.rotateX(top_plane.transform.rotation, top_plane.transform.rotation, -Math.PI / 2);
+    // scene.add(top_plane);
+
+    //FPS
+    const infoElem = document.querySelector('#info');
 
     //Frame
     function frame() {
+        const startTime = performance.now();
         renderer.render(scene, camera);
         requestAnimationFrame(frame);
+        const jsTime = performance.now() - startTime;
+
+        infoElem.textContent = 
+        `\
+fps: ${(1 / PRAY.Time.deltaTime).toFixed(1)}
+js: ${jsTime.toFixed(1)}ms`;
     }
     frame();
 
@@ -92,6 +175,11 @@ export const createScene = async (el, onLoaded) => {
         gui.domElement.style.top = `222px`;
         gui.domElement.style.left = `${canvasRect.right - guiRect.width - 2}px`;
         camera.setGui(gui);
+
+        const infoRect = infoElem.getBoundingClientRect();
+        infoElem.style.position = 'absolute';
+        infoElem.style.top = '222px';
+        infoElem.style.left = `${canvasRect.left}px`;
     };
     alignGUIWithCanvas();
 

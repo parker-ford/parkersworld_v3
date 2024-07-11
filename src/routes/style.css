@@ -524,6 +524,11 @@ body {
     font-family: 'local-opensans', sans-serif;  
 }
 
+
+.page__body a{
+    color:#28C903;
+}
+
 .page__img{
     display: block;
     margin: 40px auto;

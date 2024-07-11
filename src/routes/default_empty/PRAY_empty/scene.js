@@ -70,11 +70,20 @@ export const createScene = async (el, onLoaded) => {
     });
     scene.add(default_sphere);
 
+    //FPS
+    const infoElem = document.querySelector('#info');
 
     //Frame
     function frame() {
+        const startTime = performance.now();
         renderer.render(scene, camera);
         requestAnimationFrame(frame);
+        const jsTime = performance.now() - startTime;
+
+        infoElem.textContent = 
+        `\
+fps: ${(1 / PRAY.Time.deltaTime).toFixed(1)}
+js: ${jsTime.toFixed(1)}ms`;
     }
     frame();
 
@@ -92,6 +101,11 @@ export const createScene = async (el, onLoaded) => {
         gui.domElement.style.top = `222px`;
         gui.domElement.style.left = `${canvasRect.right - guiRect.width - 2}px`;
         camera.setGui(gui);
+
+        const infoRect = infoElem.getBoundingClientRect();
+        infoElem.style.position = 'absolute';
+        infoElem.style.top = '222px';
+        infoElem.style.left = `${canvasRect.left}px`;
     };
     alignGUIWithCanvas();
 
