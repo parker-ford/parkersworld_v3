@@ -17,7 +17,7 @@
 		<h1 class="project__title">PREEMO</h1>
 		<h2 class="project__subtitle">A WebGPU Rendering Engine</h2>
 		<h3 class="project__links">
-			[ <a href="https://github.com/parker-ford/Preemo-Render">GitHub</a>]
+			[ <a href="https://github.com/parker-ford/PREEMO">GitHub</a>]
 		</h3>
 		<div class="project__media__group">
 			<video autoplay muted loop width="40%">
@@ -38,10 +38,10 @@
 			because I wanted to allow people to interact with my graphics projects directly on my website
 			in real-time and not have to download any executable files. WebGPU, unlike its contemporary
 			API WebGL, supports the dispatchment of compute shaders, which I intend to use in future
-			experiments. Additionally, it similarities with modern graphics APIs such as Vulkan and is
-			poised to become the standard web graphics API (eventually). The downside of using WebGPU is,
-			dut to its newness, it isn't fully integrated into all browsers yet (Hopefully this will be
-			less of a problem as time goes on).
+			experiments. Additionally, it shares similarities with modern graphics APIs such as Vulkan and
+			is poised to become the standard web graphics API (eventually). The downside of using WebGPU
+			is, due to its newness, it isn't fully integrated into all browsers yet (Hopefully this will
+			be less of a problem as time goes on).
 
 			<br /><br />
 
@@ -67,5 +67,21 @@
 			- Shadows <br />
 			- Physically Based Rendering and Materials
 		</p>
+		<hr class="portfolio__spacer" />
+
+		<h2 class="project__subtitle"><strong>Gallery</strong></h2>
+
+		<div class="project__media__group">
+			<img class="project__image" src="/images/preemo/preemo1.png" alt="preemo" width="50%" />
+		</div>
+		<div class="project__media__group">
+			<img class="project__image" src="/images/preemo/raytracer.png" alt="preemo" width="50%" />
+		</div>
+		<div class="project__media__group">
+			<img class="project__image" src="/images/preemo/preemo2.png" alt="preemo" width="50%" />
+		</div>
+		<div class="project__media__group">
+			<img class="project__image" src="/images/preemo/preemo3.png" alt="preemo" width="50%" />
+		</div>
 	</div>
 </div>
