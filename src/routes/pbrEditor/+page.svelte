@@ -15,7 +15,7 @@
 	<h1 class="portfolio__title">Project</h1>
 	<div class="project__container">
 		<h1 class="project__title">PBR Material Editor</h1>
-		<h2 class="project__subtitle">Parker Ford, 2024</h2>
+		<h2 class="project__subtitle__it">Parker Ford, 2024</h2>
 		<p>
 			A real-time rendering application showcasing several physically based BRDF implementations,
 			complete with flexible lighting and material configuration options.
