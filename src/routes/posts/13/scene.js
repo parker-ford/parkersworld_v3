@@ -36,6 +36,7 @@ export const createScene = async (el, onLoaded) => {
     }
 
     const scene = new PRAY.Scene();
+    scene.debug_data_views.DEBUG_0[0] = 1;
 
 
     //Camera
@@ -59,7 +60,6 @@ export const createScene = async (el, onLoaded) => {
         attenuation: vec3.fromValues(0.8, 0.5, 0.5),
         material_flag: PRAY.Material.TYPES.LAMBERTIAN,
     });
-    scene.add(default_material);
 
 
     //Spheres
@@ -68,84 +68,25 @@ export const createScene = async (el, onLoaded) => {
         radius: 1,
         material_id: default_material.id,
     });
-    // scene.add(default_sphere);
+//     // scene.add(default_sphere);
     
-    const model = new PRAY.OBJMesh({
-        // filePath: "../models/Cube/Cube.obj",
-        filePath: "../models/StanfordBunny/bunny_super_lowpoly.obj",
+    const mesh = new PRAY.OBJMesh({
+        filePath: "../models/StanfordBunny/bunny_lowpoly.obj",
         material_id: default_material.id,
     });
-    
-    await model.loaded();
-
-    const model2 = new PRAY.OBJMesh({
-        // filePath: "../models/Cube/Cube.obj",
-        filePath: "../models/StanfordBunny/bunny_super_lowpoly.obj",
-        material_id: default_material.id,
-    });
-
-    await model2.loaded();
-
+    await mesh.loaded();
     onLoaded();
 
-    model.transform.position = vec3.fromValues(1,0,0);
-    scene.add(model);
-
-    model2.transform.position = vec3.fromValues(-1,0,0);
-    // scene.add(model2);
-
-
-    const floor_plane = new PRAY.PlaneMesh({
-        width: 1,
-        height: 1,
-        material_id: default_material.id,
+    const renderable = new PRAY.Renderable({
+        mesh: mesh,
+        material: default_material,
+        
     });
-    floor_plane.transform.position = [0, 0, 0];
-    floor_plane.transform.scale = [5, 5, 5];
-    quat.rotateX(floor_plane.transform.rotation, floor_plane.transform.rotation, Math.PI / 2);
-    // scene.add(floor_plane);
-
-    const back_plane = new PRAY.PlaneMesh({
-        width: 1,
-        height: 1,
-        material_id: default_material.id,
-    });
-    back_plane.transform.position = [0, 2.5, 2.5];
-    back_plane.transform.scale = [5, 5, 5];
-    // scene.add(back_plane);
-
-    const right_plane = new PRAY.PlaneMesh({
-        width: 1,
-        height: 1,
-        material_id: default_material.id,
-    });
-    right_plane.transform.position = [2.5, 2.5, 0];
-    right_plane.transform.scale = [5, 5, 5];
-    quat.rotateY(right_plane.transform.rotation, right_plane.transform.rotation, Math.PI / 2);
-    // scene.add(right_plane);
-
-    const left_plane = new PRAY.PlaneMesh({
-        width: 1,
-        height: 1,
-        material_id: default_material.id,
-    });
-    left_plane.transform.position = [-2.5, 2.5, 0];
-    left_plane.transform.scale = [5, 5, 5];
-    quat.rotateY(left_plane.transform.rotation, left_plane.transform.rotation, -Math.PI / 2);
-    // scene.add(left_plane);
-
-    const top_plane = new PRAY.PlaneMesh({
-        width: 1,
-        height: 1,
-        material_id: default_material.id,
-    });
-    top_plane.transform.position = [0, 5, 0];
-    top_plane.transform.scale = [5, 5, 5];
-    quat.rotateX(top_plane.transform.rotation, top_plane.transform.rotation, -Math.PI / 2);
-    // scene.add(top_plane);
+    scene.add(renderable);
 
     //FPS
     const infoElem = document.querySelector('#info');
+    infoElem.style.fontFamily = "Consolas, 'Courier New', monospace";
 
     //Frame
     function frame() {
@@ -156,17 +97,39 @@ export const createScene = async (el, onLoaded) => {
 
         infoElem.textContent = 
         `\
+TIME STATS:
 fps: ${(1 / PRAY.Time.deltaTime).toFixed(1)}
-js: ${jsTime.toFixed(1)}ms`;
+js: ${jsTime.toFixed(1)}ms
+
+BVH STATS:
+triangle count: ${mesh.triangle_count}
+node count: ${mesh.bvh.node_count}
+leaf count: ${mesh.bvh.leaf_count}
+leaf depth:
+  -min: ${mesh.bvh.min_leaf_depth}
+  -max: ${mesh.bvh.max_leaf_depth}
+  -mean: ${parseFloat(mesh.bvh.mean_leaf_depth.toFixed(2))}
+leaf triangles:
+  -min: ${mesh.bvh.min_leaf_triangles}
+  -max: ${mesh.bvh.max_leaf_triangles}
+  -mean: ${parseFloat(mesh.bvh.mean_leaf_triangles.toFixed(2))}
+`;
     }
     frame();
 
     const parameters= {
-        lens_focal_length: camera.lens_focal_length,
-        image_plane_distance: camera.image_plane_distance,
-        fstop: camera.fstop,
-        focal_length: camera.focal_length,
+        bvh_debug: true,
+        bvh_depth: 0,
     }
+
+    gui.add(parameters, 'bvh_debug').onChange((value) => {
+        scene.debug_data_views.DEBUG_0[0] = value;
+        scene.parameters_updated = true;
+    });
+    gui.add(parameters, 'bvh_depth', 0, 16).step(1).onChange((value) => {
+        scene.debug_data_views.DEBUG_1[0] = value;
+        scene.parameters_updated = true;
+    });
 
     const alignGUIWithCanvas = () => {
         const canvasRect = el.getBoundingClientRect();

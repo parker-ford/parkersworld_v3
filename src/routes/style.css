@@ -859,9 +859,10 @@ body {
     color: #333; 
     background-color: #333; 
     height: 1px;
-    width: 100%; 
+    width: 110%; 
     margin-top: 40px;
     margin-bottom: 40px;
+    align-self: center;
 }
 
 .portfolio__section__title{
@@ -899,27 +900,37 @@ body {
     color: #F5F5F5;
     padding-top: 50px;
     padding-bottom: 50px;
-    padding-left: 200px;
-    padding-right: 200px;
+    padding-left: 300px;
+    padding-right: 300px;
     border-radius: 15px;
     margin-bottom: 40px;
     border: 3px solid #424242;
 }
 
+
 .project__title{
     font-weight: 800;
     font-size: 2em;
     margin-top: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .project__subtitle{
     /* font-weight: 700; */
     font-size: 1.2em;
     /* margin-top: 20px; */
-    margin-bottom: 7px;
-    /* font-style: italic; */
+    margin-bottom: 15px;
 }
+
+.project__subtitle__it{
+    /* font-weight: 700; */
+    font-size: 1.2em;
+    /* margin-top: 20px; */
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+
 
 .project__subtitle strong {
     font-weight: 700;
@@ -961,6 +972,44 @@ body {
     /* margin-top: 20px; */
     margin-bottom: 20px;
 }
+
+.project__description *{
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.project__description h1 {
+    font-weight: 700;
+}
+
+.project__description h3 {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.project__description p {
+    padding-left: 20px;
+}
+
+.project__description ul {
+    padding-left: 40px;
+} 
+
+.project__description li {
+    margin-bottom: 10px;
+}
+
+.project__description img {
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 100%;
+}
+
+.project__description .image__description {
+    margin-bottom: 10px;
+    color:#707070;
+}
+
 
 @media(max-width: 1400px){
     .project__container{

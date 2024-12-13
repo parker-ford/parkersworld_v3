@@ -41,6 +41,22 @@
 		<div class="portfolio__item">
 			<img
 				class="portfolio__item__image"
+				src="images/portfolio/PBRPortfolioThumbnail.png"
+				alt="renderer"
+			/>
+			<div class="portfolio__item__content">
+				<h1 class="portfolio__item__title">PBR Material Editor</h1>
+				<p class="portfolio__item__description">
+					A real-time physically based material editor complete with implementations of several
+					popular BRDFs.
+				</p>
+				<a class="portfolio__item__button" href="\pbrEditor">Learn More</a>
+			</div>
+		</div>
+		<hr class="portfolio__spacer" />
+		<div class="portfolio__item">
+			<img
+				class="portfolio__item__image"
 				src="images/portfolio/PREEMOPortfolioThumbnail.png"
 				alt="renderer"
 			/>
