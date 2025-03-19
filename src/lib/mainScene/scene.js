@@ -133,7 +133,7 @@ paintingParent.add(planeMesh);
 
 // Load frame model
 fbxLoader.load(
-    './models/Frame/frame_new/frame.fbx',
+    './models/Frame/frame_new/frame_v2.fbx',
     (object) => {
         paintingMesh = object;
         object.position.set(.3,-3,0);
