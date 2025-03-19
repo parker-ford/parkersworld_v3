@@ -25,10 +25,14 @@
 			<h1 class = "biography__title">Hey, I'm Parker</h1>
 			<h2 class = "biography_subtitle">and I'm addicted to programming</h2>
 			<p class = "biography__body">
-				Welcome to my website. This is where I document my learning process and get to show off whatever
+				<!-- Welcome to my website. This is where I document my learning process and get to show off whatever
 				I am currently working on, most of which will be graphics programming related. All my stuff is
 				interactive so scroll down to whatever seems interesting to you and mess around with it.
-				Who knows, maybe you'll learn something new. Enjoy your stay, and thanks for dropping by.
+				Who knows, maybe you'll learn something new. Enjoy your stay, and thanks for dropping by. -->
+				Welcome to my website. I like to make cool stuff.
+				This is where I can share it with the world.
+				Scroll down to see what I've been working on.
+				Thanks for stopping by.
 				<br>
 				<br>
 			</p>
