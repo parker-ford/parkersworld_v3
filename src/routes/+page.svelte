@@ -70,7 +70,7 @@
 				interactive so scroll down to whatever seems interesting to you and mess around with it.
 				Who knows, maybe you'll learn something new. Enjoy your stay, and thanks for dropping by. -->
 				Welcome to my website. I like to make cool stuff.
-				This is where I can share it with the world.
+				This is where I share it with the world.
 				Scroll down to see what I've been working on.
 				Thanks for stopping by.
 				<br>
