@@ -5,7 +5,22 @@
 	import './style.css';
 
 	let el;
+	let visiblePosts = [];
+	let currentIndex = 0;
+	const POSTS_PER_LOAD = 3; // Adjust this number as needed
+	let loadingMore = false;
+	let observerTarget;
+
 	sceneLoaded.set(false);
+
+	function loadMorePosts() {
+		const nextPosts = data.summaries.slice(currentIndex, currentIndex + POSTS_PER_LOAD);
+		if (nextPosts.length > 0) {
+			visiblePosts = [...visiblePosts, ...nextPosts];
+			currentIndex += POSTS_PER_LOAD;
+			loadingMore = false;
+		}
+	}
 
 	onMount(async () => {
 		const { createScene } = await import('../lib/mainScene/scene');
@@ -16,6 +31,31 @@
 			const img = new Image();
 			img.src = element.image;
 		});
+
+		// Initial load of posts
+		loadMorePosts();
+
+		// Set up intersection observer for infinite scroll
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting && !loadingMore && currentIndex < data.summaries.length) {
+					loadingMore = true;
+					loadMorePosts();
+				}
+			});
+		}, {
+			rootMargin: '100px' // Start loading slightly before reaching the bottom
+		});
+
+		if (observerTarget) {
+			observer.observe(observerTarget);
+		}
+
+		return () => {
+			if (observerTarget) {
+				observer.unobserve(observerTarget);
+			}
+		};
 	});
 </script>
 
@@ -53,7 +93,7 @@
 		<h1>Blog Posts</h1>
 	</div>
 	<div class="main__posts" id="main__posts">
-		{#each data.summaries as { name, description, date, image, image_static, logo, page, hovered }}
+		{#each visiblePosts as { name, description, date, image, image_static, logo, page, hovered }}
 			<div
 				role="button"
 				tabindex="0"
@@ -77,5 +117,12 @@
 				</div>
 			</div>
 		{/each}
+		
+		<!-- Observer target element -->
+		<div bind:this={observerTarget} class="observer-target">
+			{#if loadingMore}
+				<p>Loading more posts...</p>
+			{/if}
+		</div>
 	</div>
 </div>
